@@ -1,0 +1,66 @@
+---
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: Release
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      major: ${{ steps.release.outputs.major }}
+      minor: ${{ steps.release.outputs.minor }}
+      patch: ${{ steps.release.outputs.patch }}
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit
+
+      - uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4.4.0
+        id: release
+
+  tag:
+    if: needs.release.outputs.release_created
+    runs-on: ubuntu-latest
+    name: Tag Release
+    permissions:
+      id-token: write
+      contents: write
+    needs:
+      - release
+
+    steps:
+      - uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+      - run: |
+          git config --local user.email "${{ env.GITHUB_ACTION }}+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - run: |
+          git tag -d v${{ needs.release.outputs.major }} || true
+          git push origin :v${{ needs.release.outputs.major }} || true
+          git tag -a v${{ needs.release.outputs.major }} -m "Release v${{ needs.release.outputs.major }}"
+          git push origin v${{ needs.release.outputs.major }}
+
+      - run: |
+          git tag -d v${{ needs.release.outputs.major }}.${{ needs.release.outputs.minor }} || true
+          git push origin :v${{ needs.release.outputs.major }}.${{ needs.release.outputs.minor }} || true
+          git tag -a v${{ needs.release.outputs.major }}.${{ needs.release.outputs.minor }} -m "Release v${{ needs.release.outputs.major }}.${{ needs.release.outputs.minor }}"
+          git push origin v${{ needs.release.outputs.major }}.${{ needs.release.outputs.minor }}
