@@ -20,11 +20,11 @@ type CreateOptions struct {
 	// Description is the description of the repository.
 	Description pulumi.StringInput
 	// EnableDiscussions indicates whether to enable discussions for the repository.
-	EnableDiscussions pulumi.BoolInput
+	EnableDiscussions pulumi.BoolPtrInput
 	// EnableWiki indicates whether to enable the wiki for the repository.
-	EnableWiki pulumi.BoolInput
+	EnableWiki pulumi.BoolPtrInput
 	// Homepage is the homepage URL of the repository.
-	Homepage pulumi.StringInput
+	Homepage pulumi.StringPtrInput
 	// Topics is a list of topics to associate with the repository.
 	Topics []string
 	// GitHubPagesBranch is the branch to use for GitHub Pages.
