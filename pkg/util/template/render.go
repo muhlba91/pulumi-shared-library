@@ -5,11 +5,11 @@ import (
 	"text/template"
 )
 
-// RenderTemplate reads a template file at the given path and renders it
+// Render reads a template file at the given path and renders it
 // with the provided data. It returns the rendered result or an error.
 // path: the file path to the template.
 // data: the data to populate the template.
-func RenderTemplate(path string, data any) (string, error) {
+func Render(path string, data any) (string, error) {
 	tpl, errParse := template.ParseFiles(path)
 	if errParse != nil {
 		return "", errParse
