@@ -1,0 +1,58 @@
+# Changelog
+
+## [1.1.0](https://github.com/muhlba91/pulumi-shared-library/compare/v1.0.0...v1.1.0) (2025-11-21)
+
+
+### Features
+
+* initial commit ([91e6074](https://github.com/muhlba91/pulumi-shared-library/commit/91e6074cfe2e367ebdf1691ae53170ccacfe75eb))
+* initial version ([fca06f5](https://github.com/muhlba91/pulumi-shared-library/commit/fca06f5482e109a50a587f088972f2da365240dc))
+
+
+### Bug Fixes
+
+* do not destroy on drift for github secrets ([cfd41eb](https://github.com/muhlba91/pulumi-shared-library/commit/cfd41eb3137e9026189c4bf6a7639eaf73ec362b))
+* fix required deployments for github rulesets ([5b5c716](https://github.com/muhlba91/pulumi-shared-library/commit/5b5c716a185a928901b501ba94d600a43e64e2fd))
+* rename template rendering func ([dc5dceb](https://github.com/muhlba91/pulumi-shared-library/commit/dc5dcebd061cb6e8d949aa1934512520a22f3c7e))
+* use ptr for optional pulumi values ([5c08a18](https://github.com/muhlba91/pulumi-shared-library/commit/5c08a18df676f8629008f0a56de63c6c95f563ad))
+
+
+### Miscellaneous Chores
+
+* **ci:** add harden-runner to conform ([062c0ac](https://github.com/muhlba91/pulumi-shared-library/commit/062c0ac1ca58430ec85ce4f5a9f11b827bc867ca))
+* **deps:** bump golang.org/x/crypto from 0.39.0 to 0.45.0 ([5654d02](https://github.com/muhlba91/pulumi-shared-library/commit/5654d02d5636085722c6722ec3c102f26159c71f))
+* **deps:** tidy up go modules ([d91819d](https://github.com/muhlba91/pulumi-shared-library/commit/d91819dc24bbc92f5ad059a03c59e91a36448735))
+* **deps:** update actions/checkout action to v5.0.1 ([ed70cb7](https://github.com/muhlba91/pulumi-shared-library/commit/ed70cb798b56a33878e6788cda0937d0ac482e79))
+* **deps:** update actions/checkout action to v6 ([8f0f70e](https://github.com/muhlba91/pulumi-shared-library/commit/8f0f70ed60952cdb16fc027be553ed018834feef))
+* **deps:** update actions/dependency-review-action action to v4.8.2 ([03e0c7d](https://github.com/muhlba91/pulumi-shared-library/commit/03e0c7d213c6db58b5967baa7b654901b308e6ea))
+* **deps:** update actions/setup-go action to v6 ([938eb83](https://github.com/muhlba91/pulumi-shared-library/commit/938eb83c1cd9287259a696db9f66835e81682e39))
+* **deps:** update actions/setup-go action to v6.1.0 ([81d740b](https://github.com/muhlba91/pulumi-shared-library/commit/81d740be6dca22a8f3ecad44c771e153cb059a33))
+* **deps:** update actions/upload-artifact action to v5 ([4624d14](https://github.com/muhlba91/pulumi-shared-library/commit/4624d1499c48e8a245e80d17fb06e6ef0dade6c3))
+* **deps:** update github/codeql-action action to v4.31.2 ([0b2a79b](https://github.com/muhlba91/pulumi-shared-library/commit/0b2a79b3c434aac607c23c5d722855be02e0ba58))
+* **deps:** update github/codeql-action action to v4.31.3 ([794509c](https://github.com/muhlba91/pulumi-shared-library/commit/794509c9dc5dd863a0649a2fee834ea18342a4e9))
+* **deps:** update github/codeql-action action to v4.31.4 ([8176dc3](https://github.com/muhlba91/pulumi-shared-library/commit/8176dc30b297188615df17359a4bdb0ba04368b5))
+* **deps:** update golangci/golangci-lint-action action to v9 ([a7780e8](https://github.com/muhlba91/pulumi-shared-library/commit/a7780e8484c3bfa85804b647e91c09b63b004271))
+* **deps:** update golangci/golangci-lint-action action to v9.1.0 ([ccf989f](https://github.com/muhlba91/pulumi-shared-library/commit/ccf989f6e7adc7e3c37ea305c8722db3a66b6905))
+* **deps:** update module github.com/pulumi/pulumi-aws/sdk/v7 to v7.11.0 ([452f4fb](https://github.com/muhlba91/pulumi-shared-library/commit/452f4fb8ed1117ff24b659bc1150a5d8306ec9b6))
+* **deps:** update module github.com/pulumi/pulumi-aws/sdk/v7 to v7.11.1 ([b6130a7](https://github.com/muhlba91/pulumi-shared-library/commit/b6130a7782e107731c0ac5241ddb3b8852f31aff))
+* **deps:** update module github.com/pulumi/pulumi-aws/sdk/v7 to v7.12.0 ([49d4c6f](https://github.com/muhlba91/pulumi-shared-library/commit/49d4c6fd85e448faddc04fc6387ff5a8526be5f9))
+* **deps:** update module github.com/pulumi/pulumi-gcp/sdk/v9 to v9.4.0 ([f2d6cc9](https://github.com/muhlba91/pulumi-shared-library/commit/f2d6cc9b6883bb4798037ce6ee566fc7bb1050c7))
+* **deps:** update module github.com/pulumi/pulumi-gcp/sdk/v9 to v9.5.0 ([1667864](https://github.com/muhlba91/pulumi-shared-library/commit/1667864395fc7210c4d2e8d714cbdbd88ea513b8))
+* **deps:** update module github.com/pulumi/pulumi-github/sdk/v6 to v6.8.1 ([7dd8e11](https://github.com/muhlba91/pulumi-shared-library/commit/7dd8e110b18f6790e81c0175599f560b2d68eb73))
+* **deps:** update module github.com/pulumi/pulumi-github/sdk/v6 to v6.9.0 ([85dddae](https://github.com/muhlba91/pulumi-shared-library/commit/85dddaead9a096e43a5b54c19562a5f580e7c96f))
+* **deps:** update module github.com/pulumi/pulumi-github/sdk/v6 to v6.9.1 ([62a207e](https://github.com/muhlba91/pulumi-shared-library/commit/62a207e7d12f4a950305bd3b51e49948a3018282))
+* **deps:** update module github.com/pulumi/pulumi-hcloud/sdk to v1.26.0 ([c6ad7aa](https://github.com/muhlba91/pulumi-shared-library/commit/c6ad7aa6c9d79e0f28b1c58d8b0df78f645ba959))
+* **deps:** update module github.com/pulumi/pulumi-hcloud/sdk to v1.27.0 ([91da0a9](https://github.com/muhlba91/pulumi-shared-library/commit/91da0a9442daa7d8dc74a267b7214827f1ba51e9))
+* **deps:** update module github.com/pulumi/pulumi-hcloud/sdk to v1.28.0 ([9f8a9e7](https://github.com/muhlba91/pulumi-shared-library/commit/9f8a9e7c510c83306f6a060729a34240ced00619))
+* **deps:** update module github.com/pulumi/pulumi-kubernetes/sdk/v4 to v4.24.0 ([23d4c1a](https://github.com/muhlba91/pulumi-shared-library/commit/23d4c1ad51be9a5b68aadcc8ec19ce8cdadb04e1))
+* **deps:** update module github.com/pulumi/pulumi-postgresql/sdk/v3 to v3.16.1 ([84e46a6](https://github.com/muhlba91/pulumi-shared-library/commit/84e46a6545b38d666067cda626fed2f98005d6a8))
+* **deps:** update module github.com/pulumi/pulumi-tls/sdk/v5 to v5.2.3 ([99bad0c](https://github.com/muhlba91/pulumi-shared-library/commit/99bad0ca5dc1c4cb4e933856dfda6954ba3a08d0))
+* **deps:** update module github.com/pulumi/pulumi-vault/sdk/v7 to v7.4.0 ([21be521](https://github.com/muhlba91/pulumi-shared-library/commit/21be521e7caa3074b31bbcab56b087f68a2d2272))
+* **deps:** update module github.com/pulumi/pulumi-vault/sdk/v7 to v7.4.1 ([143e68c](https://github.com/muhlba91/pulumi-shared-library/commit/143e68cad3620a794b4f5ae441fee465a6ab42ec))
+* **deps:** update module github.com/pulumi/pulumi-vault/sdk/v7 to v7.5.0 ([779e493](https://github.com/muhlba91/pulumi-shared-library/commit/779e4937a1cab075a51f370a33e42d9209032ef4))
+* **deps:** update module github.com/pulumi/pulumi/sdk/v3 to v3.206.0 ([03e4c6d](https://github.com/muhlba91/pulumi-shared-library/commit/03e4c6dd294347b68cf170f517b907663de955fa))
+* **deps:** update module github.com/pulumi/pulumi/sdk/v3 to v3.207.0 ([d600b92](https://github.com/muhlba91/pulumi-shared-library/commit/d600b92e70a7f9fef413fd42a8a9234448bb69a6))
+* **deps:** update module github.com/pulumi/pulumi/sdk/v3 to v3.208.0 ([3ca0906](https://github.com/muhlba91/pulumi-shared-library/commit/3ca09063d98cbf0e78596ade5e8458f2cf71c010))
+* **deps:** update module github.com/stretchr/testify to v1.11.1 ([93b73b6](https://github.com/muhlba91/pulumi-shared-library/commit/93b73b637da33c36a89b33b64ba0654af2d8bd05))
+* **deps:** update step-security/harden-runner action to v2.13.2 ([2bc69f7](https://github.com/muhlba91/pulumi-shared-library/commit/2bc69f71bbb54d837c4a248c6cd04ce6b3aeddb7))
+* **deps:** update step-security/harden-runner action to v2.13.2 ([660c3df](https://github.com/muhlba91/pulumi-shared-library/commit/660c3dfbc6ddda8f91e5b092874e7d94d6d540bd))
