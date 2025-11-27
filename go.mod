@@ -4,7 +4,7 @@ go 1.25.3
 
 require (
 	github.com/pulumi/pulumi-aws/sdk/v7 v7.12.0
-	github.com/pulumi/pulumi-gcp/sdk/v9 v9.5.0
+	github.com/pulumi/pulumi-gcp/sdk/v9 v9.6.0
 	github.com/pulumi/pulumi-github/sdk/v6 v6.9.1
 	github.com/pulumi/pulumi-google-native/sdk v0.32.0
 	github.com/pulumi/pulumi-hcloud/sdk v1.28.0
