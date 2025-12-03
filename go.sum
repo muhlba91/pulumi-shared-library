@@ -182,6 +182,8 @@ github.com/pulumi/pulumi-vault/sdk/v7 v7.5.0 h1:BX6LuloVP06RdTs4uWqtToEb/AaoINby
 github.com/pulumi/pulumi-vault/sdk/v7 v7.5.0/go.mod h1:4D1bRLKqJZhj0gzoJ2BcLH75lfDrCGzrJIrIG1crdBc=
 github.com/pulumi/pulumi/sdk/v3 v3.209.0 h1:Ti0FohAset2HEgogTxTOWoyvQd2N2+pkTSIn5DW3W7s=
 github.com/pulumi/pulumi/sdk/v3 v3.209.0/go.mod h1:qBMg01woyYVNqNDJXpFL1e5gdN7oQQvCNNNtfq1gsEo=
+github.com/pulumi/pulumi/sdk/v3 v3.210.0 h1:QMNdfQfB7jCa/ZoY8aIfwOwApuvhnOoIH8s4umNvR3U=
+github.com/pulumi/pulumi/sdk/v3 v3.210.0/go.mod h1:0qnUzUV5ypAcdoPNOX426wV4ePMnkDvGlPBZqlizHmU=
 github.com/pulumiverse/pulumi-time/sdk v0.1.0 h1:xfi9HKDgV+GgDxQ23oSv9KxC3DQqViGTcMrJICRgJv0=
 github.com/pulumiverse/pulumi-time/sdk v0.1.0/go.mod h1:NUa1zA74DF002WrM6iF111A6UjX9knPpXufVRvBwNyg=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
