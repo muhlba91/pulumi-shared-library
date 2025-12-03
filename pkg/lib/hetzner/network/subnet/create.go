@@ -5,8 +5,6 @@ import (
 
 	"github.com/pulumi/pulumi-hcloud/sdk/go/hcloud"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-
-	"github.com/muhlba91/pulumi-shared-library/pkg/util/sanitize"
 )
 
 type CreateOptions struct {
@@ -20,11 +18,12 @@ type CreateOptions struct {
 
 // Create creates a Hetzner subnet.
 // ctx: The Pulumi context.
+// name: The name of the subnet.
 // opts: The options for creating the subnet.
-func Create(ctx *pulumi.Context, opts *CreateOptions) (*hcloud.NetworkSubnet, error) {
+func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hcloud.NetworkSubnet, error) {
 	return hcloud.NewNetworkSubnet(
 		ctx,
-		fmt.Sprintf("hcloud-subnet-%s", sanitize.Text(opts.Cidr)),
+		fmt.Sprintf("hcloud-subnet-%s", name),
 		&hcloud.NetworkSubnetArgs{
 			NetworkId:   opts.NetworkID,
 			Type:        pulumi.String("cloud"),

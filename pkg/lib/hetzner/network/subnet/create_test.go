@@ -19,7 +19,7 @@ func TestCreateSubnet(t *testing.T) {
 			PulumiOptions: nil,
 		}
 
-		res, err := libsubnet.Create(ctx, opts)
+		res, err := libsubnet.Create(ctx, "subnet", opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
@@ -46,7 +46,7 @@ func TestCreateSubnet_WithOptions(t *testing.T) {
 			},
 		}
 
-		res, err := libsubnet.Create(ctx, opts)
+		res, err := libsubnet.Create(ctx, "subnet", opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
