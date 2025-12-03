@@ -21,7 +21,7 @@ func TestCreateRdns(t *testing.T) {
 			AutoDelete: pulumi.Bool(true),
 			Labels:     map[string]string{"env": "test"},
 		}
-		primary, err := libip.Create(ctx, primaryOpts)
+		primary, err := libip.Create(ctx, "primaryip", primaryOpts)
 		require.NoError(t, err)
 		require.NotNil(t, primary)
 
@@ -64,7 +64,7 @@ func TestCreateRdns_WithOptions(t *testing.T) {
 				pulumi.Protect(true),
 			},
 		}
-		primary, err := libip.Create(ctx, primaryOpts)
+		primary, err := libip.Create(ctx, "primaryip", primaryOpts)
 		require.NoError(t, err)
 		require.NotNil(t, primary)
 

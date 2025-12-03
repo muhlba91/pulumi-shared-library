@@ -26,10 +26,10 @@ type CreateOptions struct {
 // Create creates a Hetzner Primary IP with the given options.
 // ctx: Pulumi context for resource creation.
 // opts: Options for creating the Primary IP.
-func Create(ctx *pulumi.Context, opts *CreateOptions) (*hcloud.PrimaryIp, error) {
+func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hcloud.PrimaryIp, error) {
 	return hcloud.NewPrimaryIp(
 		ctx,
-		fmt.Sprintf("hcloud-primary-ip-%s-%s-%s", opts.Name, opts.IPType, opts.Datacenter),
+		fmt.Sprintf("hcloud-primary-ip-%s-%s-%s", name, opts.IPType, opts.Datacenter),
 		&hcloud.PrimaryIpArgs{
 			Name:         pulumi.String(fmt.Sprintf("%s-%s-%s", opts.Name, opts.IPType, opts.Datacenter)),
 			AssigneeType: pulumi.String("server"),

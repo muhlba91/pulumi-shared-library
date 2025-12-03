@@ -21,7 +21,7 @@ func TestCreatePrimaryIP(t *testing.T) {
 			Labels:     map[string]string{"env": "test"},
 		}
 
-		res, err := libip.Create(ctx, opts)
+		res, err := libip.Create(ctx, "primaryip", opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
@@ -67,7 +67,7 @@ func TestCreatePrimaryIP_WithOptions(t *testing.T) {
 			},
 		}
 
-		res, err := libip.Create(ctx, opts)
+		res, err := libip.Create(ctx, "primaryip", opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 

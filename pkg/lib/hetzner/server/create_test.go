@@ -15,7 +15,7 @@ import (
 func TestCreateServer(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		// create primary ips to link to the server
-		p4, err := libprimaryip.Create(ctx, &libprimaryip.CreateOptions{
+		p4, err := libprimaryip.Create(ctx, "primaryip", &libprimaryip.CreateOptions{
 			Name:       "p4",
 			IPType:     "ipv4",
 			Datacenter: "fsn1-dc14",
@@ -25,7 +25,7 @@ func TestCreateServer(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, p4)
 
-		p6, err := libprimaryip.Create(ctx, &libprimaryip.CreateOptions{
+		p6, err := libprimaryip.Create(ctx, "primaryip", &libprimaryip.CreateOptions{
 			Name:       "p6",
 			IPType:     "ipv6",
 			Datacenter: "nbg1-dc3",
@@ -90,7 +90,7 @@ func TestCreateServer(t *testing.T) {
 
 func TestCreateServer_PublicSSH(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		p4, err := libprimaryip.Create(ctx, &libprimaryip.CreateOptions{
+		p4, err := libprimaryip.Create(ctx, "primaryip", &libprimaryip.CreateOptions{
 			Name:       "p4b",
 			IPType:     "ipv4",
 			Datacenter: "fsn1-dc14",
@@ -100,7 +100,7 @@ func TestCreateServer_PublicSSH(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, p4)
 
-		p6, err := libprimaryip.Create(ctx, &libprimaryip.CreateOptions{
+		p6, err := libprimaryip.Create(ctx, "primaryip", &libprimaryip.CreateOptions{
 			Name:       "p6b",
 			IPType:     "ipv6",
 			Datacenter: "nbg1-dc3",
