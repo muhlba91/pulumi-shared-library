@@ -13,6 +13,8 @@ type CreateArgs struct {
 	Path pulumi.StringInput
 	// Description is the description of the vault store.
 	Description pulumi.StringInput
+	// NamePrefix is an optional prefix for the resource name.
+	NamePrefix *string
 	// PulumiOptions are optional resource options (e.g. provider).
 	PulumiOptions []pulumi.ResourceOption
 }
@@ -26,7 +28,12 @@ func Create(
 	name string,
 	opts *CreateArgs,
 ) (*vault.Mount, error) {
-	return vault.NewMount(ctx, fmt.Sprintf("vault-store-%s", name), &vault.MountArgs{
+	prefix := "store"
+	if opts.NamePrefix != nil {
+		prefix = *opts.NamePrefix
+	}
+
+	return vault.NewMount(ctx, fmt.Sprintf("vault-%s-%s", prefix, name), &vault.MountArgs{
 		Path: opts.Path,
 		Type: pulumi.String("kv"),
 		Options: pulumi.ToStringMap(map[string]string{

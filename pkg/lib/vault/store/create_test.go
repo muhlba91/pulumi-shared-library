@@ -22,6 +22,10 @@ func TestCreateVaultStore(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, mnt)
 
+		mnt.ID().ApplyT(func(p string) error {
+			assert.Equal(t, "vault-store-basic_id", p)
+			return nil
+		})
 		mnt.Path.ApplyT(func(p string) error {
 			assert.Equal(t, "secret/path", p)
 			return nil
@@ -41,9 +45,11 @@ func TestCreateVaultStore(t *testing.T) {
 
 func TestCreateVaultStore_WithOptions(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		prefix := "mount"
 		args := &libstore.CreateArgs{
 			Path:          pulumi.String("secret/withopts"),
 			Description:   pulumi.String("store with options"),
+			NamePrefix:    &prefix,
 			PulumiOptions: []pulumi.ResourceOption{pulumi.Protect(true)},
 		}
 
@@ -51,6 +57,10 @@ func TestCreateVaultStore_WithOptions(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, mnt)
 
+		mnt.ID().ApplyT(func(p string) error {
+			assert.Equal(t, "vault-mount-withopts_id", p)
+			return nil
+		})
 		mnt.Path.ApplyT(func(p string) error {
 			assert.Equal(t, "secret/withopts", p)
 			return nil
