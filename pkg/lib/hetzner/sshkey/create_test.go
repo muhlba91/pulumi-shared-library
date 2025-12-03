@@ -19,7 +19,7 @@ func TestCreateSSHKey(t *testing.T) {
 			Labels:    map[string]string{"env": "test"},
 		}
 
-		res, err := libssh.Create(ctx, opts)
+		res, err := libssh.Create(ctx, "sshkey", opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
@@ -51,7 +51,7 @@ func TestCreateSSHKey_WithOptions(t *testing.T) {
 			},
 		}
 
-		res, err := libssh.Create(ctx, opts)
+		res, err := libssh.Create(ctx, "sshkey", opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 

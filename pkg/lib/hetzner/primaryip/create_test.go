@@ -14,7 +14,7 @@ import (
 func TestCreatePrimaryIP(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		opts := &libip.CreateOptions{
-			Name:       "myp",
+			Name:       "myip",
 			IPType:     "ipv4",
 			Datacenter: "fsn1-dc14",
 			AutoDelete: pulumi.Bool(true),
@@ -25,9 +25,8 @@ func TestCreatePrimaryIP(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
-		// Name should contain the provided base name
 		res.Name.ApplyT(func(n string) error {
-			assert.Contains(t, n, opts.Name)
+			assert.Equal(t, "myip-ipv4-fsn1-dc14", n)
 			return nil
 		})
 		res.Type.ApplyT(func(typ string) error {

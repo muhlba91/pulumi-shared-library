@@ -31,7 +31,11 @@ type CreateOptions struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-func Create(ctx *pulumi.Context, opts *CreateOptions) (*hcloud.Firewall, error) {
+// Create creates a Hetzner firewall with the given options.
+// ctx: Pulumi context.
+// name: The name of the firewall.
+// opts: The options for creating the firewall.
+func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hcloud.Firewall, error) {
 	rules := hcloud.FirewallRuleArray{}
 	for _, r := range opts.Rules {
 		var src pulumi.StringArray
@@ -52,7 +56,7 @@ func Create(ctx *pulumi.Context, opts *CreateOptions) (*hcloud.Firewall, error) 
 		})
 	}
 
-	return hcloud.NewFirewall(ctx, fmt.Sprintf("hcloud-firewall-%s", opts.Name), &hcloud.FirewallArgs{
+	return hcloud.NewFirewall(ctx, fmt.Sprintf("hcloud-firewall-%s", name), &hcloud.FirewallArgs{
 		Name:   pulumi.String(opts.Name),
 		Rules:  rules,
 		Labels: pulumi.ToStringMap(opts.Labels),

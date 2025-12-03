@@ -21,9 +21,10 @@ type CreateOptions struct {
 
 // Create creates a Hetzner Cloud SSH key with the given name, public key, and labels.
 // ctx: The Pulumi context.
+// name: The name of the SSH key.
 // opts: The options for creating the SSH key.
-func Create(ctx *pulumi.Context, opts *CreateOptions) (*hcloud.SshKey, error) {
-	return hcloud.NewSshKey(ctx, fmt.Sprintf("hcloud-ssh-%s", opts.Name), &hcloud.SshKeyArgs{
+func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hcloud.SshKey, error) {
+	return hcloud.NewSshKey(ctx, fmt.Sprintf("hcloud-ssh-%s", name), &hcloud.SshKeyArgs{
 		Name:      pulumi.String(opts.Name),
 		PublicKey: opts.PublicKey,
 		Labels:    pulumi.ToStringMap(opts.Labels),

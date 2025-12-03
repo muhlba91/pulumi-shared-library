@@ -32,7 +32,7 @@ func TestCreateFirewall(t *testing.T) {
 			Labels: map[string]string{"env": "test"},
 		}
 
-		fw, err := libfw.Create(ctx, opts)
+		fw, err := libfw.Create(ctx, "firewall", opts)
 		require.NoError(t, err)
 		require.NotNil(t, fw)
 
@@ -75,7 +75,7 @@ func TestCreateFirewall_WithOptions(t *testing.T) {
 			},
 		}
 
-		fw, err := libfw.Create(ctx, opts)
+		fw, err := libfw.Create(ctx, "firewall", opts)
 		require.NoError(t, err)
 		require.NotNil(t, fw)
 

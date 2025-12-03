@@ -29,7 +29,7 @@ type CreateOptions struct {
 func Create(ctx *pulumi.Context, opts *CreateOptions) (*hcloud.PrimaryIp, error) {
 	return hcloud.NewPrimaryIp(
 		ctx,
-		fmt.Sprintf("hcloud-primary-ip-%s-%s-%s", opts.IPType, opts.Datacenter, opts.Name),
+		fmt.Sprintf("hcloud-primary-ip-%s-%s-%s", opts.Name, opts.IPType, opts.Datacenter),
 		&hcloud.PrimaryIpArgs{
 			Name:         pulumi.String(fmt.Sprintf("%s-%s-%s", opts.Name, opts.IPType, opts.Datacenter)),
 			AssigneeType: pulumi.String("server"),
