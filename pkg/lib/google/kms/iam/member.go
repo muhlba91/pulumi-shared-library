@@ -33,18 +33,6 @@ type KeyringMemberArgs struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// KeyringBindingArgs represents the arguments for creating a KeyRing IAM binding.
-type KeyringBindingArgs struct {
-	// KeyRingID is the ID of the KeyRing to attach the IAM binding to.
-	KeyRingID string
-	// Member is the member to assign the role to (e.g., "user:<email>").
-	Member string
-	// Role is the role to assign to the IAM binding.
-	Role string
-	// PulumiOptions are additional Pulumi resource options. Optional.
-	PulumiOptions []pulumi.ResourceOption
-}
-
 // CreateMember defines a new IAM member for a CryptoKey.
 // ctx: Pulumi context.
 // args: MemberArgs containing CryptoKeyID, Member, Role, and optional Pulumi options.
@@ -54,8 +42,8 @@ func CreateMember(
 ) (*gcpkms.CryptoKeyIAMMember, error) {
 	name := fmt.Sprintf(
 		"gcp-kms-iam-cryptokey-member-%s-%s-%s",
-		sanitize.Text(args.Member),
 		sanitize.Text(args.CryptoKeyID),
+		sanitize.Text(args.Member),
 		sanitize.Text(args.Role),
 	)
 
@@ -75,8 +63,8 @@ func CreateKeyringMember(
 ) (*gcpkms.KeyRingIAMMember, error) {
 	name := fmt.Sprintf(
 		"gcp-kms-iam-member-%s-%s-%s",
-		sanitize.Text(args.Member),
 		sanitize.Text(args.KeyRingID),
+		sanitize.Text(args.Member),
 		sanitize.Text(args.Role),
 	)
 
@@ -84,26 +72,5 @@ func CreateKeyringMember(
 		KeyRingId: pulumi.String(args.KeyRingID),
 		Role:      pulumi.String(args.Role),
 		Member:    pulumi.String(args.Member),
-	}, args.PulumiOptions...)
-}
-
-// CreateKeyringBinding defines a new IAM binding for a KeyRing.
-// ctx: Pulumi context.
-// args: KeyringBindingArgs containing KeyRingID, Member, Role, and optional Pulumi options.
-func CreateKeyringBinding(
-	ctx *pulumi.Context,
-	args *KeyringBindingArgs,
-) (*gcpkms.KeyRingIAMBinding, error) {
-	name := fmt.Sprintf(
-		"gcp-kms-iam-binding-%s-%s-%s",
-		sanitize.Text(args.Member),
-		sanitize.Text(args.KeyRingID),
-		sanitize.Text(args.Role),
-	)
-
-	return gcpkms.NewKeyRingIAMBinding(ctx, name, &gcpkms.KeyRingIAMBindingArgs{
-		KeyRingId: pulumi.String(args.KeyRingID),
-		Role:      pulumi.String(args.Role),
-		Members:   pulumi.StringArray{pulumi.String(args.Member)},
 	}, args.PulumiOptions...)
 }
