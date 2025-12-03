@@ -77,3 +77,70 @@ func TestCreateKMSMember_WithOptionalArgs(t *testing.T) {
 	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
 	require.NoError(t, err)
 }
+
+func TestCreateKeyringMember(t *testing.T) {
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		keyRingID := "projects/proj/locations/global/keyRings/ring"
+		member := "user:alice@example.com"
+		role := "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+		args := &iam.KeyringMemberArgs{
+			KeyRingID: keyRingID,
+			Member:    member,
+			Role:      role,
+		}
+
+		res, err := iam.CreateKeyringMember(ctx, args)
+		require.NoError(t, err)
+		require.NotNil(t, res)
+
+		res.KeyRingId.ApplyT(func(id string) error {
+			assert.Equal(t, keyRingID, id)
+			return nil
+		})
+		res.Member.ApplyT(func(m string) error {
+			assert.Equal(t, member, m)
+			return nil
+		})
+		res.Role.ApplyT(func(r string) error {
+			assert.Equal(t, role, r)
+			return nil
+		})
+		return nil
+	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	require.NoError(t, err)
+}
+
+func TestCreateKeyringMember_WithOptionalArgs(t *testing.T) {
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		keyRingID := "projects/proj/locations/global/keyRings/ring"
+		member := "user:alice@example.com"
+		role := "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+
+		args := &iam.KeyringMemberArgs{
+			KeyRingID:     keyRingID,
+			Member:        member,
+			Role:          role,
+			PulumiOptions: []pulumi.ResourceOption{},
+		}
+
+		res, err := iam.CreateKeyringMember(ctx, args)
+		require.NoError(t, err)
+		require.NotNil(t, res)
+
+		res.KeyRingId.ApplyT(func(id string) error {
+			assert.Equal(t, keyRingID, id)
+			return nil
+		})
+		res.Member.ApplyT(func(m string) error {
+			assert.Equal(t, member, m)
+			return nil
+		})
+		res.Role.ApplyT(func(r string) error {
+			assert.Equal(t, role, r)
+			return nil
+		})
+		return nil
+	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	require.NoError(t, err)
+}
