@@ -7,6 +7,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	hModel "github.com/muhlba91/pulumi-shared-library/pkg/model/hetzner"
+	"github.com/muhlba91/pulumi-shared-library/pkg/util/defaults"
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/pulumi/convert"
 )
 
@@ -30,6 +31,8 @@ type CreateOptions struct {
 	PrimaryIPv4Address *hcloud.PrimaryIp
 	// PrimaryIPv6Address is the primary IPv6 address for the server's public network.
 	PrimaryIPv6Address *hcloud.PrimaryIp
+	// EnableIPv6 indicates whether IPv6 should be enabled for the server.
+	EnableIPv6 *bool
 	// Firewalls are the firewalls to add to the server.
 	Firewalls []pulumi.IntInput
 	// Backups indicates whether backups should be enabled for the server.
@@ -78,7 +81,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hModel.Serv
 			hcloud.ServerPublicNetArgs{
 				Ipv4Enabled: pulumi.Bool(true),
 				Ipv4:        convert.IDToInt(opts.PrimaryIPv4Address.ID()),
-				Ipv6Enabled: pulumi.Bool(true),
+				Ipv6Enabled: pulumi.Bool(defaults.GetOrDefault(opts.EnableIPv6, true)),
 				Ipv6:        convert.IDToInt(opts.PrimaryIPv6Address.ID()),
 			},
 		},

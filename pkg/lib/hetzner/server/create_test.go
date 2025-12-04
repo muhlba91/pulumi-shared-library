@@ -3,6 +3,7 @@ package server_test
 import (
 	"testing"
 
+	"github.com/pulumi/pulumi-hcloud/sdk/go/hcloud"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -83,6 +84,13 @@ func TestCreateServer(t *testing.T) {
 			assert.Equal(t, "10.0.1.5", ssh)
 			return nil
 		})
+		srv.Resource.(*hcloud.Server).PublicNets.ApplyT(func(pns []hcloud.ServerPublicNet) error {
+			assert.Len(t, pns, 1)
+			assert.True(t, *pns[0].Ipv4Enabled)
+			assert.True(t, *pns[0].Ipv6Enabled)
+			return nil
+		})
+
 		return nil
 	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
 	require.NoError(t, err)
@@ -110,6 +118,7 @@ func TestCreateServer_PublicSSH(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, p6)
 
+		enableIPv6 := false
 		opts := &libserver.CreateOptions{
 			Hostname:           pulumi.String("public-host"),
 			ServerType:         pulumi.String("cx21"),
@@ -120,6 +129,7 @@ func TestCreateServer_PublicSSH(t *testing.T) {
 			IPAddress:          pulumi.String("10.1.1.10"),
 			PrimaryIPv4Address: p4,
 			PrimaryIPv6Address: p6,
+			EnableIPv6:         &enableIPv6,
 			Firewalls:          nil,
 			Backups:            pulumi.Bool(false),
 			Protection:         true,
@@ -136,6 +146,13 @@ func TestCreateServer_PublicSSH(t *testing.T) {
 			assert.Equal(t, "mocked-ip-address-ipv4-fsn1-dc14", ssh)
 			return nil
 		})
+		srv.Resource.(*hcloud.Server).PublicNets.ApplyT(func(pns []hcloud.ServerPublicNet) error {
+			assert.Len(t, pns, 1)
+			assert.True(t, *pns[0].Ipv4Enabled)
+			assert.False(t, *pns[0].Ipv6Enabled)
+			return nil
+		})
+
 		return nil
 	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
 	require.NoError(t, err)
