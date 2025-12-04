@@ -3,6 +3,7 @@ package storage
 import (
 	"os"
 	"path"
+	"path/filepath"
 
 	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/storage"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -41,7 +42,7 @@ func WriteFileAndUpload(
 	ctx *pulumi.Context,
 	args *WriteFileAndUploadArgs,
 ) pulumi.Output {
-	written := fileutil.WritePulumi(args.OutputPath, args.Content, args.Permissions...)
+	written := fileutil.WritePulumi(filepath.Join(args.OutputPath, args.Name), args.Content, args.Permissions...)
 
 	return written.ApplyT(func(v string) *storage.BucketObject {
 		bo, err := gcsutil.Upload(ctx, &gcsutil.UploadArgs{

@@ -19,9 +19,9 @@ func TestWriteFileAndUpload(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		var wg sync.WaitGroup
 
-		name := "obj.txt"
+		name := "out_basic.txt"
 		content := "hello world"
-		outputPath := filepath.Join(t.TempDir(), "out_basic.txt")
+		outputPath := t.TempDir()
 		bucketID := "bucket-1"
 		bucketPath := "path/in/bucket"
 		expectedObjectName := filepath.Join(bucketPath, name)
@@ -55,7 +55,7 @@ func TestWriteFileAndUpload(t *testing.T) {
 				return nil
 			})
 
-			data, err := os.ReadFile(outputPath)
+			data, err := os.ReadFile(filepath.Join(outputPath, name))
 			require.NoError(t, err)
 			assert.Equal(t, content, string(data))
 			return nil
