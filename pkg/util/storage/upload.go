@@ -25,6 +25,8 @@ type WriteFileAndUploadArgs struct {
 	BucketID string
 	// BucketPath is the path within the bucket to upload the object to.
 	BucketPath string
+	// Labels are the labels to assign to the bucket object.
+	Labels map[string]string
 	// Permissions are optional file permissions for the written file.
 	Permissions []os.FileMode
 }
@@ -49,6 +51,7 @@ func WriteFileAndUpload(
 			BucketID: args.BucketID,
 			Content:  &v,
 			Key:      path.Join(args.BucketPath, args.Name),
+			Labels:   args.Labels,
 		})
 		if err != nil {
 			log.Error().Msgf("Failed to upload object to GCS: %v", err)

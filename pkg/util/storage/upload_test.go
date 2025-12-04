@@ -32,6 +32,7 @@ func TestWriteFileAndUpload(t *testing.T) {
 			OutputPath: outputPath,
 			BucketID:   bucketID,
 			BucketPath: bucketPath,
+			Labels:     map[string]string{"env": "test"},
 		}
 
 		out := utilstorage.WriteFileAndUpload(ctx, args)
@@ -52,6 +53,11 @@ func TestWriteFileAndUpload(t *testing.T) {
 			})
 			bo.Name.ApplyT(func(n string) error {
 				assert.Equal(t, expectedObjectName, n)
+				return nil
+			})
+			bo.Metadata.ApplyT(func(n map[string]string) error {
+				assert.NotEmpty(t, n)
+				assert.Contains(t, n, "env")
 				return nil
 			})
 

@@ -21,7 +21,7 @@ func TestCreateFirewall(t *testing.T) {
 					Direction: "in",
 					Protocol:  "tcp",
 					Port:      "22",
-					SourceIps: []pulumi.StringInput{pulumi.String("203.0.113.0/24")},
+					SourceIPs: []pulumi.StringInput{pulumi.String("203.0.113.0/24")},
 				},
 				{
 					Direction: "in",
@@ -48,8 +48,10 @@ func TestCreateFirewall(t *testing.T) {
 			assert.Len(t, r, 2)
 			assert.Equal(t, "tcp", r[0].Protocol)
 			assert.Equal(t, "22", *r[0].Port)
+			assert.Nil(t, r[0].Description)
 			assert.Equal(t, "tcp", r[1].Protocol)
 			assert.Equal(t, "80", *r[1].Port)
+			assert.Nil(t, r[1].Description)
 			return nil
 		})
 		return nil
@@ -63,10 +65,11 @@ func TestCreateFirewall_WithOptions(t *testing.T) {
 			Name: "fw-protected",
 			Rules: []libfw.Rule{
 				{
-					Direction: "in",
-					Protocol:  "udp",
-					Port:      "53",
-					SourceIps: []pulumi.StringInput{pulumi.String("198.51.100.0/24")},
+					Description: pulumi.String("rule"),
+					Direction:   "in",
+					Protocol:    "udp",
+					Port:        "53",
+					SourceIPs:   []pulumi.StringInput{pulumi.String("198.51.100.0/24")},
 				},
 			},
 			Labels: map[string]string{"team": "infra"},
@@ -87,6 +90,7 @@ func TestCreateFirewall_WithOptions(t *testing.T) {
 			assert.Len(t, r, 1)
 			assert.Equal(t, "udp", r[0].Protocol)
 			assert.Equal(t, "53", *r[0].Port)
+			assert.Equal(t, "rule", *r[0].Description)
 			return nil
 		})
 		return nil

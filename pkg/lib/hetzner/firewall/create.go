@@ -9,14 +9,16 @@ import (
 
 // Rule represents a Hetzner firewall rule.
 type Rule struct {
+	// Description is an optional description of the rule.
+	Description pulumi.StringInput
 	// Direction is the direction of the rule (in or out).
 	Direction string
 	// Protocol is the protocol of the rule (e.g., tcp, udp).
 	Protocol string
 	// Port is the port or port range of the rule.
 	Port string
-	// SourceIps are the source IPs or CIDR blocks for the rule.
-	SourceIps []pulumi.StringInput
+	// SourceIPs are the source IPs or CIDR blocks for the rule.
+	SourceIPs []pulumi.StringInput
 }
 
 // CreateOptions represents the options for creating a Hetzner firewall.
@@ -39,20 +41,22 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hcloud.Fire
 	rules := hcloud.FirewallRuleArray{}
 	for _, r := range opts.Rules {
 		var src pulumi.StringArray
-		if len(r.SourceIps) == 0 {
+		if len(r.SourceIPs) == 0 {
 			src = pulumi.StringArray{
 				pulumi.String("0.0.0.0/0"),
 				pulumi.String("::/0"),
 			}
 		} else {
-			src = pulumi.StringArray(r.SourceIps)
+			src = pulumi.StringArray(r.SourceIPs)
 		}
 
 		rules = append(rules, hcloud.FirewallRuleArgs{
-			Direction: pulumi.String(r.Direction),
-			Protocol:  pulumi.String(r.Protocol),
-			Port:      pulumi.String(r.Port),
-			SourceIps: src,
+			Description:    r.Description,
+			Direction:      pulumi.String(r.Direction),
+			Protocol:       pulumi.String(r.Protocol),
+			Port:           pulumi.String(r.Port),
+			SourceIps:      src,
+			DestinationIps: pulumi.StringArray{},
 		})
 	}
 
