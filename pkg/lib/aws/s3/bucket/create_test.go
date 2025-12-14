@@ -13,7 +13,7 @@ import (
 
 func TestCreateBucket(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		opts := libbucket.CreateOptions{
+		opts := &libbucket.CreateOptions{
 			Name: "basic",
 		}
 
@@ -26,6 +26,10 @@ func TestCreateBucket(t *testing.T) {
 			assert.Empty(t, m)
 			return nil
 		})
+		b.BucketPrefix.ApplyT(func(m string) error {
+			assert.Empty(t, m)
+			return nil
+		})
 		return nil
 	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
 	require.NoError(t, err)
@@ -33,8 +37,10 @@ func TestCreateBucket(t *testing.T) {
 
 func TestCreateBucket_WithOptions(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		opts := libbucket.CreateOptions{
-			Name: "with-opts",
+		prefix := pulumi.StringPtr("prefix-")
+		opts := &libbucket.CreateOptions{
+			Name:   "with-opts",
+			Prefix: &prefix,
 			Labels: map[string]string{
 				"tag": "label",
 			},
@@ -49,6 +55,10 @@ func TestCreateBucket_WithOptions(t *testing.T) {
 
 		b.Tags.ApplyT(func(m map[string]string) error {
 			assert.Equal(t, "label", m["tag"])
+			return nil
+		})
+		b.BucketPrefix.ApplyT(func(m string) error {
+			assert.Equal(t, "prefix-", m)
 			return nil
 		})
 		return nil

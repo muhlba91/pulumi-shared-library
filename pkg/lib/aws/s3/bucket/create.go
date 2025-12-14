@@ -5,12 +5,16 @@ import (
 
 	"github.com/pulumi/pulumi-aws/sdk/v7/go/aws/s3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+
+	"github.com/muhlba91/pulumi-shared-library/pkg/util/defaults"
 )
 
 // CreateOptions holds optional parameters for Create.
 type CreateOptions struct {
 	// Name prefix for the bucket.
 	Name string
+	// Prefix for the bucket name.
+	Prefix *pulumi.StringPtrInput
 	// Labels to apply to the bucket.
 	Labels map[string]string
 	// Additional Pulumi resource options.
@@ -20,9 +24,10 @@ type CreateOptions struct {
 // Create creates an S3 bucket with AES256 server-side encryption.
 // ctx: Pulumi context.
 // opts: CreateOptions for the bucket.
-func Create(ctx *pulumi.Context, opts CreateOptions) (*s3.Bucket, error) {
+func Create(ctx *pulumi.Context, opts *CreateOptions) (*s3.Bucket, error) {
 	b, errCreate := s3.NewBucket(ctx, fmt.Sprintf("s3-bucket-%s", opts.Name), &s3.BucketArgs{
-		Tags: pulumi.ToStringMap(opts.Labels),
+		BucketPrefix: defaults.GetOrDefault(opts.Prefix, pulumi.StringPtrFromPtr(nil)),
+		Tags:         pulumi.ToStringMap(opts.Labels),
 	}, opts.PulumiOptions...)
 	if errCreate != nil {
 		return nil, errCreate
