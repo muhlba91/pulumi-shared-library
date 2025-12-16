@@ -14,7 +14,7 @@ type CreateOptions struct {
 	// Name is the name of the database to create.
 	Name string
 	// Owner is the owner of the database.
-	Owner pgModel.UserData
+	Owner *pgModel.UserData
 	// PulumiOptions are additional options to pass to the Postgresql Database resource.
 	PulumiOptions []pulumi.ResourceOption
 }

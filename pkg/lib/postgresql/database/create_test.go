@@ -23,7 +23,7 @@ func TestCreate_PostgresDatabase(t *testing.T) {
 
 		db, err := libdb.Create(ctx, &libdb.CreateOptions{
 			Name:  "mydb",
-			Owner: *ud,
+			Owner: ud,
 		})
 		require.NoError(t, err)
 		require.NotNil(t, db)
@@ -64,7 +64,7 @@ func TestCreate_PostgresDatabase_WithOptions(t *testing.T) {
 
 		db, err := libdb.Create(ctx, &libdb.CreateOptions{
 			Name:  "mydb2",
-			Owner: *ud,
+			Owner: ud,
 			PulumiOptions: []pulumi.ResourceOption{
 				pulumi.Protect(true),
 			},
