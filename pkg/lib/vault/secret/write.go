@@ -26,11 +26,17 @@ func Write(
 	ctx *pulumi.Context,
 	args *WriteArgs,
 ) (*kv.SecretV2, error) {
+	opts := args.PulumiOptions
+	if opts == nil {
+		opts = []pulumi.ResourceOption{}
+	}
+	opts = append(opts, pulumi.DeleteBeforeReplace(true))
+
 	name := fmt.Sprintf("vault-secret-%s-%s", args.Path, args.Key)
 
 	return kv.NewSecretV2(ctx, name, &kv.SecretV2Args{
 		Mount:    pulumi.String(args.Path),
 		Name:     pulumi.String(args.Key),
 		DataJson: args.Value,
-	}, args.PulumiOptions...)
+	}, opts...)
 }

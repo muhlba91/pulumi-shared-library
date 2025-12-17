@@ -35,6 +35,7 @@ func Write(
 	} else {
 		opts = append(opts, pulumi.DependsOn([]pulumi.Resource{args.Repository}))
 	}
+	opts = append(opts, pulumi.DeleteBeforeReplace(true))
 
 	return args.Repository.Name.ApplyT(func(repositoryName string) *github.ActionsSecret {
 		name := fmt.Sprintf("github-actions-secret-%s-%s", repositoryName, args.Key)
