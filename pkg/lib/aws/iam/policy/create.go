@@ -26,7 +26,7 @@ type CreateOptions struct {
 // name: The Pulumi resource name.
 // opts: The options for creating the IAM Policy.
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*iam.Policy, error) {
-	return iam.NewPolicy(ctx, fmt.Sprintf("aws-iam-role-ci-policy-%s", name), &iam.PolicyArgs{
+	return iam.NewPolicy(ctx, fmt.Sprintf("aws-policy-%s", name), &iam.PolicyArgs{
 		Name:        opts.Name,
 		Description: opts.Description,
 		Policy:      opts.Policy,

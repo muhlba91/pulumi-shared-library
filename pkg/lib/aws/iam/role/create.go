@@ -26,7 +26,7 @@ type CreateOptions struct {
 // name: A unique name for the IAM Role resource
 // opts: CreateOptions containing configuration for the IAM Role
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*iam.Role, error) {
-	return iam.NewRole(ctx, fmt.Sprintf("aws-iam-role-ci-%s", name), &iam.RoleArgs{
+	return iam.NewRole(ctx, fmt.Sprintf("aws-role-%s", name), &iam.RoleArgs{
 		Name:             opts.Name,
 		Description:      opts.Description,
 		AssumeRolePolicy: opts.AssumeRolePolicy,

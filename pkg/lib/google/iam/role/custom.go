@@ -30,7 +30,7 @@ type CustomRoleArgs struct {
 func CreateCustomRole(ctx *pulumi.Context, name string, args *CustomRoleArgs) (*projects.IAMCustomRole, error) {
 	return projects.NewIAMCustomRole(
 		ctx,
-		fmt.Sprintf("gcp-iam-role-ci-%s", name),
+		fmt.Sprintf("gcp-iam-role-%s", name),
 		&projects.IAMCustomRoleArgs{
 			RoleId:      args.ID,
 			Title:       args.Title,
