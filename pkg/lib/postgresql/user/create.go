@@ -24,7 +24,7 @@ type CreateOptions struct {
 // ctx: Pulumi context
 // options: CreateOptions for customizing the user creation
 func Create(ctx *pulumi.Context, opts *CreateOptions) (*pgModel.UserData, error) {
-	pw, err := random.CreatePassword(ctx, fmt.Sprintf("pg-user-%s", opts.Username), &random.PasswordOptions{
+	pw, err := random.CreatePassword(ctx, fmt.Sprintf("password-pg-user-%s", opts.Username), &random.PasswordOptions{
 		Length:  defaultPasswordLength,
 		Special: false,
 	})
