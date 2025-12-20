@@ -29,8 +29,8 @@ func TestCreateRuleset(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, rs)
 
-		rs.Repository.ApplyT(func(r *string) error {
-			assert.Equal(t, "myrepo", *r)
+		rs.Repository.ApplyT(func(r string) error {
+			assert.Equal(t, "myrepo", r)
 			return nil
 		})
 		rs.Target.ApplyT(func(target string) error {
