@@ -192,6 +192,8 @@ github.com/pulumi/pulumi-hcloud/sdk v1.29.0 h1:TQasXTpZlib8zCQXnsRSUpX0cB1/pRoPB
 github.com/pulumi/pulumi-hcloud/sdk v1.29.0/go.mod h1:JID9el4HeuNGU9BJiPHQsGddjvkzoVbUUZtmD1dbuTg=
 github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.24.1 h1:L1J2/PHgAziDXUvOWJ4HH1JBlgxzpQseZiEIu4K2x34=
 github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.24.1/go.mod h1:vNiMC/N8GNHvDwU3gQRXQ6V+kbgSl5N/lKtfrUjGuXU=
+github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.25.0 h1:N1qitmrGomEaCPsblqJHaw8Re0cqqox5V+kHsi4EEtk=
+github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.25.0/go.mod h1:ACBJF6+nzUqDeRK+p2OrvykunyeHfvtbyELc6PB38fk=
 github.com/pulumi/pulumi-postgresql/sdk/v3 v3.16.1 h1:aezlWXwTpBpjYm4mQUeIRMLKDvJ1ednzJZ9UPQndyU8=
 github.com/pulumi/pulumi-postgresql/sdk/v3 v3.16.1/go.mod h1:f7Dx1hJn0Fkh1WwnGk9g8j16RhFSHC/hcQjw/H60qSY=
 github.com/pulumi/pulumi-pulumiservice/sdk v0.32.0 h1:w9KpEeIWRl8fcdJFEKBaN0WbSSlVk2EBVXHwN5chxTI=
