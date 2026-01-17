@@ -34,7 +34,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hcloud.Prim
 			Name:         pulumi.String(fmt.Sprintf("%s-%s-%s", opts.Name, opts.IPType, opts.Datacenter)),
 			AssigneeType: pulumi.String("server"),
 			Type:         pulumi.String(opts.IPType),
-			Datacenter:   pulumi.String(opts.Datacenter),
+			Location:     pulumi.String(opts.Datacenter),
 			AutoDelete:   opts.AutoDelete,
 			Labels:       pulumi.ToStringMap(opts.Labels),
 		},

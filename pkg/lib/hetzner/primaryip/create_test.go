@@ -33,7 +33,7 @@ func TestCreatePrimaryIP(t *testing.T) {
 			assert.Equal(t, opts.IPType, typ)
 			return nil
 		})
-		res.Datacenter.ApplyT(func(d string) error {
+		res.Location.ApplyT(func(d string) error {
 			assert.Equal(t, opts.Datacenter, d)
 			return nil
 		})
@@ -75,7 +75,7 @@ func TestCreatePrimaryIP_WithOptions(t *testing.T) {
 			assert.Equal(t, opts.IPType, typ)
 			return nil
 		})
-		res.Datacenter.ApplyT(func(d string) error {
+		res.Location.ApplyT(func(d string) error {
 			assert.Equal(t, opts.Datacenter, d)
 			return nil
 		})

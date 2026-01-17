@@ -67,7 +67,7 @@ func (Mocks) NewResource(args pulumi.MockResourceArgs) (string, resource.Propert
 			fmt.Sprintf(
 				"mocked-ip-address-%s-%s",
 				args.Inputs["type"].StringValue(),
-				args.Inputs["datacenter"].StringValue(),
+				args.Inputs["location"].StringValue(),
 			),
 		)
 	}
