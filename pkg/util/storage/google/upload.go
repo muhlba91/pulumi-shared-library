@@ -1,4 +1,4 @@
-package storage
+package google
 
 import (
 	"path"
@@ -10,6 +10,7 @@ import (
 
 	gcsutil "github.com/muhlba91/pulumi-shared-library/pkg/lib/google/storage"
 	fileutil "github.com/muhlba91/pulumi-shared-library/pkg/util/file"
+	"github.com/muhlba91/pulumi-shared-library/pkg/util/storage"
 )
 
 // WriteFileAndUpload writes content to a local file and uploads it to a GCS bucket.
@@ -21,11 +22,9 @@ import (
 // bucketID: the ID of the GCS bucket.
 // bucketPath: the path within the bucket to upload the object to.
 // permissions: optional file permissions for the written file.
-//
-// Deprecated: Use google.WriteFileAndUpload or scaleway.WriteFileAndUpload instead.
 func WriteFileAndUpload(
 	ctx *pulumi.Context,
-	args *WriteFileAndUploadArgs,
+	args *storage.WriteFileAndUploadArgs,
 ) pulumi.Output {
 	written := fileutil.WritePulumi(filepath.Join(args.OutputPath, args.Name), args.Content, args.Permissions...)
 

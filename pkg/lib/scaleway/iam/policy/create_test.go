@@ -26,12 +26,21 @@ func TestCreatePolicy(t *testing.T) {
 			Description: desc,
 			Rules:       rules,
 			Labels:      labels,
+			UserID:      pulumi.StringPtr(name),
 		})
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
 		res.Name.ApplyT(func(n string) error {
 			assert.Equal(t, name, n)
+			return nil
+		})
+		res.UserId.ApplyT(func(n *string) error {
+			assert.Equal(t, name, *n)
+			return nil
+		})
+		res.ApplicationId.ApplyT(func(n *string) error {
+			assert.Nil(t, n)
 			return nil
 		})
 		res.Rules.ApplyT(func(p []iam.PolicyRule) error {
@@ -57,10 +66,11 @@ func TestCreatePolicy_WithOptions(t *testing.T) {
 		labels := []string{"env:prod"}
 
 		res, err := libpolicy.Create(ctx, name, &libpolicy.CreateOptions{
-			Name:        pulumi.String(name),
-			Description: desc,
-			Rules:       rules,
-			Labels:      labels,
+			Name:          pulumi.String(name),
+			ApplicationID: pulumi.StringPtr(name),
+			Description:   desc,
+			Rules:         rules,
+			Labels:        labels,
 			PulumiOptions: []pulumi.ResourceOption{
 				pulumi.Protect(true),
 			},
@@ -70,6 +80,14 @@ func TestCreatePolicy_WithOptions(t *testing.T) {
 
 		res.Name.ApplyT(func(n string) error {
 			assert.Equal(t, name, n)
+			return nil
+		})
+		res.UserId.ApplyT(func(n *string) error {
+			assert.Nil(t, n)
+			return nil
+		})
+		res.ApplicationId.ApplyT(func(n *string) error {
+			assert.Equal(t, name, *n)
 			return nil
 		})
 		res.Rules.ApplyT(func(p []iam.PolicyRule) error {
