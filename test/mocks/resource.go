@@ -59,6 +59,18 @@ func (Mocks) NewResource(args pulumi.MockResourceArgs) (string, resource.Propert
 		)
 	}
 
+	if len(args.TypeToken) >= 8 && args.TypeToken[:8] == "scaleway:" {
+		outs["arn"] = resource.NewStringProperty(fmt.Sprintf("mocked-arn-%s", args.Name))
+	}
+	if args.TypeToken == "scaleway:iam/apiKey:ApiKey" {
+		outs["accessKey"] = resource.MakeSecret(
+			resource.NewStringProperty(fmt.Sprintf("mocked-access-key-%s", args.Name)),
+		)
+		outs["secretKey"] = resource.MakeSecret(
+			resource.NewStringProperty(fmt.Sprintf("mocked-secret-key-%s", args.Name)),
+		)
+	}
+
 	if len(args.TypeToken) >= 7 && args.TypeToken[:7] == "hcloud:" {
 		id = "1"
 	}

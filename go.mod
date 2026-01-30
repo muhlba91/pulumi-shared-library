@@ -15,6 +15,7 @@ require (
 	github.com/pulumi/pulumi-tls/sdk/v5 v5.3.0
 	github.com/pulumi/pulumi-vault/sdk/v7 v7.6.0
 	github.com/pulumi/pulumi/sdk/v3 v3.218.0
+	github.com/pulumiverse/pulumi-scaleway/sdk v1.41.1
 	github.com/pulumiverse/pulumi-time/sdk v0.1.0
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.11.1
