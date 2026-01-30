@@ -7,6 +7,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// CreateOptions defines the options for creating an IAM access key.
 type CreateOptions struct {
 	// UserName is the name of the IAM user to create the access key for.
 	UserName string
