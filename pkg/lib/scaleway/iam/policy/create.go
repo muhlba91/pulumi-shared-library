@@ -16,7 +16,9 @@ type CreateOptions struct {
 	// Rules are the rules of the IAM Policy.
 	Rules []iam.PolicyRuleInput
 	// UserID is the ID of the user to attach the policy to.
-	UserID pulumi.StringInput
+	UserID pulumi.StringPtrInput
+	// ApplicationID is the ID of the application to attach the policy to.
+	ApplicationID pulumi.StringPtrInput
 	// Labels are the tags to apply to the IAM Policy.
 	Labels []string
 	// PulumiOptions are additional options for the resource.
@@ -29,10 +31,11 @@ type CreateOptions struct {
 // opts: The options for creating the IAM Policy.
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*iam.Policy, error) {
 	return iam.NewPolicy(ctx, fmt.Sprintf("scaleway-policy-%s", name), &iam.PolicyArgs{
-		Name:        opts.Name,
-		Description: opts.Description,
-		UserId:      opts.UserID,
-		Rules:       iam.PolicyRuleArray(opts.Rules),
-		Tags:        pulumi.ToStringArray(opts.Labels),
+		Name:          opts.Name,
+		Description:   opts.Description,
+		UserId:        opts.UserID,
+		ApplicationId: opts.ApplicationID,
+		Rules:         iam.PolicyRuleArray(opts.Rules),
+		Tags:          pulumi.ToStringArray(opts.Labels),
 	}, opts.PulumiOptions...)
 }

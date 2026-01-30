@@ -1,4 +1,4 @@
-package storage_test
+package google_test
 
 import (
 	"os"
@@ -6,12 +6,13 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/storage"
+	gstorage "github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/storage"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	utilstorage "github.com/muhlba91/pulumi-shared-library/pkg/util/storage"
+	"github.com/muhlba91/pulumi-shared-library/pkg/util/storage"
+	utilstorage "github.com/muhlba91/pulumi-shared-library/pkg/util/storage/google"
 	"github.com/muhlba91/pulumi-shared-library/test/mocks"
 )
 
@@ -26,7 +27,7 @@ func TestWriteFileAndUpload(t *testing.T) {
 		bucketPath := "path/in/bucket"
 		expectedObjectName := filepath.Join(bucketPath, name)
 
-		args := &utilstorage.WriteFileAndUploadArgs{
+		args := &storage.WriteFileAndUploadArgs{
 			Name:       name,
 			Content:    pulumi.String(content),
 			OutputPath: outputPath,
@@ -43,7 +44,7 @@ func TestWriteFileAndUpload(t *testing.T) {
 			defer wg.Done()
 			assert.NotNil(t, v)
 
-			bo, ok := v.(*storage.BucketObject)
+			bo, ok := v.(*gstorage.BucketObject)
 			assert.True(t, ok)
 			assert.NotNil(t, bo)
 
