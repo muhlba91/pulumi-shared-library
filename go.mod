@@ -13,7 +13,7 @@ require (
 	github.com/pulumi/pulumi-pulumiservice/sdk v0.34.0
 	github.com/pulumi/pulumi-random/sdk/v4 v4.19.1
 	github.com/pulumi/pulumi-tls/sdk/v5 v5.3.0
-	github.com/pulumi/pulumi-vault/sdk/v7 v7.6.0
+	github.com/pulumi/pulumi-vault/sdk/v7 v7.7.0
 	github.com/pulumi/pulumi/sdk/v3 v3.219.0
 	github.com/pulumiverse/pulumi-scaleway/sdk v1.42.0
 	github.com/pulumiverse/pulumi-time/sdk v0.1.0
