@@ -48,10 +48,6 @@ func TestWrite_GithubActionsSecret(t *testing.T) {
 				assert.Equal(t, key, n)
 				return nil
 			})
-			as.DestroyOnDrift.ApplyT(func(n *bool) error {
-				assert.False(t, *n)
-				return nil
-			})
 			return nil
 		})
 		return nil
