@@ -1,4 +1,5 @@
-package serviceaccount
+//nolint:revive // package name is fine as is
+package user
 
 import (
 	"github.com/pulumiverse/pulumi-scaleway/sdk/go/scaleway/iam"

@@ -1,3 +1,4 @@
+//nolint:revive // package name is fine as is
 package user
 
 import (

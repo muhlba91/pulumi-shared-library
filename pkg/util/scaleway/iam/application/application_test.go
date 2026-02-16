@@ -1,4 +1,4 @@
-package user_test
+package application_test
 
 import (
 	"testing"
@@ -7,11 +7,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	utiliam "github.com/muhlba91/pulumi-shared-library/pkg/util/scaleway/iam/user"
+	utiliam "github.com/muhlba91/pulumi-shared-library/pkg/util/scaleway/iam/application"
 	"github.com/muhlba91/pulumi-shared-library/test/mocks"
 )
 
-func TestCreateServiceAccountUser(t *testing.T) {
+func TestCreateApplication(t *testing.T) {
 	require := require.New(t)
 	assert := assert.New(t)
 
@@ -20,22 +20,22 @@ func TestCreateServiceAccountUser(t *testing.T) {
 		project := "proj-basic"
 		labels := []string{}
 
-		args := &utiliam.CreateUserArgs{
+		args := &utiliam.CreateApplicationArgs{
 			Name:             name,
-			Email:            pulumi.String(name),
+			Description:      pulumi.StringPtr(name),
 			DefaultProjectID: pulumi.String(project),
 			Labels:           labels,
 		}
 
-		data, err := utiliam.CreateUser(ctx, args)
+		data, err := utiliam.CreateApplication(ctx, args)
 		require.NoError(err)
 		require.NotNil(data)
-		require.NotNil(data.User)
+		require.NotNil(data.Application)
 		require.NotNil(data.Key)
 
-		data.Key.UserId.ApplyT(func(kid *string) error {
+		data.Key.ApplicationId.ApplyT(func(kid *string) error {
 			assert.NotEmpty(kid)
-			data.User.ID().ToStringOutput().ApplyT(func(saName string) error {
+			data.Application.ID().ToStringOutput().ApplyT(func(saName string) error {
 				assert.Equal(saName, *kid)
 				return nil
 			})
