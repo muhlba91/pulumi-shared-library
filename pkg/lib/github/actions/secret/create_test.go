@@ -50,6 +50,13 @@ func TestCreate_GithubActionsSecret(t *testing.T) {
 			})
 			return nil
 		})
+
+		// Test with explicit PulumiOptions to cover the 'else' branch in Create
+		opts.PulumiOptions = []pulumi.ResourceOption{
+			pulumi.Protect(true),
+		}
+		out2 := secret.Create(ctx, opts)
+		assert.NotNil(t, out2)
 		return nil
 	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
 	require.NoError(t, err)

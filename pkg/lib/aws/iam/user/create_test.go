@@ -20,6 +20,9 @@ func TestCreateUser(t *testing.T) {
 
 		u, err := libuser.Create(ctx, name, &libuser.CreateOptions{
 			Labels: labels,
+			PulumiOptions: []pulumi.ResourceOption{
+				pulumi.Protect(true),
+			},
 		})
 		require.NoError(t, err)
 		require.NotNil(t, u)

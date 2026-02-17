@@ -53,16 +53,29 @@ func TestCreate(t *testing.T) {
 				return filepath.Join(t.TempDir(), "a", "b", "c")
 			},
 		},
+		{
+			name: "path is a directory and not writable",
+			setup: func(t *testing.T) string {
+				p := filepath.Join(t.TempDir(), "readonly")
+				require.NoError(t, os.MkdirAll(p, 0o555))
+				return filepath.Join(p, "subdir")
+			},
+		},
 	}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			path := tc.setup(t)
 
-			require.NoError(t, dir.Create(path))
-
-			info, err := os.Stat(path)
+			err := dir.Create(path)
+			if tc.name == "path is a directory and not writable" {
+				assert.Error(t, err)
+				return
+			}
 			require.NoError(t, err)
+
+			info, errStat := os.Stat(path)
+			require.NoError(t, errStat)
 			assert.True(t, info.IsDir())
 
 			entries, err := os.ReadDir(path)

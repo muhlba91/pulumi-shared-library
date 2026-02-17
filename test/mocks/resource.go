@@ -92,12 +92,14 @@ func (Mocks) Call(
 	log.Info().Msgf("Mocking call of type %s with args: %+v", args.Token, args.Args)
 
 	outs := args.Args
-	if _, ok := outs["name"]; !ok {
-		outs["name"] = resource.NewStringProperty(args.Args["name"].StringValue())
-	}
 
 	if args.Token == "hcloud:index/getNetwork:getNetwork" {
-		outs["id"] = resource.NewStringProperty(fmt.Sprintf("mocked-network-id-%s", args.Args["name"].StringValue()))
+		name := ""
+		if v, ok := args.Args["name"]; ok {
+			name = v.StringValue()
+		}
+		outs["name"] = resource.NewStringProperty(name)
+		outs["id"] = resource.NewStringProperty("1")
 	}
 
 	return outs, nil

@@ -79,10 +79,10 @@ func TestCreate_GitLabActionsSecret(t *testing.T) {
 func TestCreate_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		repoName := "my-repo"
-		repo, err := gitlab.NewProject(ctx, "repo", &gitlab.ProjectArgs{
+		repo, glErr := gitlab.NewProject(ctx, "repo", &gitlab.ProjectArgs{
 			Name: pulumi.String(repoName),
 		})
-		require.NoError(t, err)
+		require.NoError(t, glErr)
 		require.NotNil(t, repo)
 
 		key := "MY_SECRET"
@@ -143,6 +143,28 @@ func TestCreate_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 			})
 			return nil
 		})
+		return nil
+	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	require.NoError(t, err)
+
+	// Test with explicit PulumiOptions to cover the 'else' branch in Create
+	err = pulumi.RunErr(func(ctx *pulumi.Context) error {
+		repo, glErr := gitlab.NewProject(ctx, "repo2", &gitlab.ProjectArgs{
+			Name: pulumi.String("my-repo2"),
+		})
+		require.NoError(t, glErr)
+
+		opts := &secret.CreateOptions{
+			Key:        "KEY",
+			Value:      pulumi.String("VALUE"),
+			Repository: repo,
+			PulumiOptions: []pulumi.ResourceOption{
+				pulumi.Protect(true),
+			},
+		}
+
+		out := secret.Create(ctx, opts)
+		assert.NotNil(t, out)
 		return nil
 	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
 	require.NoError(t, err)
