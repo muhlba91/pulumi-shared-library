@@ -15,6 +15,7 @@ import (
 func TestCreateRepository_Public(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		visibility := "public"
+		trueValue := true
 
 		opts := &librepo.CreateOptions{
 			Name:                    pulumi.String("repo-name"),
@@ -26,6 +27,7 @@ func TestCreateRepository_Public(t *testing.T) {
 			Visibility:              &visibility,
 			Protected:               false,
 			AllowRepositoryDeletion: false,
+			RetainOnDelete:          &trueValue,
 		}
 
 		r, err := librepo.Create(ctx, "res-public", opts)
