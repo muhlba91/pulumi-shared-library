@@ -22,9 +22,9 @@ type CreateOptions struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// Create creates a Kubernetes Secret with the given name and data using the provided provider.
-// ctx: The Pulumi context.
-// opts: The options for creating the Secret.
+// Create creates a Kubernetes Secret with the provided data and metadata.
+// ctx: Pulumi context.
+// opts: CreateOptions for customizing the secret creation.
 func Create(ctx *pulumi.Context, opts *CreateOptions) (*corev1.Secret, error) {
 	return corev1.NewSecret(ctx, fmt.Sprintf("k8s-secret-%s", opts.Name), &corev1.SecretArgs{
 		Metadata: &metav1.ObjectMetaArgs{

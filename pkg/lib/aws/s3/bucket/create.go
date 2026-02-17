@@ -21,9 +21,9 @@ type CreateOptions struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// Create creates an S3 bucket with AES256 server-side encryption.
+// Create creates an S3 bucket with AES256 server-side encryption and standardized tagging.
 // ctx: Pulumi context.
-// opts: CreateOptions for creating the bucket.
+// opts: CreateOptions for customizing the bucket creation.
 func Create(ctx *pulumi.Context, opts *CreateOptions) (*s3.Bucket, error) {
 	b, errCreate := s3.NewBucket(ctx, fmt.Sprintf("s3-bucket-%s", opts.Name), &s3.BucketArgs{
 		BucketPrefix: defaults.GetOrDefault(opts.Prefix, pulumi.StringPtrFromPtr(nil)),

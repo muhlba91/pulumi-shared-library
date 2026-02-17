@@ -1,0 +1,23 @@
+# Pulumi Shared Library
+
+Shared Pulumi components and utilities for Go-based IaC projects.
+
+## Core Packages
+
+- [`pkg/lib/`](pkg/lib/): Resource abstractions for AWS, GCP, Scaleway, Hetzner, GitHub, GitLab, Vault, and Kubernetes.
+- [`pkg/util/`](pkg/util/): Utilities for files, encoding, Pulumi types, and metadata.
+- [`pkg/model/`](pkg/model/): Common data structures and interfaces.
+
+## Usage
+
+```bash
+go get github.com/muhlba91/pulumi-shared-library
+```
+
+Most resources follow the `Create(ctx, opts)` pattern.
+
+## Development
+
+- `make fix`: Format code.
+- `make lint`: Run linters.
+- `make test`: Run tests.
