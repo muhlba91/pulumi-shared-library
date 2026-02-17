@@ -9,5 +9,6 @@ type Connection struct {
 	// Username is the PostgreSQL user to connect as.
 	Username string
 	// Password is the PostgreSQL user's password.
+	//nolint:gosec // This field is necessary for the connection and is not a hardcoded credential.
 	Password string
 }
