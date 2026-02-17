@@ -93,12 +93,15 @@ func (Mocks) Call(
 
 	outs := args.Args
 
-	if args.Token == "hcloud:index/getNetwork:getNetwork" {
+	switch args.Token {
+	case "hcloud:index/getNetwork:getNetwork":
 		name := ""
 		if v, ok := args.Args["name"]; ok {
 			name = v.StringValue()
 		}
 		outs["name"] = resource.NewStringProperty(name)
+		outs["id"] = resource.NewStringProperty("1")
+	case "gitlab:index/getCurrentUser:getCurrentUser":
 		outs["id"] = resource.NewStringProperty("1")
 	}
 

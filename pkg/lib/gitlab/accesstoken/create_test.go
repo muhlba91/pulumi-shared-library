@@ -13,10 +13,11 @@ import (
 
 func TestCreate(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		userID := 123
 		opts := &accesstoken.CreateOptions{
 			Name:        pulumi.String("test-token"),
 			Description: pulumi.String("test description"),
-			UserID:      pulumi.Int(123),
+			UserID:      &userID,
 			Scopes:      []string{"api", "read_user"},
 		}
 
@@ -33,7 +34,7 @@ func TestCreate(t *testing.T) {
 			return nil
 		})
 		r.UserId.ApplyT(func(id int) error {
-			assert.Equal(t, 123, id)
+			assert.Equal(t, userID, id)
 			return nil
 		})
 		r.Scopes.ApplyT(func(s []string) error {
@@ -49,14 +50,17 @@ func TestCreate(t *testing.T) {
 func TestCreate_Minimal(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		opts := &accesstoken.CreateOptions{
-			Name:   pulumi.String("minimal-token"),
-			UserID: pulumi.Int(456),
+			Name: pulumi.String("minimal-token"),
 		}
 
 		r, err := accesstoken.Create(ctx, "minimal", opts)
 		require.NoError(t, err)
 		require.NotNil(t, r)
 
+		r.UserId.ApplyT(func(id int) error {
+			assert.Equal(t, 1, id)
+			return nil
+		})
 		r.Scopes.ApplyT(func(s []string) error {
 			assert.Equal(t, []string{"self_rotate"}, s)
 			return nil
