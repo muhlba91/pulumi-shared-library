@@ -9,8 +9,8 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/sanitize"
 )
 
-// MemberArgs represents the arguments for creating a service account member.
-type MemberArgs struct {
+// MemberOptions represents the options for creating a service account member.
+type MemberOptions struct {
 	// Member is the member ID to create the IAM member for.
 	Member pulumi.StringInput
 	// Roles are the roles to assign to the IAM member.
@@ -24,23 +24,23 @@ type MemberArgs struct {
 // CreateMember creates a gcp.projects.IAMMember for each role.
 // ctx: Pulumi context.
 // name: Name prefix for the IAM member resources.
-// args: MemberArgs containing member, roles, project, and optional Pulumi options.
+// opts: MemberOptions containing member, roles, project, and optional Pulumi options.
 func CreateMember(
 	ctx *pulumi.Context,
 	name string,
-	args *MemberArgs,
+	opts *MemberOptions,
 ) ([]*projects.IAMMember, error) {
 	var created []*projects.IAMMember
 
-	for _, role := range args.Roles {
+	for _, role := range opts.Roles {
 		res, err := projects.NewIAMMember(ctx,
 			fmt.Sprintf("gcp-iam-member-%s-%s", name, sanitize.Text(role)),
 			&projects.IAMMemberArgs{
-				Member:  args.Member,
+				Member:  opts.Member,
 				Role:    pulumi.String(role),
-				Project: args.Project,
+				Project: opts.Project,
 			},
-			args.PulumiOptions...,
+			opts.PulumiOptions...,
 		)
 		if err != nil {
 			return nil, err

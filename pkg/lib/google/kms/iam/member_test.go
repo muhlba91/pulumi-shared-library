@@ -17,13 +17,13 @@ func TestCreateKMSMember(t *testing.T) {
 		member := "user:alice@example.com"
 		role := "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
-		args := &iam.MemberArgs{
+		opts := &iam.MemberOptions{
 			CryptoKeyID: cryptoKeyID,
 			Member:      member,
 			Role:        role,
 		}
 
-		res, err := iam.CreateMember(ctx, args)
+		res, err := iam.CreateMember(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
@@ -50,14 +50,14 @@ func TestCreateKMSMember_WithOptionalArgs(t *testing.T) {
 		member := "user:alice@example.com"
 		role := "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
-		args := &iam.MemberArgs{
+		opts := &iam.MemberOptions{
 			CryptoKeyID:   cryptoKeyID,
 			Member:        member,
 			Role:          role,
 			PulumiOptions: []pulumi.ResourceOption{},
 		}
 
-		res, err := iam.CreateMember(ctx, args)
+		res, err := iam.CreateMember(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
@@ -84,13 +84,13 @@ func TestCreateKeyringMember(t *testing.T) {
 		member := "user:alice@example.com"
 		role := "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
-		args := &iam.KeyringMemberArgs{
+		opts := &iam.KeyringMemberOptions{
 			KeyRingID: keyRingID,
 			Member:    member,
 			Role:      role,
 		}
 
-		res, err := iam.CreateKeyringMember(ctx, args)
+		res, err := iam.CreateKeyringMember(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
@@ -117,14 +117,14 @@ func TestCreateKeyringMember_WithOptionalArgs(t *testing.T) {
 		member := "user:alice@example.com"
 		role := "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
-		args := &iam.KeyringMemberArgs{
+		opts := &iam.KeyringMemberOptions{
 			KeyRingID:     keyRingID,
 			Member:        member,
 			Role:          role,
 			PulumiOptions: []pulumi.ResourceOption{},
 		}
 
-		res, err := iam.CreateKeyringMember(ctx, args)
+		res, err := iam.CreateKeyringMember(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 

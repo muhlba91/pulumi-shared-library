@@ -17,25 +17,25 @@ func TestCreateIAMMember(t *testing.T) {
 		member := "user:alice@example.com"
 		role := "roles/storage.objectViewer"
 
-		args := &iam.MemberArgs{
+		opts := &iam.MemberOptions{
 			BucketID: bucket,
 			Member:   member,
 			Role:     role,
 		}
 
-		iam, err := iam.CreateIAMMember(ctx, args)
+		res, err := iam.CreateIAMMember(ctx, opts)
 		require.NoError(t, err)
-		require.NotNil(t, iam)
+		require.NotNil(t, res)
 
-		iam.Bucket.ApplyT(func(b string) error {
+		res.Bucket.ApplyT(func(b string) error {
 			assert.Equal(t, bucket, b)
 			return nil
 		})
-		iam.Member.ApplyT(func(m string) error {
+		res.Member.ApplyT(func(m string) error {
 			assert.Equal(t, member, m)
 			return nil
 		})
-		iam.Role.ApplyT(func(r string) error {
+		res.Role.ApplyT(func(r string) error {
 			assert.Equal(t, role, r)
 			return nil
 		})
@@ -50,26 +50,26 @@ func TestCreateIAMMember_WithOptionalArgs(t *testing.T) {
 		member := "user:alice@example.com"
 		role := "roles/storage.objectViewer"
 
-		args := &iam.MemberArgs{
+		opts := &iam.MemberOptions{
 			BucketID:      bucket,
 			Member:        member,
 			Role:          role,
 			PulumiOptions: []pulumi.ResourceOption{},
 		}
 
-		iam, err := iam.CreateIAMMember(ctx, args)
+		res, err := iam.CreateIAMMember(ctx, opts)
 		require.NoError(t, err)
-		require.NotNil(t, iam)
+		require.NotNil(t, res)
 
-		iam.Bucket.ApplyT(func(b string) error {
+		res.Bucket.ApplyT(func(b string) error {
 			assert.Equal(t, bucket, b)
 			return nil
 		})
-		iam.Member.ApplyT(func(m string) error {
+		res.Member.ApplyT(func(m string) error {
 			assert.Equal(t, member, m)
 			return nil
 		})
-		iam.Role.ApplyT(func(r string) error {
+		res.Role.ApplyT(func(r string) error {
 			assert.Equal(t, role, r)
 			return nil
 		})

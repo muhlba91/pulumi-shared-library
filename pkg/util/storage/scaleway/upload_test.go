@@ -27,7 +27,7 @@ func TestWriteFileAndUpload(t *testing.T) {
 		bucketPath := "path/in/bucket"
 		expectedObjectName := filepath.Join(bucketPath, name)
 
-		args := &storage.WriteFileAndUploadArgs{
+		opts := &storage.WriteFileAndUploadOptions{
 			Name:       name,
 			Content:    pulumi.String(content),
 			OutputPath: outputPath,
@@ -36,7 +36,7 @@ func TestWriteFileAndUpload(t *testing.T) {
 			Labels:     map[string]string{"env": "test"},
 		}
 
-		out := utilstorage.WriteFileAndUpload(ctx, args)
+		out := utilstorage.WriteFileAndUpload(ctx, opts)
 		assert.NotNil(t, out)
 		wg.Add(1)
 

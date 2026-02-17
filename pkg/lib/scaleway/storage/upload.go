@@ -10,8 +10,8 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/sanitize"
 )
 
-// UploadArgs holds optional parameters for uploading to Scaleway Object Storage.
-type UploadArgs struct {
+// UploadOptions holds the options for uploading to Scaleway Object Storage.
+type UploadOptions struct {
 	// Key is the object key in the bucket.
 	Key string
 	// BucketID is the ID of the Scaleway bucket.
@@ -28,33 +28,32 @@ type UploadArgs struct {
 
 // Upload uploads a file or content to a Scaleway bucket and returns the Item.
 // ctx: Pulumi context.
-// name: a name prefix for the resource.
-// args: optional arguments for the upload and metadata.
+// opts: UploadOptions containing the upload and metadata options.
 func Upload(
 	ctx *pulumi.Context,
-	args *UploadArgs,
+	opts *UploadOptions,
 ) (*object.Item, error) {
-	resName := fmt.Sprintf("scaleway-object-%s-%s", args.BucketID, sanitize.Text(args.Key))
+	resName := fmt.Sprintf("scaleway-object-%s-%s", opts.BucketID, sanitize.Text(opts.Key))
 
 	var source pulumi.StringPtrInput
-	if args.File != nil {
-		source = pulumi.StringPtr(*args.File)
+	if opts.File != nil {
+		source = pulumi.StringPtr(*opts.File)
 	}
 
 	var content pulumi.StringPtrInput
-	if args.Content != nil {
-		content = pulumi.StringPtr(*args.Content)
+	if opts.Content != nil {
+		content = pulumi.StringPtr(*opts.Content)
 	}
 
-	labels := metadata.LabelsToStringMap(args.Labels)
+	labels := metadata.LabelsToStringMap(opts.Labels)
 
 	return object.NewItem(ctx, resName, &object.ItemArgs{
-		Bucket:       pulumi.String(args.BucketID),
-		Key:          pulumi.String(args.Key),
+		Bucket:       pulumi.String(opts.BucketID),
+		Key:          pulumi.String(opts.Key),
 		File:         source,
 		Content:      content,
 		Metadata:     labels,
 		StorageClass: pulumi.String("STANDARD"),
 		Visibility:   pulumi.String("private"),
-	}, args.PulumiOptions...)
+	}, opts.PulumiOptions...)
 }

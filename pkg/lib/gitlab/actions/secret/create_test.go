@@ -12,7 +12,7 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/test/mocks"
 )
 
-func TestWrite_GitLabActionsSecret(t *testing.T) {
+func TestCreate_GitLabActionsSecret(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		repoName := "my-repo"
 		repo, err := gitlab.NewProject(ctx, "repo", &gitlab.ProjectArgs{
@@ -24,13 +24,13 @@ func TestWrite_GitLabActionsSecret(t *testing.T) {
 		key := "MY_SECRET"
 		value := "s3cr3t"
 
-		args := &secret.WriteArgs{
+		opts := &secret.CreateOptions{
 			Key:        key,
 			Value:      pulumi.String(value),
 			Repository: repo,
 		}
 
-		out := secret.Write(ctx, args)
+		out := secret.Create(ctx, opts)
 		assert.NotNil(t, out)
 
 		out.ApplyT(func(v any) error {
@@ -76,7 +76,7 @@ func TestWrite_GitLabActionsSecret(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestWrite_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
+func TestCreate_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		repoName := "my-repo"
 		repo, err := gitlab.NewProject(ctx, "repo", &gitlab.ProjectArgs{
@@ -90,7 +90,7 @@ func TestWrite_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 		trueValue := true
 		variableType := "file"
 
-		args := &secret.WriteArgs{
+		opts := &secret.CreateOptions{
 			Key:                      key,
 			Value:                    pulumi.String(value),
 			Repository:               repo,
@@ -102,7 +102,7 @@ func TestWrite_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 			},
 		}
 
-		out := secret.Write(ctx, args)
+		out := secret.Create(ctx, opts)
 		assert.NotNil(t, out)
 
 		out.ApplyT(func(v any) error {

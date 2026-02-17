@@ -6,8 +6,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// WriteFileAndUploadArgs defines the arguments for WriteFileAndUpload function.
-type WriteFileAndUploadArgs struct {
+// WriteFileAndUploadOptions represents the options for writing a file and uploading it.
+type WriteFileAndUploadOptions struct {
 	// Name is the name of the object in the bucket.
 	Name string
 	// Content is the content to write and upload.

@@ -13,12 +13,12 @@ import (
 
 func TestCreateVaultStore(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		args := &libstore.CreateArgs{
+		opts := &libstore.CreateOptions{
 			Path:        pulumi.String("secret/path"),
 			Description: pulumi.String("test store"),
 		}
 
-		mnt, err := libstore.Create(ctx, "basic", args)
+		mnt, err := libstore.Create(ctx, "basic", opts)
 		require.NoError(t, err)
 		require.NotNil(t, mnt)
 
@@ -46,14 +46,14 @@ func TestCreateVaultStore(t *testing.T) {
 func TestCreateVaultStore_WithOptions(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		prefix := "mount"
-		args := &libstore.CreateArgs{
+		opts := &libstore.CreateOptions{
 			Path:          pulumi.String("secret/withopts"),
 			Description:   pulumi.String("store with options"),
 			NamePrefix:    &prefix,
 			PulumiOptions: []pulumi.ResourceOption{pulumi.Protect(true)},
 		}
 
-		mnt, err := libstore.Create(ctx, "withopts", args)
+		mnt, err := libstore.Create(ctx, "withopts", opts)
 		require.NoError(t, err)
 		require.NotNil(t, mnt)
 

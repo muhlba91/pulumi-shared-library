@@ -15,11 +15,11 @@ func TestCreateKey(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		serviceAccount := "my-service-account"
 
-		args := &serviceaccount.KeyArgs{
+		opts := &serviceaccount.KeyOptions{
 			ServiceAccount: pulumi.String(serviceAccount),
 		}
 
-		key, err := serviceaccount.CreateKey(ctx, "test", args)
+		key, err := serviceaccount.CreateKey(ctx, "test", opts)
 		require.NoError(t, err)
 		require.NotNil(t, key)
 
@@ -36,12 +36,12 @@ func TestCreateKey_WithOptionalArgs(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		serviceAccount := "my-service-account"
 
-		args := &serviceaccount.KeyArgs{
+		opts := &serviceaccount.KeyOptions{
 			ServiceAccount: pulumi.String(serviceAccount),
 			PulumiOptions:  []pulumi.ResourceOption{},
 		}
 
-		key, err := serviceaccount.CreateKey(ctx, "test", args)
+		key, err := serviceaccount.CreateKey(ctx, "test", opts)
 		require.NoError(t, err)
 		require.NotNil(t, key)
 

@@ -13,12 +13,12 @@ import (
 
 func TestCreateVaultPolicy(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		args := &libpolicy.CreateArgs{
+		opts := &libpolicy.CreateOptions{
 			Name:   "test-policy",
 			Policy: pulumi.String(`path "secret/*" { capabilities = ["read","list"] }`),
 		}
 
-		p, err := libpolicy.Create(ctx, args)
+		p, err := libpolicy.Create(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, p)
 
@@ -37,13 +37,13 @@ func TestCreateVaultPolicy(t *testing.T) {
 
 func TestCreateVaultPolicy_WithOptions(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		args := &libpolicy.CreateArgs{
+		opts := &libpolicy.CreateOptions{
 			Name:          "protected-policy",
 			Policy:        pulumi.String(`path "secret/prod/*" { capabilities = ["create","read"] }`),
 			PulumiOptions: []pulumi.ResourceOption{pulumi.Protect(true)},
 		}
 
-		p, err := libpolicy.Create(ctx, args)
+		p, err := libpolicy.Create(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, p)
 

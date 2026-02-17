@@ -15,12 +15,12 @@ import (
 
 func TestUpload(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		args := &storage.UploadArgs{
+		opts := &storage.UploadOptions{
 			BucketID: "test-bucket",
 			Key:      "test-key",
 		}
 
-		bo, err := storage.Upload(ctx, args)
+		bo, err := storage.Upload(ctx, opts)
 
 		require.NoError(t, err)
 		assert.NotNil(t, bo)
@@ -45,13 +45,13 @@ func TestUpload(t *testing.T) {
 
 func TestUpload_WithOptionalArgs(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		args := &storage.UploadArgs{
+		opts := &storage.UploadOptions{
 			BucketID:      "test-bucket",
 			Key:           "test-key",
 			PulumiOptions: []pulumi.ResourceOption{},
 		}
 
-		bo, err := storage.Upload(ctx, args)
+		bo, err := storage.Upload(ctx, opts)
 
 		require.NoError(t, err)
 		assert.NotNil(t, bo)
@@ -78,13 +78,13 @@ func TestUploadWithContent(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		content := "test content"
 
-		args := &storage.UploadArgs{
+		opts := &storage.UploadOptions{
 			BucketID: "test-bucket",
 			Key:      "test-key",
 			Content:  &content,
 		}
 
-		bo, err := storage.Upload(ctx, args)
+		bo, err := storage.Upload(ctx, opts)
 
 		require.NoError(t, err)
 		assert.NotNil(t, bo)
@@ -117,13 +117,13 @@ func TestUploadWithFile(t *testing.T) {
 	}
 
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		args := &storage.UploadArgs{
+		opts := &storage.UploadOptions{
 			BucketID: "test-bucket",
 			Key:      "test-key",
 			File:     &path,
 		}
 
-		bo, err := storage.Upload(ctx, args)
+		bo, err := storage.Upload(ctx, opts)
 
 		require.NoError(t, err)
 		assert.NotNil(t, bo)

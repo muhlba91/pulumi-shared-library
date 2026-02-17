@@ -14,7 +14,7 @@ import (
 func TestCreateCustomRole(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		name := "custom-basic"
-		args := &grole.CustomRoleArgs{
+		opts := &grole.CustomRoleOptions{
 			ID:          pulumi.String("myCustomRole"),
 			Title:       pulumi.String("My Custom Role"),
 			Description: pulumi.String("A custom role for tests"),
@@ -22,7 +22,7 @@ func TestCreateCustomRole(t *testing.T) {
 			Project:     pulumi.String("proj-123"),
 		}
 
-		role, err := grole.CreateCustomRole(ctx, name, args)
+		role, err := grole.CreateCustomRole(ctx, name, opts)
 		require.NoError(t, err)
 		require.NotNil(t, role)
 
@@ -54,7 +54,7 @@ func TestCreateCustomRole_Permissions(t *testing.T) {
 			"resourcemanager.projects.get",
 			"resourcemanager.projects.list",
 		}
-		args := &grole.CustomRoleArgs{
+		opts := &grole.CustomRoleOptions{
 			ID:          pulumi.String("permRole"),
 			Title:       pulumi.String("Perm Role"),
 			Description: pulumi.String("Role with multiple permissions"),
@@ -65,7 +65,7 @@ func TestCreateCustomRole_Permissions(t *testing.T) {
 			Project: pulumi.String("proj-456"),
 		}
 
-		role, err := grole.CreateCustomRole(ctx, name, args)
+		role, err := grole.CreateCustomRole(ctx, name, opts)
 		require.NoError(t, err)
 		require.NotNil(t, role)
 
@@ -85,14 +85,14 @@ func TestCreateCustomRole_Permissions(t *testing.T) {
 func TestCreateCustomRole_WithOptionalArgs(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		name := "custom-basic"
-		args := &grole.CustomRoleArgs{
+		opts := &grole.CustomRoleOptions{
 			ID:            pulumi.String("myCustomRole"),
 			Title:         pulumi.String("Perm Role"),
 			Project:       pulumi.String("proj-123"),
 			PulumiOptions: []pulumi.ResourceOption{},
 		}
 
-		role, err := grole.CreateCustomRole(ctx, name, args)
+		role, err := grole.CreateCustomRole(ctx, name, opts)
 		require.NoError(t, err)
 		require.NotNil(t, role)
 

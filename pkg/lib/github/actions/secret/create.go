@@ -8,8 +8,8 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// WriteArgs defines the input arguments for the Write function.
-type WriteArgs struct {
+// CreateOptions defines the options for creating a GitHub Actions secret.
+type CreateOptions struct {
 	// Key is the name of the secret.
 	Key string
 	// Value is the value of the secret.
@@ -20,32 +20,32 @@ type WriteArgs struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// Write stores a value in GitHub Actions secrets.
+// Create stores a value in GitHub Actions secrets.
 // ctx: Pulumi context.
-// args: WriteArgs containing the key, value, and repository.
-func Write(
+// opts: CreateOptions containing the key, value, and repository.
+func Create(
 	ctx *pulumi.Context,
-	args *WriteArgs,
+	opts *CreateOptions,
 ) pulumi.Output {
-	opts := args.PulumiOptions
-	if opts == nil {
-		opts = []pulumi.ResourceOption{
-			pulumi.DependsOn([]pulumi.Resource{args.Repository}),
+	pulumiOpts := opts.PulumiOptions
+	if pulumiOpts == nil {
+		pulumiOpts = []pulumi.ResourceOption{
+			pulumi.DependsOn([]pulumi.Resource{opts.Repository}),
 		}
 	} else {
-		opts = append(opts, pulumi.DependsOn([]pulumi.Resource{args.Repository}))
+		pulumiOpts = append(pulumiOpts, pulumi.DependsOn([]pulumi.Resource{opts.Repository}))
 	}
-	opts = append(opts, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"remoteUpdatedAt"}))
+	pulumiOpts = append(pulumiOpts, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"remoteUpdatedAt"}))
 
-	return args.Repository.Name.ApplyT(func(repositoryName string) *github.ActionsSecret {
-		name := fmt.Sprintf("github-actions-secret-%s-%s", repositoryName, args.Key)
+	return opts.Repository.Name.ApplyT(func(repositoryName string) *github.ActionsSecret {
+		name := fmt.Sprintf("github-actions-secret-%s-%s", repositoryName, opts.Key)
 
 		as, err := github.NewActionsSecret(ctx, name, &github.ActionsSecretArgs{
 			Repository:     pulumi.String(repositoryName),
-			SecretName:     pulumi.String(args.Key),
-			PlaintextValue: args.Value,
+			SecretName:     pulumi.String(opts.Key),
+			PlaintextValue: opts.Value,
 			DestroyOnDrift: pulumi.Bool(false),
-		}, opts...)
+		}, pulumiOpts...)
 		if err != nil {
 			log.Error().Msgf("Failed to create GitHub Actions secret: %v", err)
 			return nil

@@ -9,8 +9,8 @@ import (
 	scwmodel "github.com/muhlba91/pulumi-shared-library/pkg/model/scaleway/iam/user"
 )
 
-// CreateUserArgs defines the input arguments for CreateUser function.
-type CreateUserArgs struct {
+// CreateOptions represents the options for creating a Scaleway IAM user.
+type CreateOptions struct {
 	// Name is the name of the service account.
 	Name string
 	// Email is the email address associated with the user.
@@ -25,23 +25,23 @@ type CreateUserArgs struct {
 
 // CreateUser creates a new service account and key.
 // ctx: Pulumi context.
-// args: Arguments for creating the service account.
+// opts: CreateOptions for creating the service account.
 func CreateUser(
 	ctx *pulumi.Context,
-	args *CreateUserArgs,
+	opts *CreateOptions,
 ) (*scwmodel.User, error) {
-	user, errUser := user.Create(ctx, args.Name, &user.CreateOptions{
-		Email:         args.Email,
-		Labels:        args.Labels,
-		PulumiOptions: args.PulumiOptions,
+	user, errUser := user.Create(ctx, opts.Name, &user.CreateOptions{
+		Email:         opts.Email,
+		Labels:        opts.Labels,
+		PulumiOptions: opts.PulumiOptions,
 	})
 	if errUser != nil {
 		return nil, errUser
 	}
 
-	key, errKey := apikey.Create(ctx, args.Name, &apikey.CreateOptions{
+	key, errKey := apikey.Create(ctx, opts.Name, &apikey.CreateOptions{
 		UserID:           user.ID(),
-		DefaultProjectID: args.DefaultProjectID,
+		DefaultProjectID: opts.DefaultProjectID,
 		PulumiOptions: []pulumi.ResourceOption{
 			pulumi.DependsOn([]pulumi.Resource{user}),
 		},

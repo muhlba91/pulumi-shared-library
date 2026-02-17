@@ -7,8 +7,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// CreateArgs are the arguments for the Create function.
-type CreateArgs struct {
+// CreateOptions are the options for creating a Vault store.
+type CreateOptions struct {
 	// Path is the key path to store the value at.
 	Path pulumi.StringInput
 	// Description is the description of the vault store.
@@ -22,11 +22,11 @@ type CreateArgs struct {
 // Create creates a new Vault KV v2 store at the specified path.
 // ctx: Pulumi context
 // name: Name of the vault store resource
-// opts: CreateArgs containing the path and description
+// opts: CreateOptions containing the path and description.
 func Create(
 	ctx *pulumi.Context,
 	name string,
-	opts *CreateArgs,
+	opts *CreateOptions,
 ) (*vault.Mount, error) {
 	prefix := "store"
 	if opts.NamePrefix != nil {

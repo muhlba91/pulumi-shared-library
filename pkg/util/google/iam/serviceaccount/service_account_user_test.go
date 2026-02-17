@@ -20,13 +20,13 @@ func TestCreateServiceAccountUser_NoRoles(t *testing.T) {
 		project := "proj-basic"
 		roles := []string{}
 
-		args := &utiliam.CreateServiceAccountUserArgs{
+		opts := &utiliam.CreateOptions{
 			Name:    name,
 			Project: pulumi.String(project),
 			Roles:   roles,
 		}
 
-		data, err := utiliam.CreateServiceAccountUser(ctx, args)
+		data, err := utiliam.CreateServiceAccountUser(ctx, opts)
 		require.NoError(err)
 		require.NotNil(data)
 		require.NotNil(data.ServiceAccount)
@@ -53,13 +53,13 @@ func TestCreateServiceAccountUser_WithRoles(t *testing.T) {
 		project := "proj-roles"
 		roles := []string{"roles/viewer", "roles/storage.objectAdmin"}
 
-		args := &utiliam.CreateServiceAccountUserArgs{
+		opts := &utiliam.CreateOptions{
 			Name:    name,
 			Project: pulumi.String(project),
 			Roles:   roles,
 		}
 
-		data, err := utiliam.CreateServiceAccountUser(ctx, args)
+		data, err := utiliam.CreateServiceAccountUser(ctx, opts)
 		require.NoError(err)
 		require.NotNil(data)
 		require.NotNil(data.ServiceAccount)
