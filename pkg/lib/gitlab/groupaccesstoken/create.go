@@ -1,4 +1,4 @@
-package accesstoken
+package groupaccesstoken
 
 import (
 	"fmt"

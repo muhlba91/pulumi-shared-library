@@ -1,4 +1,4 @@
-package accesstoken_test
+package groupaccesstoken_test
 
 import (
 	"testing"
