@@ -9,6 +9,11 @@ import (
 	"github.com/pulumi/pulumi-gitlab/sdk/v9/go/gitlab"
 )
 
+const (
+	defaultExpirationDays               = 365
+	defaultRotationBeforeExpirationDays = 30
+)
+
 // CreateOptions defines the options for creating a GitLab group access token.
 type CreateOptions struct {
 	// Name is the name of the group access token.
@@ -33,11 +38,15 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*gitlab.Grou
 	scopes = append(scopes, "self_rotate")
 	slices.Sort(scopes)
 
-	return gitlab.NewGroupAccessToken(ctx, fmt.Sprintf("gitlab-pat-%s", name), &gitlab.GroupAccessTokenArgs{
+	return gitlab.NewGroupAccessToken(ctx, fmt.Sprintf("gitlab-gat-%s", name), &gitlab.GroupAccessTokenArgs{
 		Name:        opts.Name,
 		Description: opts.Description,
 		Group:       pulumi.String(opts.Group),
 		Scopes:      pulumi.ToStringArray(scopes),
 		AccessLevel: pulumi.String("maintainer"),
+		RotationConfiguration: &gitlab.GroupAccessTokenRotationConfigurationArgs{
+			ExpirationDays:   pulumi.Int(defaultExpirationDays),
+			RotateBeforeDays: pulumi.Int(defaultRotationBeforeExpirationDays),
+		},
 	}, opts.PulumiOptions...)
 }

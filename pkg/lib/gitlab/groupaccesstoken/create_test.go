@@ -3,6 +3,7 @@ package groupaccesstoken_test
 import (
 	"testing"
 
+	"github.com/pulumi/pulumi-gitlab/sdk/v9/go/gitlab"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -39,6 +40,11 @@ func TestCreate(t *testing.T) {
 		})
 		r.AccessLevel.ApplyT(func(id string) error {
 			assert.Equal(t, "maintainer", id)
+			return nil
+		})
+		r.RotationConfiguration.ApplyT(func(rc *gitlab.GroupAccessTokenRotationConfiguration) error {
+			assert.Equal(t, 365, rc.ExpirationDays)
+			assert.Equal(t, 30, rc.RotateBeforeDays)
 			return nil
 		})
 		r.Scopes.ApplyT(func(s []string) error {
