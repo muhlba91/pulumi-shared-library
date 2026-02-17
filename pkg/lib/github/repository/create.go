@@ -35,6 +35,8 @@ type CreateOptions struct {
 	Protected bool
 	// AllowRepositoryDeletion indicates whether the repository should be protected from deletion.
 	AllowRepositoryDeletion bool
+	// RetainOnDelete indicates whether the repository should be retained on deletion.
+	RetainOnDelete *bool
 	// PulumiOptions are additional options to pass to the Pulumi resource.
 	PulumiOptions []pulumi.ResourceOption
 }
@@ -49,8 +51,8 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 	optsWithRepoSpecifics := append([]pulumi.ResourceOption{}, opts.PulumiOptions...)
 	optsWithRepoSpecifics = append(
 		optsWithRepoSpecifics,
-		pulumi.Protect(opts.AllowRepositoryDeletion),
-		pulumi.RetainOnDelete(opts.AllowRepositoryDeletion),
+		pulumi.Protect(!opts.AllowRepositoryDeletion),
+		pulumi.RetainOnDelete(defaults.GetOrDefault(opts.RetainOnDelete, true)),
 		pulumi.IgnoreChanges([]string{
 			"securityAndAnalysis",
 			"template",

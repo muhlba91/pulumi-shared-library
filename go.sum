@@ -176,10 +176,10 @@ github.com/pulumi/pulumi-gcp/sdk/v9 v9.11.0 h1:LT2cBMXC24JquXHC+alB9Z9woZYmqLbip
 github.com/pulumi/pulumi-gcp/sdk/v9 v9.11.0/go.mod h1:smEQ5m3WlWyiAT1Y/dJit9w/kQpecCrLocK+msMM9aM=
 github.com/pulumi/pulumi-github/sdk/v6 v6.12.1 h1:4f5F6//J6KRlHJfeRljS8ypaTX956Ys8yxiyXjRepT8=
 github.com/pulumi/pulumi-github/sdk/v6 v6.12.1/go.mod h1:Sxhf/sjqiLG/3AjgkLbI6UptVgUVnZ0nocln+X67ptg=
+github.com/pulumi/pulumi-gitlab/sdk/v9 v9.8.2 h1:3kkDvRp1q747VQ70fGdpfcxMuJn3J8liy+YjRCFrybs=
+github.com/pulumi/pulumi-gitlab/sdk/v9 v9.8.2/go.mod h1:DznX8XAcv9WKcPqPoTFWqumlPMirvmbbUruH+aufgoI=
 github.com/pulumi/pulumi-google-native/sdk v0.32.0 h1:QrHaP6jJGCnJbjfgEnMNtX6Y2rNwy97H+afrDbk80co=
 github.com/pulumi/pulumi-google-native/sdk v0.32.0/go.mod h1:7VXK3f8iBB1fyj2ZAWPPNR80BWuXnqqRtgDoPJCVKqU=
-github.com/pulumi/pulumi-hcloud/sdk v1.32.0 h1:U/xWxuTLr1/CIvN6cUY/iIaDy4BOLpbXTXIiRyFO69Y=
-github.com/pulumi/pulumi-hcloud/sdk v1.32.0/go.mod h1:ob9quqTcfY4ulvSCEVyi75GG2QyO/s0lch1MMKc7V0k=
 github.com/pulumi/pulumi-hcloud/sdk v1.32.1 h1:erzucxHkUCuFRHzHfT6L17gu7W4JgHlJl1eMBbis6g0=
 github.com/pulumi/pulumi-hcloud/sdk v1.32.1/go.mod h1:7N5twLXy3cqonunLBa9PZ07IFKuLCfvTMIu+baSHxUg=
 github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.25.0 h1:N1qitmrGomEaCPsblqJHaw8Re0cqqox5V+kHsi4EEtk=
