@@ -11,8 +11,8 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/sanitize"
 )
 
-// Args represents the arguments for creating a service account.
-type Args struct {
+// CreateOptions represents the options for creating a service account.
+type CreateOptions struct {
 	// Name is the name of the service account.
 	Name string
 	// Roles are the roles to assign to the service account.
@@ -25,34 +25,34 @@ type Args struct {
 
 // CreateServiceAccount creates a Google Service Account and (optionally) attaches IAM members for the provided roles.
 // ctx: Pulumi context.
-// args: Args containing name, roles, project, and optional Pulumi options.
+// opts: CreateOptions containing name, roles, project, and optional Pulumi options.
 func CreateServiceAccount(
 	ctx *pulumi.Context,
-	args *Args,
+	opts *CreateOptions,
 ) (*giam.ServiceAccount, []*projects.IAMMember, error) {
 	sa, errSa := giam.NewServiceAccount(ctx,
-		fmt.Sprintf("gcp-sa-%s", sanitize.Text(args.Name)),
+		fmt.Sprintf("gcp-sa-%s", sanitize.Text(opts.Name)),
 		&giam.ServiceAccountArgs{
-			AccountId:   pulumi.String(args.Name),
-			DisplayName: pulumi.String(args.Name),
-			Project:     args.Project,
+			AccountId:   pulumi.String(opts.Name),
+			DisplayName: pulumi.String(opts.Name),
+			Project:     opts.Project,
 		},
-		args.PulumiOptions...,
+		opts.PulumiOptions...,
 	)
 	if errSa != nil {
 		return nil, nil, errSa
 	}
 
-	if len(args.Roles) > 0 {
+	if len(opts.Roles) > 0 {
 		member, _ := sa.Email.ApplyT(func(email string) string {
 			return fmt.Sprintf("serviceAccount:%s", email)
 		}).(pulumi.StringOutput)
 
-		created, errRoles := role.CreateMember(ctx, args.Name, &role.MemberArgs{
+		created, errRoles := role.CreateMember(ctx, opts.Name, &role.MemberOptions{
 			Member:        member,
-			Roles:         args.Roles,
-			Project:       args.Project,
-			PulumiOptions: args.PulumiOptions,
+			Roles:         opts.Roles,
+			Project:       opts.Project,
+			PulumiOptions: opts.PulumiOptions,
 		})
 		if errRoles != nil {
 			return nil, nil, errRoles

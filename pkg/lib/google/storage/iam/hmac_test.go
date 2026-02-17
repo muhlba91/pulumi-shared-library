@@ -15,11 +15,11 @@ func TestCreateHmacKey(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		svc := "service-account@example.com"
 
-		args := &iam.HmacKeyArgs{
+		opts := &iam.HmacKeyOptions{
 			ServiceAccount: svc,
 		}
 
-		hk, err := iam.CreateHmacKey(ctx, args)
+		hk, err := iam.CreateHmacKey(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, hk)
 
@@ -41,13 +41,13 @@ func TestCreateHmacKey_WithOptionalArgs(t *testing.T) {
 		svc := "service-account@example.com"
 		proj := pulumi.String("proj-123")
 
-		args := &iam.HmacKeyArgs{
+		opts := &iam.HmacKeyOptions{
 			ServiceAccount: svc,
 			Project:        proj,
 			PulumiOptions:  []pulumi.ResourceOption{},
 		}
 
-		hk, err := iam.CreateHmacKey(ctx, args)
+		hk, err := iam.CreateHmacKey(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, hk)
 

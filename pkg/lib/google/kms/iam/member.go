@@ -9,8 +9,8 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/sanitize"
 )
 
-// MemberArgs represents the arguments for creating a CryptoKey IAM member.
-type MemberArgs struct {
+// MemberOptions represents the options for creating a CryptoKey IAM member.
+type MemberOptions struct {
 	// CryptoKeyID is the ID of the CryptoKey to attach the IAM member to.
 	CryptoKeyID string
 	// Member is the member to assign the role to (e.g., "user:<email>").
@@ -21,8 +21,8 @@ type MemberArgs struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// KeyringMemberArgs represents the arguments for creating a KeyRing IAM member.
-type KeyringMemberArgs struct {
+// KeyringMemberOptions represents the options for creating a KeyRing IAM member.
+type KeyringMemberOptions struct {
 	// KeyRingID is the ID of the KeyRing to attach the IAM member to.
 	KeyRingID string
 	// Member is the member to assign the role to (e.g., "user:<email>").
@@ -35,42 +35,42 @@ type KeyringMemberArgs struct {
 
 // CreateMember defines a new IAM member for a CryptoKey.
 // ctx: Pulumi context.
-// args: MemberArgs containing CryptoKeyID, Member, Role, and optional Pulumi options.
+// opts: MemberOptions containing CryptoKeyID, Member, Role, and optional Pulumi options.
 func CreateMember(
 	ctx *pulumi.Context,
-	args *MemberArgs,
+	opts *MemberOptions,
 ) (*gcpkms.CryptoKeyIAMMember, error) {
 	name := fmt.Sprintf(
 		"gcp-kms-iam-cryptokey-member-%s-%s-%s",
-		sanitize.Text(args.CryptoKeyID),
-		sanitize.Text(args.Member),
-		sanitize.Text(args.Role),
+		sanitize.Text(opts.CryptoKeyID),
+		sanitize.Text(opts.Member),
+		sanitize.Text(opts.Role),
 	)
 
 	return gcpkms.NewCryptoKeyIAMMember(ctx, name, &gcpkms.CryptoKeyIAMMemberArgs{
-		CryptoKeyId: pulumi.String(args.CryptoKeyID),
-		Role:        pulumi.String(args.Role),
-		Member:      pulumi.String(args.Member),
-	}, args.PulumiOptions...)
+		CryptoKeyId: pulumi.String(opts.CryptoKeyID),
+		Role:        pulumi.String(opts.Role),
+		Member:      pulumi.String(opts.Member),
+	}, opts.PulumiOptions...)
 }
 
 // CreateKeyringMember defines a new IAM member for a KeyRing.
 // ctx: Pulumi context.
-// args: KeyringMemberArgs containing KeyRingID, Member, Role, and optional Pulumi options.
+// opts: KeyringMemberOptions containing KeyRingID, Member, Role, and optional Pulumi options.
 func CreateKeyringMember(
 	ctx *pulumi.Context,
-	args *KeyringMemberArgs,
+	opts *KeyringMemberOptions,
 ) (*gcpkms.KeyRingIAMMember, error) {
 	name := fmt.Sprintf(
 		"gcp-kms-iam-member-%s-%s-%s",
-		sanitize.Text(args.KeyRingID),
-		sanitize.Text(args.Member),
-		sanitize.Text(args.Role),
+		sanitize.Text(opts.KeyRingID),
+		sanitize.Text(opts.Member),
+		sanitize.Text(opts.Role),
 	)
 
 	return gcpkms.NewKeyRingIAMMember(ctx, name, &gcpkms.KeyRingIAMMemberArgs{
-		KeyRingId: pulumi.String(args.KeyRingID),
-		Role:      pulumi.String(args.Role),
-		Member:    pulumi.String(args.Member),
-	}, args.PulumiOptions...)
+		KeyRingId: pulumi.String(opts.KeyRingID),
+		Role:      pulumi.String(opts.Role),
+		Member:    pulumi.String(opts.Member),
+	}, opts.PulumiOptions...)
 }

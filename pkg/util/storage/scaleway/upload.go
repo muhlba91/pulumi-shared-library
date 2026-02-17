@@ -24,16 +24,16 @@ import (
 // permissions: optional file permissions for the written file.
 func WriteFileAndUpload(
 	ctx *pulumi.Context,
-	args *storage.WriteFileAndUploadArgs,
+	opts *storage.WriteFileAndUploadOptions,
 ) pulumi.Output {
-	written := fileutil.WritePulumi(filepath.Join(args.OutputPath, args.Name), args.Content, args.Permissions...)
+	written := fileutil.WritePulumi(filepath.Join(opts.OutputPath, opts.Name), opts.Content, opts.Permissions...)
 
 	return written.ApplyT(func(v string) *object.Item {
-		bo, err := scwutil.Upload(ctx, &scwutil.UploadArgs{
-			BucketID: args.BucketID,
+		bo, err := scwutil.Upload(ctx, &scwutil.UploadOptions{
+			BucketID: opts.BucketID,
 			Content:  &v,
-			Key:      path.Join(args.BucketPath, args.Name),
-			Labels:   args.Labels,
+			Key:      path.Join(opts.BucketPath, opts.Name),
+			Labels:   opts.Labels,
 		})
 		if err != nil {
 			log.Error().Msgf("Failed to upload object to Scaleway: %v", err)

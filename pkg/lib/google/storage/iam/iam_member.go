@@ -7,8 +7,8 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/sanitize"
 )
 
-// MemberArgs represents the arguments for creating a GCS bucket IAM member.
-type MemberArgs struct {
+// MemberOptions represents the options for creating a GCS bucket IAM member.
+type MemberOptions struct {
 	// BucketID is the ID of the GCS bucket.
 	BucketID string
 	// Member is the member ID to create the IAM member for.
@@ -21,24 +21,24 @@ type MemberArgs struct {
 
 // CreateIAMMember defines a new IAM member for a GCS bucket.
 // ctx: The Pulumi context.
-// args: MemberArgs containing member, role, bucket ID, and optional Pulumi options.
+// opts: MemberOptions containing member, role, bucket ID, and optional Pulumi options.
 func CreateIAMMember(
 	ctx *pulumi.Context,
-	args *MemberArgs,
+	opts *MemberOptions,
 ) (*gcpStorage.BucketIAMMember, error) {
 	name := "gcp-gcs-iam-member-" + sanitize.Text(
-		args.BucketID,
+		opts.BucketID,
 	) + "-" + sanitize.Text(
-		args.Member,
+		opts.Member,
 	) + "-" + sanitize.Text(
-		args.Role,
+		opts.Role,
 	)
 
 	iamMember, err := gcpStorage.NewBucketIAMMember(ctx, name, &gcpStorage.BucketIAMMemberArgs{
-		Bucket: pulumi.String(args.BucketID),
-		Role:   pulumi.String(args.Role),
-		Member: pulumi.String(args.Member),
-	}, args.PulumiOptions...)
+		Bucket: pulumi.String(opts.BucketID),
+		Role:   pulumi.String(opts.Role),
+		Member: pulumi.String(opts.Member),
+	}, opts.PulumiOptions...)
 	if err != nil {
 		return nil, err
 	}

@@ -13,14 +13,14 @@ import (
 
 func TestEnableServices_Single(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		args := &gproject.EnableServicesArgs{
+		opts := &gproject.EnableServicesOptions{
 			Project: "proj-single",
 			Services: []string{
 				"compute.googleapis.com",
 			},
 		}
 
-		res, err := gproject.EnableServices(ctx, args)
+		res, err := gproject.EnableServices(ctx, opts)
 		require.NoError(t, err)
 		require.Len(t, res, 1)
 
@@ -44,12 +44,12 @@ func TestEnableServices_Multiple(t *testing.T) {
 			"iam.googleapis.com",
 			"storage.googleapis.com",
 		}
-		args := &gproject.EnableServicesArgs{
+		opts := &gproject.EnableServicesOptions{
 			Project:  "proj-multi",
 			Services: services,
 		}
 
-		res, err := gproject.EnableServices(ctx, args)
+		res, err := gproject.EnableServices(ctx, opts)
 		require.NoError(t, err)
 		require.Len(t, res, len(services))
 
@@ -73,7 +73,7 @@ func TestEnableServices_Multiple(t *testing.T) {
 
 func TestEnableServices_Single_WithOptionalArgs(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		args := &gproject.EnableServicesArgs{
+		opts := &gproject.EnableServicesOptions{
 			Project: "proj-single",
 			Services: []string{
 				"compute.googleapis.com",
@@ -81,7 +81,7 @@ func TestEnableServices_Single_WithOptionalArgs(t *testing.T) {
 			PulumiOptions: []pulumi.ResourceOption{},
 		}
 
-		res, err := gproject.EnableServices(ctx, args)
+		res, err := gproject.EnableServices(ctx, opts)
 		require.NoError(t, err)
 		require.Len(t, res, 1)
 

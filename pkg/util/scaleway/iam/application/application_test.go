@@ -20,14 +20,14 @@ func TestCreateApplication(t *testing.T) {
 		project := "proj-basic"
 		labels := []string{}
 
-		args := &utiliam.CreateApplicationArgs{
+		opts := &utiliam.CreateOptions{
 			Name:             name,
 			Description:      pulumi.StringPtr(name),
 			DefaultProjectID: pulumi.String(project),
 			Labels:           labels,
 		}
 
-		data, err := utiliam.CreateApplication(ctx, args)
+		data, err := utiliam.CreateApplication(ctx, opts)
 		require.NoError(err)
 		require.NotNil(data)
 		require.NotNil(data.Application)

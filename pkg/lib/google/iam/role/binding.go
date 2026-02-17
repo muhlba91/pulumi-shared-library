@@ -7,8 +7,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// BindingArgs represents the arguments for creating a service account IAM Binding.
-type BindingArgs struct {
+// BindingOptions represents the options for creating a service account IAM Binding.
+type BindingOptions struct {
 	// ServiceAccount is the Service Account ID to create the IAM Binding for.
 	ServiceAccount pulumi.StringInput
 	// Role is the role to assign to the IAM Binding.
@@ -22,19 +22,19 @@ type BindingArgs struct {
 // CreateBinding creates a IAM Binding for a Service Account to provided roles.
 // ctx: Pulumi context.
 // name: Name for the IAM Binding resource.
-// args: BindingArgs containing service account, role, members, and optional Pulumi options.
+// opts: BindingOptions containing service account, role, members, and optional Pulumi options.
 func CreateBinding(
 	ctx *pulumi.Context,
 	name string,
-	args *BindingArgs,
+	opts *BindingOptions,
 ) (*serviceaccount.IAMBinding, error) {
 	return serviceaccount.NewIAMBinding(
 		ctx,
 		fmt.Sprintf("gcp-iam-identity-member-%s", name),
 		&serviceaccount.IAMBindingArgs{
-			ServiceAccountId: args.ServiceAccount,
-			Role:             args.Role,
-			Members:          pulumi.StringArray(args.Members),
+			ServiceAccountId: opts.ServiceAccount,
+			Role:             opts.Role,
+			Members:          pulumi.StringArray(opts.Members),
 		},
-		args.PulumiOptions...)
+		opts.PulumiOptions...)
 }

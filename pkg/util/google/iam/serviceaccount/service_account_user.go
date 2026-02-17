@@ -7,8 +7,8 @@ import (
 	gmodel "github.com/muhlba91/pulumi-shared-library/pkg/model/google/iam/serviceaccount"
 )
 
-// CreateServiceAccountUserArgs defines the input arguments for CreateServiceAccountUser function.
-type CreateServiceAccountUserArgs struct {
+// CreateOptions represents the options for creating a Google service account user.
+type CreateOptions struct {
 	// Name is the name of the service account.
 	Name string
 	// Project is the GCP project ID where the service account will be created.
@@ -19,21 +19,21 @@ type CreateServiceAccountUserArgs struct {
 
 // CreateServiceAccountUser creates a new service account and key.
 // ctx: Pulumi context.
-// args: CreateServiceAccountUserArgs containing the name, project, and roles.
+// opts: CreateOptions for creating the service account user.
 func CreateServiceAccountUser(
 	ctx *pulumi.Context,
-	args *CreateServiceAccountUserArgs,
+	opts *CreateOptions,
 ) (*gmodel.User, error) {
-	serviceAccount, _, errSa := serviceaccount.CreateServiceAccount(ctx, &serviceaccount.Args{
-		Name:    args.Name,
-		Roles:   args.Roles,
-		Project: args.Project,
+	serviceAccount, _, errSa := serviceaccount.CreateServiceAccount(ctx, &serviceaccount.CreateOptions{
+		Name:    opts.Name,
+		Roles:   opts.Roles,
+		Project: opts.Project,
 	})
 	if errSa != nil {
 		return nil, errSa
 	}
 
-	key, errKey := serviceaccount.CreateKey(ctx, args.Name, &serviceaccount.KeyArgs{
+	key, errKey := serviceaccount.CreateKey(ctx, opts.Name, &serviceaccount.KeyOptions{
 		ServiceAccount: serviceAccount.Name,
 		PulumiOptions: []pulumi.ResourceOption{
 			pulumi.DependsOn([]pulumi.Resource{serviceAccount}),

@@ -9,8 +9,8 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/sanitize"
 )
 
-// HmacKeyArgs represents the arguments for creating an HMAC key.
-type HmacKeyArgs struct {
+// HmacKeyOptions represents the options for creating an HMAC key.
+type HmacKeyOptions struct {
 	// ServiceAccount is the email of the service account for which to create the HMAC key.
 	ServiceAccount string
 	// Project is the GCP project ID where the HMAC key will be created. Optional.
@@ -21,14 +21,14 @@ type HmacKeyArgs struct {
 
 // CreateHmacKey creates an HMAC key for a Google service account.
 // ctx: Pulumi context.
-// args: The arguments for creating the HMAC key.
-func CreateHmacKey(ctx *pulumi.Context, args *HmacKeyArgs) (*gstorage.HmacKey, error) {
+// opts: The options for creating the HMAC key.
+func CreateHmacKey(ctx *pulumi.Context, opts *HmacKeyOptions) (*gstorage.HmacKey, error) {
 	return gstorage.NewHmacKey(ctx,
-		fmt.Sprintf("gcp-hmac-%s", sanitize.Text(args.ServiceAccount)),
+		fmt.Sprintf("gcp-hmac-%s", sanitize.Text(opts.ServiceAccount)),
 		&gstorage.HmacKeyArgs{
-			ServiceAccountEmail: pulumi.String(args.ServiceAccount),
-			Project:             args.Project,
+			ServiceAccountEmail: pulumi.String(opts.ServiceAccount),
+			Project:             opts.Project,
 		},
-		args.PulumiOptions...,
+		opts.PulumiOptions...,
 	)
 }

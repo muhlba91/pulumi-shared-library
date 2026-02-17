@@ -17,13 +17,13 @@ func TestCreateKeyringBinding(t *testing.T) {
 		member := "user:alice@example.com"
 		role := "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
-		args := &iam.KeyringBindingArgs{
+		opts := &iam.KeyringBindingOptions{
 			KeyRingID: keyRingID,
 			Member:    member,
 			Role:      role,
 		}
 
-		res, err := iam.CreateKeyringBinding(ctx, args)
+		res, err := iam.CreateKeyringBinding(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
@@ -50,14 +50,14 @@ func TestCreateKeyringBinding_WithOptionalArgs(t *testing.T) {
 		member := "user:alice@example.com"
 		role := "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
-		args := &iam.KeyringBindingArgs{
+		opts := &iam.KeyringBindingOptions{
 			KeyRingID:     keyRingID,
 			Member:        member,
 			Role:          role,
 			PulumiOptions: []pulumi.ResourceOption{},
 		}
 
-		res, err := iam.CreateKeyringBinding(ctx, args)
+		res, err := iam.CreateKeyringBinding(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 

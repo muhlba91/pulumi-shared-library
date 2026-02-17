@@ -17,13 +17,13 @@ func TestCreateServiceAccount_NoRoles(t *testing.T) {
 		var roles []string
 		project := "proj-no-roles"
 
-		args := &serviceaccount.Args{
+		opts := &serviceaccount.CreateOptions{
 			Name:    name,
 			Roles:   roles,
 			Project: pulumi.String(project),
 		}
 
-		sa, members, err := serviceaccount.CreateServiceAccount(ctx, args)
+		sa, members, err := serviceaccount.CreateServiceAccount(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, sa)
 		assert.Nil(t, members)
@@ -38,14 +38,14 @@ func TestCreateServiceAccount_NoRoles_WithOptionalArgs(t *testing.T) {
 		var roles []string
 		project := pulumi.String("proj-no-roles")
 
-		args := &serviceaccount.Args{
+		opts := &serviceaccount.CreateOptions{
 			Name:          name,
 			Roles:         roles,
 			Project:       project,
 			PulumiOptions: []pulumi.ResourceOption{},
 		}
 
-		sa, members, err := serviceaccount.CreateServiceAccount(ctx, args)
+		sa, members, err := serviceaccount.CreateServiceAccount(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, sa)
 		assert.Nil(t, members)
@@ -60,13 +60,13 @@ func TestCreateServiceAccount_WithRoles(t *testing.T) {
 		roles := []string{"roles/viewer", "roles/storage.objectAdmin"}
 		project := pulumi.String("proj-123")
 
-		args := &serviceaccount.Args{
+		opts := &serviceaccount.CreateOptions{
 			Name:    name,
 			Roles:   roles,
 			Project: project,
 		}
 
-		sa, members, err := serviceaccount.CreateServiceAccount(ctx, args)
+		sa, members, err := serviceaccount.CreateServiceAccount(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, sa)
 		require.Len(t, members, len(roles))

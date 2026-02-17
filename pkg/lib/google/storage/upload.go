@@ -10,8 +10,8 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/sanitize"
 )
 
-// UploadArgs holds optional parameters for uploading to GCS.
-type UploadArgs struct {
+// UploadOptions holds the options for uploading to GCS.
+type UploadOptions struct {
 	// Key is the object key in the bucket.
 	Key string
 	// BucketID is the ID of the GCS bucket.
@@ -28,31 +28,30 @@ type UploadArgs struct {
 
 // Upload uploads a file or content to a GCS bucket and returns the BucketObject.
 // ctx: Pulumi context.
-// name: a name prefix for the resource.
-// args: optional arguments for the upload and metadata.
+// opts: UploadOptions containing the upload and metadata options.
 func Upload(
 	ctx *pulumi.Context,
-	args *UploadArgs,
+	opts *UploadOptions,
 ) (*storage.BucketObject, error) {
-	resName := fmt.Sprintf("gcs-object-%s-%s", args.BucketID, sanitize.Text(args.Key))
+	resName := fmt.Sprintf("gcs-object-%s-%s", opts.BucketID, sanitize.Text(opts.Key))
 
 	var source pulumi.AssetOrArchiveInput
-	if args.File != nil {
-		source = pulumi.NewFileAsset(*args.File)
+	if opts.File != nil {
+		source = pulumi.NewFileAsset(*opts.File)
 	}
 
 	var content pulumi.StringPtrInput
-	if args.Content != nil {
-		content = pulumi.StringPtr(*args.Content)
+	if opts.Content != nil {
+		content = pulumi.StringPtr(*opts.Content)
 	}
 
-	labels := metadata.LabelsToStringMap(args.Labels)
+	labels := metadata.LabelsToStringMap(opts.Labels)
 
 	return storage.NewBucketObject(ctx, resName, &storage.BucketObjectArgs{
-		Bucket:   pulumi.String(args.BucketID),
-		Name:     pulumi.String(args.Key),
+		Bucket:   pulumi.String(opts.BucketID),
+		Name:     pulumi.String(opts.Key),
 		Source:   source,
 		Content:  content,
 		Metadata: labels,
-	}, args.PulumiOptions...)
+	}, opts.PulumiOptions...)
 }

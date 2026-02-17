@@ -20,14 +20,14 @@ func TestCreateServiceAccountUser(t *testing.T) {
 		project := "proj-basic"
 		labels := []string{}
 
-		args := &utiliam.CreateUserArgs{
+		opts := &utiliam.CreateOptions{
 			Name:             name,
 			Email:            pulumi.String(name),
 			DefaultProjectID: pulumi.String(project),
 			Labels:           labels,
 		}
 
-		data, err := utiliam.CreateUser(ctx, args)
+		data, err := utiliam.CreateUser(ctx, opts)
 		require.NoError(err)
 		require.NotNil(data)
 		require.NotNil(data.User)

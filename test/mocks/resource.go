@@ -10,6 +10,8 @@ import (
 
 type Mocks int
 
+// NewResource mocks resource creation for Pulumi.
+// args: MockResourceArgs containing information about the resource being mocked.
 func (Mocks) NewResource(args pulumi.MockResourceArgs) (string, resource.PropertyMap, error) {
 	log.Info().Msgf("Mocking resource of type %s with name %s", args.TypeToken, args.Name)
 
@@ -20,18 +22,16 @@ func (Mocks) NewResource(args pulumi.MockResourceArgs) (string, resource.Propert
 		outs["name"] = resource.NewStringProperty(args.Name)
 	}
 
-	if args.TypeToken == "random:index/randomPassword:RandomPassword" {
+	switch args.TypeToken {
+	case "random:index/randomPassword:RandomPassword":
 		outs["result"] = resource.NewStringProperty(
 			fmt.Sprintf("mocked-password-%v", args.Inputs["length"].NumberValue()),
 		)
-	}
-	if args.TypeToken == "random:index/randomString:RandomString" {
+	case "random:index/randomString:RandomString":
 		outs["result"] = resource.NewStringProperty(
 			fmt.Sprintf("mocked-string-%v", args.Inputs["length"].NumberValue()),
 		)
-	}
-
-	if args.TypeToken == "tls:index/privateKey:PrivateKey" {
+	case "tls:index/privateKey:PrivateKey":
 		outs["privateKeyPem"] = resource.MakeSecret(
 			resource.NewStringProperty(
 				fmt.Sprintf(
@@ -48,33 +48,18 @@ func (Mocks) NewResource(args pulumi.MockResourceArgs) (string, resource.Propert
 				args.Inputs["rsaBits"].NumberValue(),
 			),
 		)
-	}
-
-	if len(args.TypeToken) >= 4 && args.TypeToken[:4] == "aws:" {
-		outs["arn"] = resource.NewStringProperty(fmt.Sprintf("mocked-arn-%s", args.Name))
-	}
-	if args.TypeToken == "aws:iam/accessKey:AccessKey" {
+	case "aws:iam/accessKey:AccessKey":
 		outs["secret"] = resource.MakeSecret(
 			resource.NewStringProperty(fmt.Sprintf("mocked-secret-%s", args.Name)),
 		)
-	}
-
-	if len(args.TypeToken) >= 8 && args.TypeToken[:8] == "scaleway:" {
-		outs["arn"] = resource.NewStringProperty(fmt.Sprintf("mocked-arn-%s", args.Name))
-	}
-	if args.TypeToken == "scaleway:iam/apiKey:ApiKey" {
+	case "scaleway:iam/apiKey:ApiKey":
 		outs["accessKey"] = resource.MakeSecret(
 			resource.NewStringProperty(fmt.Sprintf("mocked-access-key-%s", args.Name)),
 		)
 		outs["secretKey"] = resource.MakeSecret(
 			resource.NewStringProperty(fmt.Sprintf("mocked-secret-key-%s", args.Name)),
 		)
-	}
-
-	if len(args.TypeToken) >= 7 && args.TypeToken[:7] == "hcloud:" {
-		id = "1"
-	}
-	if args.TypeToken == "hcloud:index/primaryIp:PrimaryIp" {
+	case "hcloud:index/primaryIp:PrimaryIp":
 		outs["ipAddress"] = resource.NewStringProperty(
 			fmt.Sprintf(
 				"mocked-ip-address-%s-%s",
@@ -82,17 +67,25 @@ func (Mocks) NewResource(args pulumi.MockResourceArgs) (string, resource.Propert
 				args.Inputs["location"].StringValue(),
 			),
 		)
-	}
-
-	if args.TypeToken == "pulumiservice:index:AccessToken" {
+	case "pulumiservice:index:AccessToken":
 		outs["value"] = resource.MakeSecret(
 			resource.NewStringProperty(fmt.Sprintf("mocked-pulumi-access-token-%s", args.Name)),
 		)
 	}
 
+	if len(args.TypeToken) >= 4 && args.TypeToken[:4] == "aws:" {
+		outs["arn"] = resource.NewStringProperty(fmt.Sprintf("mocked-arn-%s", args.Name))
+	}
+
+	if len(args.TypeToken) >= 7 && args.TypeToken[:7] == "hcloud:" {
+		id = "1"
+	}
+
 	return id, outs, nil
 }
 
+// Call mocks function calls for Pulumi.
+// args: MockCallArgs containing information about the call being mocked.
 func (Mocks) Call(
 	args pulumi.MockCallArgs,
 ) (resource.PropertyMap, error) {
@@ -107,5 +100,5 @@ func (Mocks) Call(
 		outs["id"] = resource.NewStringProperty(fmt.Sprintf("mocked-network-id-%s", args.Args["name"].StringValue()))
 	}
 
-	return args.Args, nil
+	return outs, nil
 }

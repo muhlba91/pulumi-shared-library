@@ -7,8 +7,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// EnableServicesArgs represents the arguments for enabling services.
-type EnableServicesArgs struct {
+// EnableServicesOptions represents the options for enabling services.
+type EnableServicesOptions struct {
 	// Project is the GCP project ID.
 	Project string
 	// Services is the list of services to enable.
@@ -19,16 +19,16 @@ type EnableServicesArgs struct {
 
 // EnableServices enables the specified Google services for a given project.
 // ctx: Pulumi context.
-// args: EnableProjectServicesArgs containing project and services to enable.
-func EnableServices(ctx *pulumi.Context, args *EnableServicesArgs) ([]*projects.Service, error) {
-	res := make([]*projects.Service, 0, len(args.Services))
+// opts: EnableServicesOptions containing project and services to enable.
+func EnableServices(ctx *pulumi.Context, opts *EnableServicesOptions) ([]*projects.Service, error) {
+	res := make([]*projects.Service, 0, len(opts.Services))
 
-	for _, svc := range args.Services {
-		name := fmt.Sprintf("gcp-project-service-%s-%s", args.Project, svc)
+	for _, svc := range opts.Services {
+		name := fmt.Sprintf("gcp-project-service-%s-%s", opts.Project, svc)
 		s, err := projects.NewService(ctx, name, &projects.ServiceArgs{
 			Service: pulumi.String(svc),
-			Project: pulumi.String(args.Project),
-		}, args.PulumiOptions...)
+			Project: pulumi.String(opts.Project),
+		}, opts.PulumiOptions...)
 		if err != nil {
 			return nil, err
 		}

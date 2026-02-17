@@ -7,8 +7,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// CustomRoleArgs represents arguments for creating a GCP IAM custom role.
-type CustomRoleArgs struct {
+// CustomRoleOptions represents the options for creating a GCP IAM custom role.
+type CustomRoleOptions struct {
 	// ID is the roleId for the custom role (e.g. "myCustomRole").
 	ID pulumi.StringInput
 	// Title is the human-readable title for the role.
@@ -26,19 +26,19 @@ type CustomRoleArgs struct {
 // CreateCustomRole creates a GCP IAM custom role.
 // ctx: Pulumi context.
 // name: Name prefix for the custom role resource.
-// args: CustomRoleArgs containing ID, Title, Description, Permissions, Project, and optional Pulumi options.
-func CreateCustomRole(ctx *pulumi.Context, name string, args *CustomRoleArgs) (*projects.IAMCustomRole, error) {
+// opts: CustomRoleOptions containing ID, Title, Description, Permissions, Project, and optional Pulumi options.
+func CreateCustomRole(ctx *pulumi.Context, name string, opts *CustomRoleOptions) (*projects.IAMCustomRole, error) {
 	return projects.NewIAMCustomRole(
 		ctx,
 		fmt.Sprintf("gcp-iam-role-%s", name),
 		&projects.IAMCustomRoleArgs{
-			RoleId:      args.ID,
-			Title:       args.Title,
-			Description: args.Description,
+			RoleId:      opts.ID,
+			Title:       opts.Title,
+			Description: opts.Description,
 			Stage:       pulumi.String("GA"),
-			Permissions: pulumi.StringArray(args.Permissions),
-			Project:     args.Project,
+			Permissions: pulumi.StringArray(opts.Permissions),
+			Project:     opts.Project,
 		},
-		args.PulumiOptions...,
+		opts.PulumiOptions...,
 	)
 }

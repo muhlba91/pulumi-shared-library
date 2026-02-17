@@ -18,13 +18,13 @@ func TestCreateBinding(t *testing.T) {
 		role := pulumi.String("roles/iam.serviceAccountUser")
 		members := []pulumi.StringInput{pulumi.String("user:alice@example.com")}
 
-		args := &grole.BindingArgs{
+		opts := &grole.BindingOptions{
 			ServiceAccount: serviceAccount,
 			Role:           role,
 			Members:        members,
 		}
 
-		binding, err := grole.CreateBinding(ctx, name, args)
+		binding, err := grole.CreateBinding(ctx, name, opts)
 		require.NoError(t, err)
 		require.NotNil(t, binding)
 
@@ -55,13 +55,13 @@ func TestCreateBinding_MultipleMembers(t *testing.T) {
 			pulumi.String("group:devs@example.com"),
 		}
 
-		args := &grole.BindingArgs{
+		opts := &grole.BindingOptions{
 			ServiceAccount: serviceAccount,
 			Role:           role,
 			Members:        members,
 		}
 
-		binding, err := grole.CreateBinding(ctx, name, args)
+		binding, err := grole.CreateBinding(ctx, name, opts)
 		require.NoError(t, err)
 		require.NotNil(t, binding)
 
@@ -89,14 +89,14 @@ func TestCreateBinding_WithOptionalArgs(t *testing.T) {
 		role := pulumi.String("roles/iam.serviceAccountUser")
 		members := []pulumi.StringInput{pulumi.String("user:alice@example.com")}
 
-		args := &grole.BindingArgs{
+		opts := &grole.BindingOptions{
 			ServiceAccount: serviceAccount,
 			Role:           role,
 			Members:        members,
 			PulumiOptions:  []pulumi.ResourceOption{},
 		}
 
-		binding, err := grole.CreateBinding(ctx, name, args)
+		binding, err := grole.CreateBinding(ctx, name, opts)
 		require.NoError(t, err)
 		require.NotNil(t, binding)
 

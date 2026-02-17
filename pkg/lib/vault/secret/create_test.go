@@ -11,18 +11,18 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/test/mocks"
 )
 
-func TestWrite_Defaults(t *testing.T) {
+func TestCreate_Defaults(t *testing.T) {
 	require := require.New(t)
 	assert := assert.New(t)
 
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		args := &secret.WriteArgs{
+		opts := &secret.CreateOptions{
 			Key:   "mykey",
 			Value: pulumi.String("my-value"),
 			Path:  "secret",
 		}
 
-		secret, err := secret.Write(ctx, args)
+		secret, err := secret.Create(ctx, opts)
 
 		require.NoError(err)
 		require.NotNil(secret)
@@ -47,19 +47,19 @@ func TestWrite_Defaults(t *testing.T) {
 	require.NoError(err)
 }
 
-func TestWrite_Defaults_WithOptionalArgs(t *testing.T) {
+func TestCreate_Defaults_WithOptionalArgs(t *testing.T) {
 	require := require.New(t)
 	assert := assert.New(t)
 
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		args := &secret.WriteArgs{
+		opts := &secret.CreateOptions{
 			Key:           "mykey",
 			Value:         pulumi.String("my-value"),
 			Path:          "secret",
 			PulumiOptions: []pulumi.ResourceOption{},
 		}
 
-		secret, err := secret.Write(ctx, args)
+		secret, err := secret.Create(ctx, opts)
 
 		require.NoError(err)
 		require.NotNil(secret)

@@ -18,7 +18,7 @@ func TestCreateMember_MultipleRoles(t *testing.T) {
 		roles := []string{"roles/viewer", "roles/storage.objectAdmin"}
 		project := pulumi.String("proj-123")
 
-		created, err := role.CreateMember(ctx, name, &role.MemberArgs{
+		created, err := role.CreateMember(ctx, name, &role.MemberOptions{
 			Member:  pulumi.String(member),
 			Roles:   roles,
 			Project: project,
@@ -54,7 +54,7 @@ func TestCreateMember_MultipleRoles_WithOptionalArgs(t *testing.T) {
 		roles := []string{"roles/viewer", "roles/storage.objectAdmin"}
 		project := pulumi.String("proj-123")
 
-		created, err := role.CreateMember(ctx, name, &role.MemberArgs{
+		created, err := role.CreateMember(ctx, name, &role.MemberOptions{
 			Member:        pulumi.String(member),
 			Roles:         roles,
 			Project:       project,

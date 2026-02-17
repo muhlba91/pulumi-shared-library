@@ -10,8 +10,8 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/defaults"
 )
 
-// WriteArgs defines the input arguments for the Write function.
-type WriteArgs struct {
+// CreateOptions defines the options for creating a GitLab project variable.
+type CreateOptions struct {
 	// Key is the name of the secret.
 	Key string
 	// Value is the value of the secret.
@@ -28,36 +28,36 @@ type WriteArgs struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// Write stores a value in a GitLab Variable.
+// Create stores a value in a GitLab Variable.
 // ctx: Pulumi context.
-// args: WriteArgs containing the key, value, and repository.
-func Write(
+// opts: CreateOptions containing the key, value, and repository.
+func Create(
 	ctx *pulumi.Context,
-	args *WriteArgs,
+	opts *CreateOptions,
 ) pulumi.Output {
-	opts := args.PulumiOptions
-	if opts == nil {
-		opts = []pulumi.ResourceOption{
-			pulumi.DependsOn([]pulumi.Resource{args.Repository}),
+	pulumiOpts := opts.PulumiOptions
+	if pulumiOpts == nil {
+		pulumiOpts = []pulumi.ResourceOption{
+			pulumi.DependsOn([]pulumi.Resource{opts.Repository}),
 		}
 	} else {
-		opts = append(opts, pulumi.DependsOn([]pulumi.Resource{args.Repository}))
+		pulumiOpts = append(pulumiOpts, pulumi.DependsOn([]pulumi.Resource{opts.Repository}))
 	}
-	opts = append(opts, pulumi.DeleteBeforeReplace(true))
+	pulumiOpts = append(pulumiOpts, pulumi.DeleteBeforeReplace(true))
 
-	return args.Repository.Name.ApplyT(func(repositoryName string) *gitlab.ProjectVariable {
-		name := fmt.Sprintf("gitlab-project-variable-%s-%s", repositoryName, args.Key)
+	return opts.Repository.Name.ApplyT(func(repositoryName string) *gitlab.ProjectVariable {
+		name := fmt.Sprintf("gitlab-project-variable-%s-%s", repositoryName, opts.Key)
 
 		as, err := gitlab.NewProjectVariable(ctx, name, &gitlab.ProjectVariableArgs{
-			Project:      args.Repository.ID(),
-			Key:          pulumi.String(args.Key),
-			Value:        args.Value,
-			VariableType: pulumi.String(defaults.GetOrDefault(args.VariableType, "env_var")),
+			Project:      opts.Repository.ID(),
+			Key:          pulumi.String(opts.Key),
+			Value:        opts.Value,
+			VariableType: pulumi.String(defaults.GetOrDefault(opts.VariableType, "env_var")),
 			Hidden:       pulumi.Bool(true),
 			Masked:       pulumi.Bool(true),
-			Protected:    pulumi.Bool(defaults.GetOrDefault(args.Protected, false)),
-			Raw:          pulumi.Bool(defaults.GetOrDefault(args.DisableVariableExpansion, false)),
-		}, opts...)
+			Protected:    pulumi.Bool(defaults.GetOrDefault(opts.Protected, false)),
+			Raw:          pulumi.Bool(defaults.GetOrDefault(opts.DisableVariableExpansion, false)),
+		}, pulumiOpts...)
 		if err != nil {
 			log.Error().Msgf("Failed to create GitLab Project Variable: %v", err)
 			return nil

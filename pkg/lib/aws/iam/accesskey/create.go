@@ -18,8 +18,8 @@ type CreateOptions struct {
 }
 
 // Create creates a new IAM access key for the specified user.
-// ctx: The Pulumi context.
-// opts: The options for creating the access key.
+// ctx: Pulumi context.
+// opts: CreateOptions for creating the access key.
 func Create(ctx *pulumi.Context, opts *CreateOptions) (*iam.AccessKey, error) {
 	optsWithDepends := append([]pulumi.ResourceOption{}, opts.PulumiOptions...)
 	optsWithDepends = append(optsWithDepends, pulumi.DependsOn([]pulumi.Resource{opts.User}))
