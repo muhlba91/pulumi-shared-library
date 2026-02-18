@@ -15,6 +15,8 @@ type CreateOptions struct {
 	Repository *gitlab.Project
 	// Branch is the branch pattern to which the ruleset will apply.
 	Branch string
+	// ReviewerCount is the number of required approving reviews.
+	ReviewerCount *int
 	// AllowForcePush indicates whether to allow force pushes.
 	AllowForcePush *bool
 	// SignedCommits indicates whether to require signed commits.
@@ -40,6 +42,23 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*gitlab.Bran
 		pulumi.RetainOnDelete(!defaults.GetOrDefault(opts.DeleteOnDestroy, false)),
 		pulumi.DependsOn([]pulumi.Resource{opts.Repository}),
 	)
+
+	if opts.ReviewerCount != nil && *opts.ReviewerCount > 0 {
+		_, bpErr := gitlab.NewProjectApprovalRule(
+			ctx,
+			fmt.Sprintf("gitlab-project-approval-rule-%s", name),
+			&gitlab.ProjectApprovalRuleArgs{
+				Project:                       opts.Repository.ID(),
+				Name:                          pulumi.String(fmt.Sprintf("gitlab-project-approval-rule-%s", name)),
+				AppliesToAllProtectedBranches: pulumi.Bool(true),
+				RuleType:                      pulumi.String("regular"),
+				ApprovalsRequired:             pulumi.Int(*opts.ReviewerCount),
+			},
+			optsWithRepoSpecifics...)
+		if bpErr != nil {
+			return nil, bpErr
+		}
+	}
 
 	_, pprErr := gitlab.NewProjectPushRules(
 		ctx,

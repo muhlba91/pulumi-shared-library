@@ -77,6 +77,7 @@ func TestCreateRuleset_Custom(t *testing.T) {
 		codeOwnerReview := true
 		memberCheck := true
 		deleteOnDestroy := true
+		reviewerCount := 1
 
 		opts := &libruleset.CreateOptions{
 			Repository:      repo,
@@ -86,6 +87,7 @@ func TestCreateRuleset_Custom(t *testing.T) {
 			CodeOwnerReview: &codeOwnerReview,
 			DeleteOnDestroy: &deleteOnDestroy,
 			MemberCheck:     &memberCheck,
+			ReviewerCount:   &reviewerCount,
 		}
 
 		rs, err := libruleset.Create(ctx, "custom", opts)
