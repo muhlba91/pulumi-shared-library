@@ -108,7 +108,6 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*gitlab.Proj
 		MergePipelinesEnabled:                  pulumi.Bool(defaults.GetOrDefault(opts.EnableMergeQueue, false)),
 		MergeRequestsAccessLevel:               pulumi.String(visibilitySelector),
 		MergeTrainsEnabled:                     pulumi.Bool(defaults.GetOrDefault(opts.EnableMergeQueue, false)),
-		MergeTrainsSkipTrainAllowed:            pulumi.Bool(true),
 		ModelExperimentsAccessLevel:            pulumi.String("disabled"),
 		ModelRegistryAccessLevel:               pulumi.String("disabled"),
 		MonitorAccessLevel:                     pulumi.String(visibilitySelector),
