@@ -56,7 +56,7 @@ func TestCreateRuleset(t *testing.T) {
 			return nil
 		})
 		rs.UnprotectAccessLevel.ApplyT(func(e string) error {
-			assert.Equal(t, "admin", e)
+			assert.Equal(t, "maintainer", e)
 			return nil
 		})
 		return nil

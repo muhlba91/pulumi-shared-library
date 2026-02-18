@@ -84,7 +84,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*gitlab.Bran
 			CodeOwnerApprovalRequired: pulumi.Bool(defaults.GetOrDefault(opts.CodeOwnerReview, false)),
 			MergeAccessLevel:          pulumi.String("developer"),
 			PushAccessLevel:           pulumi.String("maintainer"),
-			UnprotectAccessLevel:      pulumi.String("admin"),
+			UnprotectAccessLevel:      pulumi.String("maintainer"),
 		},
 		optsWithRepoSpecifics...)
 }
