@@ -14,7 +14,7 @@ import (
 
 const (
 	defaultCiDefaultGitDepth          = 1
-	defaultCiDeletePipelinesInSeconds = 3600
+	defaultCiDeletePipelinesInSeconds = 31536000 // 1 year in seconds
 	defaultVisibility                 = "public"
 )
 
@@ -38,6 +38,8 @@ type CreateOptions struct {
 	AutoDevopsEnabled *bool
 	// EnableMergeQueue indicates whether to enable the merge queue.
 	EnableMergeQueue *bool
+	// DeletePipelinesInSeconds is the number of seconds after which pipelines should be automatically deleted.
+	DeletePipelinesInSeconds *int
 	// Protected indicates whether the repository is protected.
 	Protected bool
 	// AllowRepositoryDeletion indicates whether the repository should be protected from deletion.
@@ -75,19 +77,21 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*gitlab.Proj
 	}
 
 	return gitlab.NewProject(ctx, fmt.Sprintf("gitlab-project-%s", name), &gitlab.ProjectArgs{
-		Name:                                   opts.Name,
-		Description:                            opts.Description,
-		AllowMergeOnSkippedPipeline:            pulumi.Bool(true),
-		AnalyticsAccessLevel:                   pulumi.String(visibilitySelector),
-		ArchiveOnDestroy:                       pulumi.Bool(opts.Protected),
-		Archived:                               pulumi.Bool(false),
-		AutoCancelPendingPipelines:             pulumi.String("enabled"),
-		AutoDevopsEnabled:                      pulumi.Bool(defaults.GetOrDefault(opts.AutoDevopsEnabled, false)),
-		AutocloseReferencedIssues:              pulumi.Bool(true),
-		BuildGitStrategy:                       pulumi.String("fetch"),
-		BuildsAccessLevel:                      pulumi.String(visibilitySelector),
-		CiDefaultGitDepth:                      pulumi.Int(defaultCiDefaultGitDepth),
-		CiDeletePipelinesInSeconds:             pulumi.Int(defaultCiDeletePipelinesInSeconds),
+		Name:                        opts.Name,
+		Description:                 opts.Description,
+		AllowMergeOnSkippedPipeline: pulumi.Bool(true),
+		AnalyticsAccessLevel:        pulumi.String(visibilitySelector),
+		ArchiveOnDestroy:            pulumi.Bool(opts.Protected),
+		Archived:                    pulumi.Bool(false),
+		AutoCancelPendingPipelines:  pulumi.String("enabled"),
+		AutoDevopsEnabled:           pulumi.Bool(defaults.GetOrDefault(opts.AutoDevopsEnabled, false)),
+		AutocloseReferencedIssues:   pulumi.Bool(true),
+		BuildGitStrategy:            pulumi.String("fetch"),
+		BuildsAccessLevel:           pulumi.String(visibilitySelector),
+		CiDefaultGitDepth:           pulumi.Int(defaultCiDefaultGitDepth),
+		CiDeletePipelinesInSeconds: pulumi.Int(
+			defaults.GetOrDefault(opts.DeletePipelinesInSeconds, defaultCiDeletePipelinesInSeconds),
+		),
 		CiForwardDeploymentEnabled:             pulumi.Bool(true),
 		CiForwardDeploymentRollbackAllowed:     pulumi.Bool(false),
 		CiPipelineVariablesMinimumOverrideRole: pulumi.String("owner"),

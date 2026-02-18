@@ -15,20 +15,22 @@ func TestCreateRepository_Public(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		visibility := "public"
 		trueValue := true
+		deletePipelinesInSeconds := 10000
 
 		opts := &librepo.CreateOptions{
-			Name:                    pulumi.String("repo-name"),
-			Description:             pulumi.String("desc"),
-			EnableWiki:              &trueValue,
-			Topics:                  []string{"z", "a"},
-			Visibility:              &visibility,
-			AutoDevopsEnabled:       &trueValue,
-			ConversationResolution:  &trueValue,
-			EnableMergeQueue:        &trueValue,
-			NamespaceID:             pulumi.IntPtr(123),
-			Protected:               false,
-			AllowRepositoryDeletion: false,
-			RetainOnDelete:          &trueValue,
+			Name:                     pulumi.String("repo-name"),
+			Description:              pulumi.String("desc"),
+			EnableWiki:               &trueValue,
+			Topics:                   []string{"z", "a"},
+			Visibility:               &visibility,
+			AutoDevopsEnabled:        &trueValue,
+			ConversationResolution:   &trueValue,
+			EnableMergeQueue:         &trueValue,
+			NamespaceID:              pulumi.IntPtr(123),
+			Protected:                false,
+			AllowRepositoryDeletion:  false,
+			RetainOnDelete:           &trueValue,
+			DeletePipelinesInSeconds: &deletePipelinesInSeconds,
 		}
 
 		r, err := librepo.Create(ctx, "res-public", opts)
@@ -41,6 +43,10 @@ func TestCreateRepository_Public(t *testing.T) {
 		})
 		r.VisibilityLevel.ApplyT(func(v string) error {
 			assert.Equal(t, "public", v)
+			return nil
+		})
+		r.CiDeletePipelinesInSeconds.ApplyT(func(ad int) error {
+			assert.Equal(t, deletePipelinesInSeconds, ad)
 			return nil
 		})
 		r.Topics.ApplyT(func(ts []string) error {
@@ -86,6 +92,10 @@ func TestCreateRepository_Private(t *testing.T) {
 		})
 		r.Topics.ApplyT(func(ts []string) error {
 			assert.Equal(t, []string{"a", "b"}, ts)
+			return nil
+		})
+		r.CiDeletePipelinesInSeconds.ApplyT(func(ad int) error {
+			assert.Equal(t, 31536000, ad)
 			return nil
 		})
 		r.ArchiveOnDestroy.ApplyT(func(ad *bool) error {
