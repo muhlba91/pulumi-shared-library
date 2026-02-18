@@ -39,7 +39,7 @@ func TestCreate(t *testing.T) {
 			return nil
 		})
 		r.AccessLevel.ApplyT(func(id string) error {
-			assert.Equal(t, "maintainer", id)
+			assert.Equal(t, "owner", id)
 			return nil
 		})
 		r.RotationConfiguration.ApplyT(func(rc *gitlab.GroupAccessTokenRotationConfiguration) error {

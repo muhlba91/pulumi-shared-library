@@ -43,7 +43,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*gitlab.Grou
 		Description: opts.Description,
 		Group:       pulumi.String(opts.Group),
 		Scopes:      pulumi.ToStringArray(scopes),
-		AccessLevel: pulumi.String("maintainer"),
+		AccessLevel: pulumi.String("owner"),
 		RotationConfiguration: &gitlab.GroupAccessTokenRotationConfigurationArgs{
 			ExpirationDays:   pulumi.Int(defaultExpirationDays),
 			RotateBeforeDays: pulumi.Int(defaultRotationBeforeExpirationDays),
