@@ -20,7 +20,7 @@ func TestCreateSecret(t *testing.T) {
 		s, err := libsecret.Create(ctx, &libsecret.CreateOptions{
 			Name:      name,
 			Namespace: namespace,
-			StringData: map[string]pulumi.StringInput{
+			Data: map[string]pulumi.StringInput{
 				"key": pulumi.String("value"),
 			},
 		})
@@ -35,8 +35,8 @@ func TestCreateSecret(t *testing.T) {
 		})
 
 		// Check stringData contains expected key/value
-		s.StringData.ApplyT(func(sd map[string]string) error {
-			assert.Equal(t, "value", sd["key"])
+		s.Data.ApplyT(func(d map[string]string) error {
+			assert.Equal(t, "value", d["key"])
 			return nil
 		})
 		return nil

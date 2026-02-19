@@ -16,8 +16,6 @@ type CreateOptions struct {
 	Namespace string
 	// Data is the data to store in the Secret.
 	Data map[string]pulumi.StringInput
-	// StringData is the string data to store in the Secret.
-	StringData map[string]pulumi.StringInput
 	// PulumiOptions are additional options to pass to the Pulumi resource.
 	PulumiOptions []pulumi.ResourceOption
 }
@@ -31,7 +29,6 @@ func Create(ctx *pulumi.Context, opts *CreateOptions) (*corev1.Secret, error) {
 			Name:      pulumi.String(opts.Name),
 			Namespace: pulumi.String(opts.Namespace),
 		},
-		Data:       pulumi.StringMap(opts.Data),
-		StringData: pulumi.StringMap(opts.StringData),
+		Data: pulumi.StringMap(opts.Data),
 	}, opts.PulumiOptions...)
 }
