@@ -13,7 +13,7 @@ type CreateOptions struct {
 	// Name is the name of the Kubernetes Secret to create.
 	Name string
 	// Namespace is the namespace in which to create the Secret.
-	Namespace pulumi.StringInput
+	Namespace string
 	// Data is the data to store in the Secret.
 	Data map[string]pulumi.StringInput
 	// StringData is the string data to store in the Secret.
@@ -26,10 +26,10 @@ type CreateOptions struct {
 // ctx: Pulumi context.
 // opts: CreateOptions for customizing the secret creation.
 func Create(ctx *pulumi.Context, opts *CreateOptions) (*corev1.Secret, error) {
-	return corev1.NewSecret(ctx, fmt.Sprintf("k8s-secret-%s", opts.Name), &corev1.SecretArgs{
+	return corev1.NewSecret(ctx, fmt.Sprintf("k8s-secret-%s-%s", opts.Namespace, opts.Name), &corev1.SecretArgs{
 		Metadata: &metav1.ObjectMetaArgs{
 			Name:      pulumi.String(opts.Name),
-			Namespace: opts.Namespace,
+			Namespace: pulumi.String(opts.Namespace),
 		},
 		Data:       pulumi.StringMap(opts.Data),
 		StringData: pulumi.StringMap(opts.StringData),

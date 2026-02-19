@@ -19,7 +19,7 @@ func TestCreateSecret(t *testing.T) {
 
 		s, err := libsecret.Create(ctx, &libsecret.CreateOptions{
 			Name:      name,
-			Namespace: pulumi.String(namespace),
+			Namespace: namespace,
 			StringData: map[string]pulumi.StringInput{
 				"key": pulumi.String("value"),
 			},
@@ -51,7 +51,7 @@ func TestCreateSecret_WithOptions(t *testing.T) {
 
 		s, err := libsecret.Create(ctx, &libsecret.CreateOptions{
 			Name:      name,
-			Namespace: pulumi.String(namespace),
+			Namespace: namespace,
 			Data: map[string]pulumi.StringInput{
 				"raw": pulumi.String("rawval"),
 			},
