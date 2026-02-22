@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumiverse/pulumi-scaleway/sdk/go/scaleway/object"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -29,12 +30,14 @@ func TestCreateBucket_Basic(t *testing.T) {
 			assert.Equal("EU", *loc)
 			return nil
 		})
-
+		b.CorsRules.ApplyT(func(cors []object.BucketCorsRule) error {
+			assert.Empty(cors)
+			return nil
+		})
 		b.Tags.ApplyT(func(m map[string]string) error {
 			assert.Equal(map[string]string{"env": "test"}, m)
 			return nil
 		})
-
 		b.ID().ApplyT(func(id string) error {
 			assert.NotEmpty(id)
 			return nil
@@ -50,8 +53,16 @@ func TestCreateBucket_WithOptions(t *testing.T) {
 	assert := assert.New(t)
 
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		maxAgeSeconds := 3600
+
 		opts := &libbucket.CreateOptions{
-			Location:      pulumi.String("US"),
+			Location: pulumi.String("US"),
+			CORS: &libbucket.CreateCorsOptions{
+				MaxAgeSeconds:  &maxAgeSeconds,
+				Method:         []string{"GET", "POST"},
+				Origin:         []string{"https://example.com"},
+				ResponseHeader: []string{"Content-Type"},
+			},
 			Labels:        map[string]string{"owner": "ci"},
 			PulumiOptions: []pulumi.ResourceOption{pulumi.Protect(true)},
 		}
@@ -62,6 +73,15 @@ func TestCreateBucket_WithOptions(t *testing.T) {
 
 		b.Region.ApplyT(func(loc *string) error {
 			assert.Equal("US", *loc)
+			return nil
+		})
+		b.CorsRules.ApplyT(func(cors []object.BucketCorsRule) error {
+			assert.Len(cors, 1)
+			rule := cors[0]
+			assert.Equal(3600, *rule.MaxAgeSeconds)
+			assert.Equal([]string{"GET", "POST"}, rule.AllowedMethods)
+			assert.Equal([]string{"https://example.com"}, rule.AllowedOrigins)
+			assert.Equal([]string{"Content-Type"}, rule.AllowedHeaders)
 			return nil
 		})
 		b.Tags.ApplyT(func(m map[string]string) error {

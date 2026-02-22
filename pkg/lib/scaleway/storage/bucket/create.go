@@ -11,10 +11,24 @@ import (
 type CreateOptions struct {
 	// Location is the Scaleway region where the bucket will be created.
 	Location pulumi.StringInput
+	// CORs configuration for the bucket.
+	CORS *CreateCorsOptions
 	// Labels are optional key/value pairs to tag the bucket.
 	Labels map[string]string
 	// PulumiOptions are optional resource options passed to the RecordSet.
 	PulumiOptions []pulumi.ResourceOption
+}
+
+// CreateCorsOptions defines CORS configuration data for a Scaleway bucket.
+type CreateCorsOptions struct {
+	// MaxAgeSeconds is the maximum age of the CORS preflight request.
+	MaxAgeSeconds *int
+	// Method is the list of allowed HTTP methods.
+	Method []string
+	// Origin is the list of allowed origins.
+	Origin []string
+	// ResponseHeader is the list of allowed response headers.
+	ResponseHeader []string
 }
 
 // Create creates a Scaleway bucket with the given parameters.
@@ -26,9 +40,22 @@ func Create(
 	name string,
 	opts *CreateOptions,
 ) (*object.Bucket, error) {
-	return object.NewBucket(ctx, fmt.Sprintf("scaleway-bucket-%s", name), &object.BucketArgs{
+	args := &object.BucketArgs{
 		Region:       opts.Location,
 		ForceDestroy: pulumi.Bool(true),
 		Tags:         pulumi.ToStringMap(opts.Labels),
-	}, opts.PulumiOptions...)
+	}
+
+	if opts.CORS != nil {
+		args.CorsRules = &object.BucketCorsRuleArray{
+			&object.BucketCorsRuleArgs{
+				MaxAgeSeconds:  pulumi.IntPtrFromPtr(opts.CORS.MaxAgeSeconds),
+				AllowedMethods: pulumi.ToStringArray(opts.CORS.Method),
+				AllowedOrigins: pulumi.ToStringArray(opts.CORS.Origin),
+				AllowedHeaders: pulumi.ToStringArray(opts.CORS.ResponseHeader),
+			},
+		}
+	}
+
+	return object.NewBucket(ctx, fmt.Sprintf("scaleway-bucket-%s", name), args, opts.PulumiOptions...)
 }
