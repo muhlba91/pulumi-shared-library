@@ -52,10 +52,7 @@ func TestCreateRepository_Public(t *testing.T) {
 		})
 
 		r.Pages.ApplyT(func(p *github.RepositoryPages) error {
-			assert.NotNil(t, p)
-			assert.Equal(t, "workflow", *p.BuildType)
-			assert.Equal(t, "main", p.Source.Branch)
-			assert.Equal(t, "/", *p.Source.Path)
+			assert.Nil(t, p)
 			return nil
 		})
 
@@ -196,7 +193,7 @@ func TestCreateRepository_DefaultVisibility(t *testing.T) {
 		})
 
 		r.Pages.ApplyT(func(p any) error {
-			assert.NotNil(t, p)
+			assert.Nil(t, p)
 			return nil
 		})
 

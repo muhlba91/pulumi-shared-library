@@ -64,12 +64,14 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 	var pages *github.RepositoryPagesArgs
 	var secAnalysis *github.RepositorySecurityAndAnalysisArgs
 	if !utilgithub.IsPrivateRepository(opts.Visibility) {
-		pages = &github.RepositoryPagesArgs{
-			BuildType: pulumi.String("workflow"),
-			Source: &github.RepositoryPagesSourceArgs{
-				Branch: pulumi.String(defaults.GetOrDefault(opts.GitHubPagesBranch, defaultGitHubPagesBranch)),
-				Path:   pulumi.String("/"),
-			},
+		if opts.GitHubPagesBranch != nil {
+			pages = &github.RepositoryPagesArgs{
+				BuildType: pulumi.String("workflow"),
+				Source: &github.RepositoryPagesSourceArgs{
+					Branch: pulumi.String(defaults.GetOrDefault(opts.GitHubPagesBranch, defaultGitHubPagesBranch)),
+					Path:   pulumi.String("/"),
+				},
+			}
 		}
 		secAnalysis = &github.RepositorySecurityAndAnalysisArgs{
 			SecretScanning: &github.RepositorySecurityAndAnalysisSecretScanningArgs{
