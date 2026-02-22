@@ -100,7 +100,6 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 		ArchiveOnDestroy:         pulumi.Bool(opts.Protected),
 		AutoInit:                 pulumi.Bool(false),
 		DeleteBranchOnMerge:      pulumi.Bool(true),
-		HasDownloads:             pulumi.Bool(true),
 		HasIssues:                pulumi.Bool(true),
 		HasProjects:              pulumi.Bool(true),
 		MergeCommitMessage:       pulumi.String("PR_TITLE"),
