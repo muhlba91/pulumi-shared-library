@@ -44,7 +44,6 @@ func Create(
 			Repository:     pulumi.String(repositoryName),
 			SecretName:     pulumi.String(opts.Key),
 			PlaintextValue: opts.Value,
-			DestroyOnDrift: pulumi.Bool(false),
 		}, pulumiOpts...)
 		if err != nil {
 			log.Error().Msgf("Failed to create GitHub Actions secret: %v", err)
