@@ -49,7 +49,7 @@ func TestCreateBucket_Basic(t *testing.T) {
 			assert.Nil(rule2.AbortIncompleteMultipartUploadDays)
 			assert.Len(rule2.Transitions, 1)
 			transition := rule2.Transitions[0]
-			assert.Equal("ONEZONE", transition.StorageClass)
+			assert.Equal("ONEZONE_IA", transition.StorageClass)
 			assert.Equal(3, *transition.Days)
 
 			return nil
@@ -115,7 +115,7 @@ func TestCreateBucket_WithOptions(t *testing.T) {
 			assert.Nil(rule2.AbortIncompleteMultipartUploadDays)
 			assert.Len(rule2.Transitions, 1)
 			transition := rule2.Transitions[0]
-			assert.Equal("ONEZONE", transition.StorageClass)
+			assert.Equal("ONEZONE_IA", transition.StorageClass)
 			assert.Equal(transitionDays, *transition.Days)
 
 			return nil

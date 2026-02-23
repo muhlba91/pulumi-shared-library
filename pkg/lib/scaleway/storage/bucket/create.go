@@ -64,7 +64,7 @@ func Create(
 				Prefix:  pulumi.String("move-to-one-zone"),
 				Transitions: &object.BucketLifecycleRuleTransitionArray{
 					&object.BucketLifecycleRuleTransitionArgs{
-						StorageClass: pulumi.String("ONEZONE"),
+						StorageClass: pulumi.String("ONEZONE_IA"),
 						Days: pulumi.Int(
 							defaults.GetOrDefault(opts.OneZoneTransitionDays, defaultOneZoneTransitionDays),
 						),
