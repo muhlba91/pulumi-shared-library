@@ -13,7 +13,7 @@ import (
 const incompleteMultipartUploadAbortDays = 3
 
 // defaultOneZoneTransitionDays is the number of days after which objects will be transitioned to the ONEZONE storage class.
-const defaultOneZoneTransitionDays = 3
+const defaultOneZoneTransitionDays = 30
 
 // CreateOptions holds optional parameters for Create.
 type CreateOptions struct {

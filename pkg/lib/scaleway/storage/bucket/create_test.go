@@ -50,7 +50,7 @@ func TestCreateBucket_Basic(t *testing.T) {
 			assert.Len(rule2.Transitions, 1)
 			transition := rule2.Transitions[0]
 			assert.Equal("ONEZONE_IA", transition.StorageClass)
-			assert.Equal(3, *transition.Days)
+			assert.Equal(30, *transition.Days)
 
 			return nil
 		})
