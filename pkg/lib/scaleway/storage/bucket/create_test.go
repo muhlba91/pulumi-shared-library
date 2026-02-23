@@ -34,6 +34,26 @@ func TestCreateBucket_Basic(t *testing.T) {
 			assert.Empty(cors)
 			return nil
 		})
+		b.LifecycleRules.ApplyT(func(rules []object.BucketLifecycleRule) error {
+			assert.Len(rules, 2)
+
+			rule1 := rules[0]
+			assert.True(rule1.Enabled)
+			assert.Nil(rule1.Transitions)
+			assert.Equal("expire-incomplete-multipart-uploads", *rule1.Prefix)
+			assert.Equal(3, *rule1.AbortIncompleteMultipartUploadDays)
+
+			rule2 := rules[1]
+			assert.True(rule2.Enabled)
+			assert.Equal("move-to-one-zone", *rule2.Prefix)
+			assert.Nil(rule2.AbortIncompleteMultipartUploadDays)
+			assert.Len(rule2.Transitions, 1)
+			transition := rule2.Transitions[0]
+			assert.Equal("ONEZONE", transition.StorageClass)
+			assert.Equal(3, *transition.Days)
+
+			return nil
+		})
 		b.Tags.ApplyT(func(m map[string]string) error {
 			assert.Equal(map[string]string{"env": "test"}, m)
 			return nil
@@ -54,9 +74,11 @@ func TestCreateBucket_WithOptions(t *testing.T) {
 
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		maxAgeSeconds := 3600
+		transitionDays := 5
 
 		opts := &libbucket.CreateOptions{
-			Location: pulumi.String("US"),
+			Location:              pulumi.String("US"),
+			OneZoneTransitionDays: &transitionDays,
 			CORS: &libbucket.CreateCorsOptions{
 				MaxAgeSeconds:  &maxAgeSeconds,
 				Method:         []string{"GET", "POST"},
@@ -82,6 +104,20 @@ func TestCreateBucket_WithOptions(t *testing.T) {
 			assert.Equal([]string{"GET", "POST"}, rule.AllowedMethods)
 			assert.Equal([]string{"https://example.com"}, rule.AllowedOrigins)
 			assert.Equal([]string{"Content-Type"}, rule.AllowedHeaders)
+			return nil
+		})
+		b.LifecycleRules.ApplyT(func(rules []object.BucketLifecycleRule) error {
+			assert.Len(rules, 2)
+
+			rule2 := rules[1]
+			assert.True(rule2.Enabled)
+			assert.Equal("move-to-one-zone", *rule2.Prefix)
+			assert.Nil(rule2.AbortIncompleteMultipartUploadDays)
+			assert.Len(rule2.Transitions, 1)
+			transition := rule2.Transitions[0]
+			assert.Equal("ONEZONE", transition.StorageClass)
+			assert.Equal(transitionDays, *transition.Days)
+
 			return nil
 		})
 		b.Tags.ApplyT(func(m map[string]string) error {
