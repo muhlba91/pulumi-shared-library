@@ -30,7 +30,7 @@ type CreateOptions struct {
 // opts: Options for creating the Primary IP.
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hcloud.PrimaryIp, error) {
 	location := opts.Location
-	if opts.Datacenter != nil && *opts.Datacenter == "" {
+	if opts.Datacenter != nil && *opts.Datacenter != "" {
 		location = *opts.Datacenter
 	}
 
