@@ -17,7 +17,7 @@ func TestCreateRdns(t *testing.T) {
 		primaryOpts := &libip.CreateOptions{
 			Name:       "myp",
 			IPType:     "ipv4",
-			Datacenter: "fsn1-dc14",
+			Location:   "fsn1-dc14",
 			AutoDelete: pulumi.Bool(true),
 			Labels:     map[string]string{"env": "test"},
 		}
@@ -57,7 +57,7 @@ func TestCreateRdns_WithOptions(t *testing.T) {
 		primaryOpts := &libip.CreateOptions{
 			Name:       "protected",
 			IPType:     "ipv6",
-			Datacenter: "nbg1-dc3",
+			Location:   "nbg1-dc3",
 			AutoDelete: pulumi.Bool(false),
 			Labels:     map[string]string{"team": "dev"},
 			PulumiOptions: []pulumi.ResourceOption{

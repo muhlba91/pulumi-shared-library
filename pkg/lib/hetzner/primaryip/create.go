@@ -13,8 +13,10 @@ type CreateOptions struct {
 	Name string
 	// IPType is the type of the Primary IP.
 	IPType string
+	// Location is the location where the Primary IP will be created.
+	Location string
 	// Datacenter is the datacenter where the Primary IP will be created.
-	Datacenter string
+	Datacenter *string
 	// AutoDelete indicates whether the Primary IP should be automatically deleted when the assignee is deleted.
 	AutoDelete pulumi.BoolInput
 	// Labels are the labels to assign to the Primary IP.
@@ -27,14 +29,19 @@ type CreateOptions struct {
 // ctx: Pulumi context for resource creation.
 // opts: Options for creating the Primary IP.
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hcloud.PrimaryIp, error) {
+	location := opts.Location
+	if opts.Datacenter != nil && *opts.Datacenter == "" {
+		location = *opts.Datacenter
+	}
+
 	return hcloud.NewPrimaryIp(
 		ctx,
-		fmt.Sprintf("hcloud-primary-ip-%s-%s-%s", name, opts.IPType, opts.Datacenter),
+		fmt.Sprintf("hcloud-primary-ip-%s-%s-%s", name, opts.IPType, location),
 		&hcloud.PrimaryIpArgs{
-			Name:         pulumi.String(fmt.Sprintf("%s-%s-%s", opts.Name, opts.IPType, opts.Datacenter)),
+			Name:         pulumi.String(fmt.Sprintf("%s-%s-%s", opts.Name, opts.IPType, opts.Location)),
 			AssigneeType: pulumi.String("server"),
 			Type:         pulumi.String(opts.IPType),
-			Location:     pulumi.String(opts.Datacenter),
+			Location:     pulumi.String(opts.Location),
 			AutoDelete:   opts.AutoDelete,
 			Labels:       pulumi.ToStringMap(opts.Labels),
 		},

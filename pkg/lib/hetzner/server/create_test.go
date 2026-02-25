@@ -19,7 +19,7 @@ func TestCreateServer(t *testing.T) {
 		p4, err := libprimaryip.Create(ctx, "primaryip", &libprimaryip.CreateOptions{
 			Name:       "p4",
 			IPType:     "ipv4",
-			Datacenter: "fsn1-dc14",
+			Location:   "fsn1-dc14",
 			AutoDelete: pulumi.Bool(true),
 			Labels:     map[string]string{"env": "test"},
 		})
@@ -29,7 +29,7 @@ func TestCreateServer(t *testing.T) {
 		p6, err := libprimaryip.Create(ctx, "primaryip", &libprimaryip.CreateOptions{
 			Name:       "p6",
 			IPType:     "ipv6",
-			Datacenter: "nbg1-dc3",
+			Location:   "nbg1-dc3",
 			AutoDelete: pulumi.Bool(true),
 			Labels:     map[string]string{"env": "test"},
 		})
@@ -101,7 +101,7 @@ func TestCreateServer_PublicSSH(t *testing.T) {
 		p4, err := libprimaryip.Create(ctx, "primaryip", &libprimaryip.CreateOptions{
 			Name:       "p4b",
 			IPType:     "ipv4",
-			Datacenter: "fsn1-dc14",
+			Location:   "fsn1-dc14",
 			AutoDelete: pulumi.Bool(true),
 			Labels:     map[string]string{"env": "prod"},
 		})
@@ -111,7 +111,7 @@ func TestCreateServer_PublicSSH(t *testing.T) {
 		p6, err := libprimaryip.Create(ctx, "primaryip", &libprimaryip.CreateOptions{
 			Name:       "p6b",
 			IPType:     "ipv6",
-			Datacenter: "nbg1-dc3",
+			Location:   "nbg1-dc3",
 			AutoDelete: pulumi.Bool(false),
 			Labels:     map[string]string{"env": "prod"},
 		})
