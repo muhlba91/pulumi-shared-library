@@ -13,14 +13,14 @@ import (
 // If days is <= 0 it defaults to 30.
 // ctx: Pulumi context.
 // opts: Options for creating the rotation resource.
-func Create(ctx *pulumi.Context, opts *rModel.Options) (pulumi.CustomResource, error) {
+func Create(ctx *pulumi.Context, opts *rModel.Options) (*time.Rotating, error) {
 	days := opts.Days
 	if days <= 0 {
 		days = 30
 	}
 
 	return time.NewRotating(ctx,
-		fmt.Sprintf("rotation-%s", opts.Name),
+		fmt.Sprintf("rotation-%s", *opts.Name),
 		&time.RotatingArgs{
 			RotationDays: pulumi.Int(days),
 		},

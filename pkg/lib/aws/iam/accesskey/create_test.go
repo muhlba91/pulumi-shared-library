@@ -9,10 +9,13 @@ import (
 	"github.com/stretchr/testify/require"
 
 	libaccesskey "github.com/muhlba91/pulumi-shared-library/pkg/lib/aws/iam/accesskey"
+	"github.com/muhlba91/pulumi-shared-library/pkg/model/rotation"
 	"github.com/muhlba91/pulumi-shared-library/test/mocks"
 )
 
 func TestCreateAccessKey(t *testing.T) {
+	counter := mocks.NewCounter()
+
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		userName := "test-user"
 
@@ -38,11 +41,16 @@ func TestCreateAccessKey(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Nil(t, counter.Resources["time:index/rotating:Rotating"])
+	assert.Len(t, counter.Resources["aws:iam/accessKey:AccessKey"], 1)
 }
 
 func TestCreateAccessKey_WithOptions(t *testing.T) {
+	counter := mocks.NewCounter()
+
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		userName := "protected-user"
 
@@ -55,6 +63,7 @@ func TestCreateAccessKey_WithOptions(t *testing.T) {
 		ak, err := libaccesskey.Create(ctx, &libaccesskey.CreateOptions{
 			UserName: userName,
 			User:     user,
+			Rotation: &rotation.Options{},
 			PulumiOptions: []pulumi.ResourceOption{
 				pulumi.Protect(true),
 			},
@@ -71,6 +80,9 @@ func TestCreateAccessKey_WithOptions(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Len(t, counter.Resources["time:index/rotating:Rotating"], 1)
+	assert.Len(t, counter.Resources["aws:iam/accessKey:AccessKey"], 1)
 }

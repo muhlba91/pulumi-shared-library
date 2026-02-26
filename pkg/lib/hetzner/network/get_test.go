@@ -25,6 +25,6 @@ func TestGetNetwork(t *testing.T) {
 		// assert.Equal(t, name, res.Name)
 		// assert.NotEmpty(t, res.Id)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }

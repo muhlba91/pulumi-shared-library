@@ -17,6 +17,6 @@ func TestGetCurrentUserID(t *testing.T) {
 		require.NotNil(t, got)
 		assert.Equal(t, 1, *got)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	assert.NoError(t, err)
 }

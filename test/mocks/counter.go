@@ -2,18 +2,34 @@ package mocks
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/rs/zerolog/log"
 )
 
-type Mocks int
+// Counter is a thread-safe struct to keep track of resource counts during testing.
+type Counter struct {
+	Resources map[string][]string
+	mu        sync.Mutex
+}
+
+// NewCounter initializes and returns a new Counter instance.
+func NewCounter() *Counter {
+	return &Counter{
+		Resources: make(map[string][]string),
+	}
+}
 
 // NewResource mocks resource creation for Pulumi.
 // args: MockResourceArgs containing information about the resource being mocked.
-func (Mocks) NewResource(args pulumi.MockResourceArgs) (string, resource.PropertyMap, error) {
+func (c *Counter) NewResource(args pulumi.MockResourceArgs) (string, resource.PropertyMap, error) {
 	log.Info().Msgf("Mocking resource of type %s with name %s", args.TypeToken, args.Name)
+
+	c.mu.Lock()
+	c.Resources[args.TypeToken] = append(c.Resources[args.TypeToken], args.Name)
+	c.mu.Unlock()
 
 	id := args.Name + "_id"
 
@@ -86,7 +102,7 @@ func (Mocks) NewResource(args pulumi.MockResourceArgs) (string, resource.Propert
 
 // Call mocks function calls for Pulumi.
 // args: MockCallArgs containing information about the call being mocked.
-func (Mocks) Call(
+func (c *Counter) Call(
 	args pulumi.MockCallArgs,
 ) (resource.PropertyMap, error) {
 	log.Info().Msgf("Mocking call of type %s with args: %+v", args.Token, args.Args)

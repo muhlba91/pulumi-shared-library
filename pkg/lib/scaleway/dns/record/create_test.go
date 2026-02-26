@@ -55,7 +55,7 @@ func TestCreate_DefaultTTLAndNoProject(t *testing.T) {
 		})
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -95,7 +95,7 @@ func TestCreate_RootDomain(t *testing.T) {
 		})
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -137,6 +137,6 @@ func TestCreate_CustomTTLAndProject(t *testing.T) {
 		})
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }

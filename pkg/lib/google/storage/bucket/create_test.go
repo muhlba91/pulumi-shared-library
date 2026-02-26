@@ -41,7 +41,7 @@ func TestCreateBucket_Basic(t *testing.T) {
 		})
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	req.NoError(err)
 }
 
@@ -75,6 +75,6 @@ func TestCreateBucket_WithOptions(t *testing.T) {
 		})
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	req.NoError(err)
 }

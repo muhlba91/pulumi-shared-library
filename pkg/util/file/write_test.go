@@ -63,7 +63,7 @@ func TestWritePulumi(t *testing.T) {
 		out := file.WritePulumi(path, pulumi.String(content))
 		ctx.Export("written", out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 
 	b, err := os.ReadFile(path)
@@ -80,7 +80,7 @@ func TestWritePulumiPermissions(t *testing.T) {
 		out := file.WritePulumi(path, pulumi.String(content), 0o600)
 		ctx.Export("written", out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 
 	b, err := os.ReadFile(path)
@@ -100,7 +100,7 @@ func TestWritePulumiError(t *testing.T) {
 		out := file.WritePulumi(path, pulumi.String("should fail"))
 		ctx.Export("written", out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 
 	info, statErr := os.Stat(path)
