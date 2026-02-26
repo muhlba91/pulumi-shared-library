@@ -1,6 +1,6 @@
 module github.com/muhlba91/pulumi-shared-library
 
-go 1.25.3
+go 1.26.0
 
 require (
 	github.com/pulumi/pulumi-aws/sdk/v7 v7.20.0
