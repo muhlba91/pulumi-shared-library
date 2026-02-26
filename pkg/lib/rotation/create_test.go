@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/muhlba91/pulumi-shared-library/pkg/lib/rotation"
+	rModel "github.com/muhlba91/pulumi-shared-library/pkg/model/rotation"
 	"github.com/muhlba91/pulumi-shared-library/test/mocks"
 )
 
@@ -16,7 +17,10 @@ func TestCreate_DefaultDays(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		name := "rot-default"
 
-		res, err := rotation.Create(ctx, name, 0)
+		opts := &rModel.Options{
+			Name: name,
+		}
+		res, err := rotation.Create(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
@@ -37,7 +41,11 @@ func TestCreate_CustomDays(t *testing.T) {
 		name := "rot-custom"
 		days := 7
 
-		res, err := rotation.Create(ctx, name, days)
+		opts := &rModel.Options{
+			Name: name,
+			Days: days,
+		}
+		res, err := rotation.Create(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, res)
 
