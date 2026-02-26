@@ -8,10 +8,13 @@ import (
 	"github.com/stretchr/testify/require"
 
 	libapikey "github.com/muhlba91/pulumi-shared-library/pkg/lib/scaleway/iam/apikey"
+	"github.com/muhlba91/pulumi-shared-library/pkg/model/rotation"
 	"github.com/muhlba91/pulumi-shared-library/test/mocks"
 )
 
 func TestCreateAPIKey(t *testing.T) {
+	counter := mocks.NewCounter()
+
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		userName := "test-user"
 
@@ -46,11 +49,16 @@ func TestCreateAPIKey(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Nil(t, counter.Resources["time:index/rotating:Rotating"])
+	assert.Len(t, counter.Resources["scaleway:iam/apiKey:ApiKey"], 1)
 }
 
 func TestCreateAPIKey_WithOptions(t *testing.T) {
+	counter := mocks.NewCounter()
+
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		userName := "protected-user"
 
@@ -58,6 +66,7 @@ func TestCreateAPIKey_WithOptions(t *testing.T) {
 			ApplicationID:    pulumi.String(userName),
 			Description:      pulumi.String(userName),
 			DefaultProjectID: pulumi.String(userName),
+			Rotation:         &rotation.Options{},
 			PulumiOptions: []pulumi.ResourceOption{
 				pulumi.Protect(true),
 			},
@@ -90,6 +99,9 @@ func TestCreateAPIKey_WithOptions(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Len(t, counter.Resources["time:index/rotating:Rotating"], 1)
+	assert.Len(t, counter.Resources["scaleway:iam/apiKey:ApiKey"], 1)
 }

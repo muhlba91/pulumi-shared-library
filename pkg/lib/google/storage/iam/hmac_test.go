@@ -8,10 +8,13 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/muhlba91/pulumi-shared-library/pkg/lib/google/storage/iam"
+	"github.com/muhlba91/pulumi-shared-library/pkg/model/rotation"
 	"github.com/muhlba91/pulumi-shared-library/test/mocks"
 )
 
 func TestCreateHmacKey(t *testing.T) {
+	counter := mocks.NewCounter()
+
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		svc := "service-account@example.com"
 
@@ -32,11 +35,16 @@ func TestCreateHmacKey(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Nil(t, counter.Resources["time:index/rotating:Rotating"])
+	assert.Len(t, counter.Resources["gcp:storage/hmacKey:HmacKey"], 1)
 }
 
 func TestCreateHmacKey_WithOptionalArgs(t *testing.T) {
+	counter := mocks.NewCounter()
+
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		svc := "service-account@example.com"
 		proj := pulumi.String("proj-123")
@@ -44,6 +52,7 @@ func TestCreateHmacKey_WithOptionalArgs(t *testing.T) {
 		opts := &iam.HmacKeyOptions{
 			ServiceAccount: svc,
 			Project:        proj,
+			Rotation:       &rotation.Options{},
 			PulumiOptions:  []pulumi.ResourceOption{},
 		}
 
@@ -60,6 +69,9 @@ func TestCreateHmacKey_WithOptionalArgs(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Len(t, counter.Resources["time:index/rotating:Rotating"], 1)
+	assert.Len(t, counter.Resources["gcp:storage/hmacKey:HmacKey"], 1)
 }
