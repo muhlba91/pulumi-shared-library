@@ -72,7 +72,7 @@ func TestCreate_GitLabActionsSecret(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -144,7 +144,7 @@ func TestCreate_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 
 	// Test with explicit PulumiOptions to cover the 'else' branch in Create
@@ -166,6 +166,6 @@ func TestCreate_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 		out := secret.Create(ctx, opts)
 		assert.NotNil(t, out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }

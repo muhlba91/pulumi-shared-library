@@ -43,7 +43,7 @@ func TestCreateCustomRole(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -78,7 +78,7 @@ func TestCreateCustomRole_Permissions(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -109,6 +109,6 @@ func TestCreateCustomRole_WithOptionalArgs(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }

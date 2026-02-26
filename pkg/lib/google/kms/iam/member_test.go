@@ -40,7 +40,7 @@ func TestCreateKMSMember(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -74,7 +74,7 @@ func TestCreateKMSMember_WithOptionalArgs(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -107,7 +107,7 @@ func TestCreateKeyringMember(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -141,6 +141,6 @@ func TestCreateKeyringMember_WithOptionalArgs(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }

@@ -32,7 +32,7 @@ func TestCreateHmacKey(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -60,6 +60,6 @@ func TestCreateHmacKey_WithOptionalArgs(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }

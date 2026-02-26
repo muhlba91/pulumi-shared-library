@@ -32,7 +32,7 @@ func TestCreateSubnet(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -59,6 +59,6 @@ func TestCreateSubnet_WithOptions(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }

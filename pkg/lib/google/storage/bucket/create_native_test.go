@@ -42,7 +42,7 @@ func TestCreateNativeBucket_Basic(t *testing.T) {
 		})
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	req.NoError(err)
 }
 
@@ -76,7 +76,7 @@ func TestCreateNativeBucket_WithOptions(t *testing.T) {
 		})
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	req.NoError(err)
 }
 
@@ -110,6 +110,6 @@ func TestCreateNativeBucket_WithCORS(t *testing.T) {
 		})
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	req.NoError(err)
 }

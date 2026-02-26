@@ -45,7 +45,7 @@ func TestCreateNetwork(t *testing.T) {
 		// also assert underlying type shape via Rules of SDK if needed (no-op here)
 		_ = hcloud.Network{}
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -83,6 +83,6 @@ func TestCreateNetwork_WithOptions(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }

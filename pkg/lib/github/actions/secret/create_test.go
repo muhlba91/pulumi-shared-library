@@ -58,7 +58,7 @@ func TestCreate_GithubActionsSecret(t *testing.T) {
 		out2 := secret.Create(ctx, opts)
 		assert.NotNil(t, out2)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -104,6 +104,6 @@ func TestCreate_GithubActionsSecret_WithOptionalArgs(t *testing.T) {
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }

@@ -70,6 +70,6 @@ func TestWriteFileAndUpload(t *testing.T) {
 
 		wg.Wait()
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }

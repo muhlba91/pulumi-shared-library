@@ -17,7 +17,7 @@ func TestGetOrDefault_WithExplicitProject(t *testing.T) {
 		out := project.GetOrDefault(ctx, &proj)
 		assert.Equal(t, "explicit-project", *out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -27,7 +27,7 @@ func TestGetOrDefault_NoProjectReturnsNil(t *testing.T) {
 		out := project.GetOrDefault(ctx, &proj)
 		assert.Nil(t, out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -37,7 +37,7 @@ func TestGetOrDefault_NilProjectReturnsNil(t *testing.T) {
 		out := project.GetOrDefault(ctx, proj)
 		assert.Nil(t, out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -46,7 +46,7 @@ func TestGetOrDefault_UsesGCPConfigWhenPresent(t *testing.T) {
 		out := project.GetOrDefault(ctx, nil)
 		assert.Equal(t, "configured-project", *out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)), mocks.WithConfig(map[string]string{
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()), mocks.WithConfig(map[string]string{
 		"gcp:project": "configured-project",
 	}))
 	require.NoError(t, err)

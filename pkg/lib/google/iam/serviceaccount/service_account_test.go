@@ -28,7 +28,7 @@ func TestCreateServiceAccount_NoRoles(t *testing.T) {
 		require.NotNil(t, sa)
 		assert.Nil(t, members)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -50,7 +50,7 @@ func TestCreateServiceAccount_NoRoles_WithOptionalArgs(t *testing.T) {
 		require.NotNil(t, sa)
 		assert.Nil(t, members)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -92,6 +92,6 @@ func TestCreateServiceAccount_WithRoles(t *testing.T) {
 		}
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }

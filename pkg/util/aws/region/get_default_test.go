@@ -17,7 +17,7 @@ func TestGetOrDefault_WithExplicitRegion(t *testing.T) {
 		out := region.GetOrDefault(ctx, &reg)
 		assert.Equal(t, "explicit-region", *out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -27,7 +27,7 @@ func TestGetOrDefault_NoRegionReturnsNil(t *testing.T) {
 		out := region.GetOrDefault(ctx, &reg)
 		assert.Nil(t, out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -37,7 +37,7 @@ func TestGetOrDefault_NilRegionReturnsNil(t *testing.T) {
 		out := region.GetOrDefault(ctx, reg)
 		assert.Nil(t, out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)))
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
@@ -46,7 +46,7 @@ func TestGetOrDefault_UsesAWSConfigWhenPresent(t *testing.T) {
 		out := region.GetOrDefault(ctx, nil)
 		assert.Equal(t, "configured-region", *out)
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.Mocks(0)), mocks.WithConfig(map[string]string{
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()), mocks.WithConfig(map[string]string{
 		"aws:region": "configured-region",
 	}))
 	require.NoError(t, err)
