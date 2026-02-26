@@ -8,50 +8,77 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/muhlba91/pulumi-shared-library/pkg/lib/random"
+	"github.com/muhlba91/pulumi-shared-library/pkg/model/rotation"
 	"github.com/muhlba91/pulumi-shared-library/test/mocks"
 )
 
 func TestCreatePassword_Defaults(t *testing.T) {
-	require := require.New(t)
-	assert := assert.New(t)
+	counter := mocks.NewCounter()
 
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		data, err := random.CreatePassword(ctx, "test", nil)
-		require.NoError(err)
-		require.NotNil(data)
-		require.NotNil(data.Resource)
+		require.NoError(t, err)
+		require.NotNil(t, data)
+		require.NotNil(t, data.Resource)
 
 		// Assert the password value from the mocked resource
 		data.Password.ApplyT(func(p string) error {
-			assert.Equal("mocked-password-16", p)
+			assert.Equal(t, "mocked-password-16", p)
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
-	require.NoError(err)
+	}, pulumi.WithMocks("project", "stack", counter))
+	require.NoError(t, err)
+
+	assert.Nil(t, counter.Resources["time:index/rotating:Rotating"])
+	assert.Len(t, counter.Resources["random:index/randomPassword:RandomPassword"], 1)
+}
+
+func TestCreatePassword_DefaultOptions(t *testing.T) {
+	counter := mocks.NewCounter()
+
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		data, err := random.CreatePassword(ctx, "test", &random.PasswordOptions{})
+		require.NoError(t, err)
+		require.NotNil(t, data)
+		require.NotNil(t, data.Resource)
+
+		// Assert the password value from the mocked resource
+		data.Password.ApplyT(func(p string) error {
+			assert.Equal(t, "mocked-password-16", p)
+			return nil
+		})
+		return nil
+	}, pulumi.WithMocks("project", "stack", counter))
+	require.NoError(t, err)
+
+	assert.Nil(t, counter.Resources["time:index/rotating:Rotating"])
+	assert.Len(t, counter.Resources["random:index/randomPassword:RandomPassword"], 1)
 }
 
 func TestCreatePassword_CustomOptions(t *testing.T) {
-	require := require.New(t)
-	assert := assert.New(t)
-
-	opts := &random.PasswordOptions{
-		Length:  8,
-		Special: false,
-	}
+	counter := mocks.NewCounter()
 
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		opts := &random.PasswordOptions{
+			Length:   8,
+			Special:  false,
+			Rotation: &rotation.Options{},
+		}
 		data, err := random.CreatePassword(ctx, "custom", opts)
-		require.NoError(err)
-		require.NotNil(data)
-		require.NotNil(data.Resource)
+		require.NoError(t, err)
+		require.NotNil(t, data)
+		require.NotNil(t, data.Resource)
 
 		// Assert the password value from the mocked resource
 		data.Password.ApplyT(func(p string) error {
-			assert.Equal("mocked-password-8", p)
+			assert.Equal(t, "mocked-password-8", p)
 			return nil
 		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
-	require.NoError(err)
+	}, pulumi.WithMocks("project", "stack", counter))
+	require.NoError(t, err)
+
+	assert.Len(t, counter.Resources["time:index/rotating:Rotating"], 1)
+	assert.Len(t, counter.Resources["random:index/randomPassword:RandomPassword"], 1)
 }

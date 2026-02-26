@@ -16,7 +16,7 @@ type CreateOptions struct {
 	UserName string
 	// User is the IAM user resource to associate the access key with.
 	User pulumi.Resource
-	// Rotation defines the rotation options for the access key.
+	// Rotation defines the rotation options for the resource.
 	Rotation *rModel.Options
 	// PulumiOptions are additional options to pass to the resource.
 	PulumiOptions []pulumi.ResourceOption

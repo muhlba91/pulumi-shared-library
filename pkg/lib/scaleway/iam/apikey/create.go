@@ -5,6 +5,9 @@ import (
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumiverse/pulumi-scaleway/sdk/go/scaleway/iam"
+
+	rModel "github.com/muhlba91/pulumi-shared-library/pkg/model/rotation"
+	"github.com/muhlba91/pulumi-shared-library/pkg/util/rotation"
 )
 
 // CreateOptions defines the options for creating an IAM API key.
@@ -17,6 +20,8 @@ type CreateOptions struct {
 	ApplicationID pulumi.StringPtrInput
 	// DefaultProjectID is the default project ID for the API key.
 	DefaultProjectID pulumi.StringPtrInput
+	// Rotation defines the rotation options for the resource.
+	Rotation *rModel.Options
 	// PulumiOptions are additional options to pass to the resource.
 	PulumiOptions []pulumi.ResourceOption
 }
@@ -26,15 +31,22 @@ type CreateOptions struct {
 // name: The name of the API key resource.
 // opts: The options for creating the API key.
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*iam.ApiKey, error) {
+	resName := fmt.Sprintf("scaleway-api-key-%s", name)
+
+	pulumiOpts := append([]pulumi.ResourceOption{}, opts.PulumiOptions...)
+	if trigger, _ := rotation.Trigger(ctx, resName, opts.Rotation); trigger != nil {
+		pulumiOpts = append(pulumiOpts, pulumi.ReplacementTrigger(trigger))
+	}
+
 	return iam.NewApiKey(
 		ctx,
-		fmt.Sprintf("scaleway-api-key-%s", name),
+		resName,
 		&iam.ApiKeyArgs{
 			Description:      opts.Description,
 			UserId:           opts.UserID,
 			ApplicationId:    opts.ApplicationID,
 			DefaultProjectId: opts.DefaultProjectID,
 		},
-		opts.PulumiOptions...,
+		pulumiOpts...,
 	)
 }
