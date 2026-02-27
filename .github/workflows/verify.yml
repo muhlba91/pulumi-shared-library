@@ -90,3 +90,4 @@ jobs:
           goveralls -coverprofile=covprofile -service=github
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
