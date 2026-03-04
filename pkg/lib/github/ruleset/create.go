@@ -41,6 +41,8 @@ type CreateOptions struct {
 	UpdatedBranchBeforeMerge *bool
 	// RequiredChecks are the required status checks for the ruleset.
 	RequiredChecks []string
+	// CopilotReview indicates whether to enable Copilot code review.
+	CopilotReview *bool
 	// WIPIntegration indicates whether to enable WIP integration.
 	WIPIntegration *bool
 	// PulumiOptions are additional options to pass to the Pulumi resource.
@@ -88,7 +90,12 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 				RequiredSignatures:        pulumi.Bool(defaults.GetOrDefault(opts.SignedCommits, false)),
 				Update:                    pulumi.Bool(false),
 				UpdateAllowsFetchAndMerge: pulumi.Bool(false),
+				CopilotCodeReview: &github.RepositoryRulesetRulesCopilotCodeReviewArgs{
+					ReviewDraftPullRequests: pulumi.Bool(false),
+					ReviewOnPush:            pulumi.Bool(defaults.GetOrDefault(opts.CopilotReview, true)),
+				},
 				PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
+					AllowedMergeMethods:          pulumi.StringArray{pulumi.String("rebase")},
 					DismissStaleReviewsOnPush:    pulumi.Bool(true),
 					RequireCodeOwnerReview:       pulumi.Bool(defaults.GetOrDefault(opts.CodeOwnerReview, false)),
 					RequiredApprovingReviewCount: pulumi.Int(defaults.GetOrDefault(opts.ReviewerCount, 0)),

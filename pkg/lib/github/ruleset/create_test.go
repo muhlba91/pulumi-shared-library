@@ -1,3 +1,4 @@
+//nolint:cyclop // this file is necessarily complex due to the number of options being tested
 package ruleset_test
 
 import (
@@ -12,6 +13,7 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/test/mocks"
 )
 
+//nolint:gocognit // this test is necessarily complex due to the number of options being tested
 func TestCreateRuleset(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		repo, err := github.NewRepository(ctx, "repo-basic", &github.RepositoryArgs{
@@ -50,15 +52,61 @@ func TestCreateRuleset(t *testing.T) {
 		})
 
 		rs.BypassActors.ApplyT(func(b []github.RepositoryRulesetBypassActor) error {
-			assert.GreaterOrEqual(t, len(b), 2)
+			assert.Len(t, b, 2)
+			ids := map[int]bool{}
+			for _, a := range b {
+				if a.ActorId != nil {
+					ids[*a.ActorId] = true
+					if *a.ActorId == 2 {
+						assert.Equal(t, "RepositoryRole", a.ActorType)
+						assert.Equal(t, "pull_request", a.BypassMode)
+					}
+					if *a.ActorId == 5 {
+						assert.Equal(t, "RepositoryRole", a.ActorType)
+						assert.Equal(t, "always", a.BypassMode)
+					}
+				}
+			}
+			assert.True(t, ids[2])
+			assert.True(t, ids[5])
 			return nil
 		})
-
 		rs.Rules.ApplyT(func(r github.RepositoryRulesetRules) error {
-			if r.MergeQueue != nil {
-				assert.Fail(t, "expected MergeQueue to be nil for default")
-			}
+			assert.Nil(t, r.MergeQueue)
+
 			assert.True(t, *r.Creation)
+			assert.True(t, *r.NonFastForward)
+			assert.False(t, *r.RequiredSignatures)
+
+			if r.CopilotCodeReview != nil {
+				assert.False(t, *r.CopilotCodeReview.ReviewDraftPullRequests)
+				assert.True(t, *r.CopilotCodeReview.ReviewOnPush)
+			} else {
+				assert.Fail(t, "expected CopilotCodeReview to be present")
+			}
+
+			if r.RequiredStatusChecks != nil && len(r.RequiredStatusChecks.RequiredChecks) > 0 {
+				found := map[string]bool{}
+				for _, c := range r.RequiredStatusChecks.RequiredChecks {
+					found[c.Context] = true
+				}
+				assert.True(t, found["WIP"])
+				assert.True(t, *r.RequiredStatusChecks.StrictRequiredStatusChecksPolicy)
+			} else {
+				assert.Fail(t, "RequiredStatusChecks missing")
+			}
+
+			if r.PullRequest != nil {
+				hasRebase := false
+				for _, m := range r.PullRequest.AllowedMergeMethods {
+					if m == "rebase" || (m == "REBASE") {
+						hasRebase = true
+					}
+				}
+				assert.True(t, hasRebase)
+				assert.True(t, *r.PullRequest.DismissStaleReviewsOnPush)
+			}
+
 			return nil
 		})
 		return nil
@@ -66,6 +114,7 @@ func TestCreateRuleset(t *testing.T) {
 	require.NoError(t, err)
 }
 
+//nolint:gocognit // this test is necessarily complex due to the number of options being tested
 func TestCreateRuleset_Custom(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		repo, err := github.NewRepository(ctx, "repo-custom", &github.RepositoryArgs{
@@ -129,11 +178,29 @@ func TestCreateRuleset_Custom(t *testing.T) {
 			if r.MergeQueue == nil {
 				assert.Fail(t, "expected MergeQueue to be present")
 			}
+			if r.MergeQueue.MergeMethod != nil {
+				assert.Equal(t, "REBASE", *r.MergeQueue.MergeMethod)
+			} else {
+				assert.Fail(t, "MergeMethod is nil")
+			}
+			if r.MergeQueue.GroupingStrategy != nil {
+				assert.Equal(t, "ALLGREEN", *r.MergeQueue.GroupingStrategy)
+			} else {
+				assert.Fail(t, "GroupingStrategy is nil")
+			}
+
 			return nil
 		})
 
 		rs.BypassActors.ApplyT(func(b []github.RepositoryRulesetBypassActor) error {
-			assert.GreaterOrEqual(t, len(b), 4)
+			assert.Len(t, b, 4)
+			foundIntegration := false
+			for _, a := range b {
+				if a.ActorType == "Integration" {
+					foundIntegration = true
+				}
+			}
+			assert.True(t, foundIntegration)
 			return nil
 		})
 
