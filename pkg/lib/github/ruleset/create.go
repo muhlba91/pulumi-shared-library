@@ -74,7 +74,6 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 			Enforcement: pulumi.String("active"),
 			Conditions: &github.RepositoryRulesetConditionsArgs{
 				RefName: &github.RepositoryRulesetConditionsRefNameArgs{
-					Excludes: pulumi.ToStringArray([]string{}),
 					Includes: pulumi.ToStringArray(opts.Patterns),
 				},
 			},
