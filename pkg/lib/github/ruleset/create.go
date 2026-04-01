@@ -74,6 +74,9 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 			Enforcement: pulumi.String("active"),
 			Conditions: &github.RepositoryRulesetConditionsArgs{
 				RefName: &github.RepositoryRulesetConditionsRefNameArgs{
+					// remove the placeholder for excludes after the provider supports it
+					// https://github.com/integrations/terraform-provider-github/issues/3299
+					Excludes: pulumi.ToStringArray([]string{"placeholder-for-terraform-provider-github-issue-3299"}),
 					Includes: pulumi.ToStringArray(opts.Patterns),
 				},
 			},
