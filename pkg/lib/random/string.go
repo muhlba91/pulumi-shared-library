@@ -36,6 +36,7 @@ func CreateString(ctx *pulumi.Context, name string, opts *StringOptions) (*rando
 		Lower:   pulumi.Bool(true),
 		Upper:   pulumi.Bool(true),
 		Number:  pulumi.Bool(true),
+		Numeric: pulumi.Bool(true),
 	})
 	if err != nil {
 		return nil, err
