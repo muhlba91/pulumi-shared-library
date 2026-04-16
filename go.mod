@@ -3,7 +3,7 @@ module github.com/muhlba91/pulumi-shared-library
 go 1.26.0
 
 require (
-	github.com/pulumi/pulumi-aws/sdk/v7 v7.25.0
+	github.com/pulumi/pulumi-aws/sdk/v7 v7.26.0
 	github.com/pulumi/pulumi-gcp/sdk/v9 v9.20.0
 	github.com/pulumi/pulumi-github/sdk/v6 v6.12.2
 	github.com/pulumi/pulumi-gitlab/sdk/v9 v9.10.0
