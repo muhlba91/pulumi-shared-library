@@ -13,6 +13,8 @@ import (
 )
 
 func TestCreateRepository_Public(t *testing.T) {
+	counter := mocks.NewCounter()
+
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		visibility := "public"
 		trueValue := true
@@ -51,11 +53,6 @@ func TestCreateRepository_Public(t *testing.T) {
 			return nil
 		})
 
-		r.Pages.ApplyT(func(p *github.RepositoryPages) error {
-			assert.Nil(t, p)
-			return nil
-		})
-
 		r.SecurityAndAnalysis.ApplyT(func(s github.RepositorySecurityAndAnalysis) error {
 			assert.NotNil(t, s)
 			assert.Nil(t, s.AdvancedSecurity)
@@ -67,11 +64,15 @@ func TestCreateRepository_Public(t *testing.T) {
 		})
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Nil(t, counter.Resources["github:index/repositoryPages:RepositoryPages"])
 }
 
 func TestCreateRepository_GhPages(t *testing.T) {
+	counter := mocks.NewCounter()
+
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		visibility := "public"
 		ghPagesBranch := "gh-pages"
@@ -101,20 +102,16 @@ func TestCreateRepository_GhPages(t *testing.T) {
 			assert.Equal(t, "public", v)
 			return nil
 		})
-
-		r.Pages.ApplyT(func(p *github.RepositoryPages) error {
-			assert.NotNil(t, p)
-			assert.Equal(t, "workflow", *p.BuildType)
-			assert.Equal(t, "gh-pages", p.Source.Branch)
-			assert.Equal(t, "/", *p.Source.Path)
-			return nil
-		})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Len(t, counter.Resources["github:index/repositoryPages:RepositoryPages"], 1)
 }
 
 func TestCreateRepository_Private(t *testing.T) {
+	counter := mocks.NewCounter()
+
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		visibility := "private"
 		gitHubPagesBranch := "gh-pages"
@@ -153,11 +150,6 @@ func TestCreateRepository_Private(t *testing.T) {
 			return nil
 		})
 
-		r.Pages.ApplyT(func(p any) error {
-			assert.Nil(t, p)
-			return nil
-		})
-
 		r.SecurityAndAnalysis.ApplyT(func(s github.RepositorySecurityAndAnalysis) error {
 			assert.NotNil(t, s)
 			assert.Nil(t, s.AdvancedSecurity)
@@ -167,11 +159,15 @@ func TestCreateRepository_Private(t *testing.T) {
 		})
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Nil(t, counter.Resources["github:index/repositoryPages:RepositoryPages"])
 }
 
 func TestCreateRepository_DefaultVisibility(t *testing.T) {
+	counter := mocks.NewCounter()
+
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		opts := &librepo.CreateOptions{
 			Name:                    pulumi.String("repo-default"),
@@ -192,12 +188,9 @@ func TestCreateRepository_DefaultVisibility(t *testing.T) {
 			return nil
 		})
 
-		r.Pages.ApplyT(func(p any) error {
-			assert.Nil(t, p)
-			return nil
-		})
-
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Nil(t, counter.Resources["github:index/repositoryPages:RepositoryPages"])
 }

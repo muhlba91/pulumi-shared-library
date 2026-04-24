@@ -56,23 +56,14 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 		pulumi.IgnoreChanges([]string{
 			"securityAndAnalysis",
 			"template",
+			"pages",
 		}),
 	)
 
 	sort.Strings(opts.Topics)
 
-	var pages *github.RepositoryPagesArgs
 	var secAnalysis *github.RepositorySecurityAndAnalysisArgs
 	if !utilgithub.IsPrivateRepository(opts.Visibility) {
-		if opts.GitHubPagesBranch != nil {
-			pages = &github.RepositoryPagesArgs{
-				BuildType: pulumi.String("workflow"),
-				Source: &github.RepositoryPagesSourceArgs{
-					Branch: pulumi.String(defaults.GetOrDefault(opts.GitHubPagesBranch, defaultGitHubPagesBranch)),
-					Path:   pulumi.String("/"),
-				},
-			}
-		}
 		secAnalysis = &github.RepositorySecurityAndAnalysisArgs{
 			SecretScanning: &github.RepositorySecurityAndAnalysisSecretScanningArgs{
 				Status: pulumi.String("enabled"),
@@ -83,7 +74,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 		}
 	}
 
-	return github.NewRepository(ctx, fmt.Sprintf("github-repo-%s", name), &github.RepositoryArgs{
+	repo, rErr := github.NewRepository(ctx, fmt.Sprintf("github-repo-%s", name), &github.RepositoryArgs{
 		Name:                     opts.Name,
 		Description:              opts.Description,
 		HasDiscussions:           opts.EnableDiscussions,
@@ -107,7 +98,25 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 		SquashMergeCommitMessage: pulumi.String("COMMIT_MESSAGES"),
 		SquashMergeCommitTitle:   pulumi.String("COMMIT_OR_PR_TITLE"),
 		VulnerabilityAlerts:      pulumi.Bool(true),
-		Pages:                    pages,
 		SecurityAndAnalysis:      secAnalysis,
 	}, optsWithRepoSpecifics...)
+	if rErr != nil {
+		return nil, rErr
+	}
+
+	if !utilgithub.IsPrivateRepository(opts.Visibility) && opts.GitHubPagesBranch != nil {
+		_, err := github.NewRepositoryPages(ctx, fmt.Sprintf("github-repo-%s-pages", name), &github.RepositoryPagesArgs{
+			Repository: repo.Name,
+			BuildType:  pulumi.String("workflow"),
+			Source: &github.RepositoryPagesSourceArgs{
+				Branch: pulumi.String(defaults.GetOrDefault(opts.GitHubPagesBranch, defaultGitHubPagesBranch)),
+				Path:   pulumi.String("/"),
+			},
+		}, pulumi.Parent(repo))
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return repo, nil
 }
