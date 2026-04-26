@@ -68,6 +68,7 @@ func TestCreateRepository_Public(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Nil(t, counter.Resources["github:index/repositoryPages:RepositoryPages"])
+	assert.Len(t, counter.Resources["github:index/repositoryVulnerabilityAlerts:RepositoryVulnerabilityAlerts"], 1)
 }
 
 func TestCreateRepository_GhPages(t *testing.T) {
@@ -107,6 +108,7 @@ func TestCreateRepository_GhPages(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Len(t, counter.Resources["github:index/repositoryPages:RepositoryPages"], 1)
+	assert.Len(t, counter.Resources["github:index/repositoryVulnerabilityAlerts:RepositoryVulnerabilityAlerts"], 1)
 }
 
 func TestCreateRepository_Private(t *testing.T) {
@@ -163,6 +165,7 @@ func TestCreateRepository_Private(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Nil(t, counter.Resources["github:index/repositoryPages:RepositoryPages"])
+	assert.Len(t, counter.Resources["github:index/repositoryVulnerabilityAlerts:RepositoryVulnerabilityAlerts"], 1)
 }
 
 func TestCreateRepository_DefaultVisibility(t *testing.T) {
@@ -193,4 +196,5 @@ func TestCreateRepository_DefaultVisibility(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Nil(t, counter.Resources["github:index/repositoryPages:RepositoryPages"])
+	assert.Len(t, counter.Resources["github:index/repositoryVulnerabilityAlerts:RepositoryVulnerabilityAlerts"], 1)
 }

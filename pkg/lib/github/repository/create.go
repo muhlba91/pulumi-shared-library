@@ -53,6 +53,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 		pulumi.RetainOnDelete(defaults.GetOrDefault(opts.RetainOnDelete, true)),
 		pulumi.IgnoreChanges([]string{
 			"securityAndAnalysis",
+			"vulnerabilityAlerts",
 			"template",
 			"pages",
 		}),
@@ -95,20 +96,40 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 		MergeCommitTitle:         pulumi.String("MERGE_MESSAGE"),
 		SquashMergeCommitMessage: pulumi.String("COMMIT_MESSAGES"),
 		SquashMergeCommitTitle:   pulumi.String("COMMIT_OR_PR_TITLE"),
-		VulnerabilityAlerts:      pulumi.Bool(true),
 		SecurityAndAnalysis:      secAnalysis,
 	}, optsWithRepoSpecifics...)
 	if rErr != nil {
 		return nil, rErr
 	}
 
-	if !utilgithub.IsPrivateRepository(opts.Visibility) && opts.EnablePages != nil && *opts.EnablePages {
-		_, err := github.NewRepositoryPages(ctx, fmt.Sprintf("github-repo-%s-pages", name), &github.RepositoryPagesArgs{
+	optsWithResourceSpecifics := append([]pulumi.ResourceOption{}, opts.PulumiOptions...)
+	optsWithResourceSpecifics = append(optsWithResourceSpecifics, pulumi.Parent(repo))
+
+	_, saErr := github.NewRepositoryVulnerabilityAlerts(
+		ctx,
+		fmt.Sprintf("github-repo-%s-vuln-alerts", name),
+		&github.RepositoryVulnerabilityAlertsArgs{
 			Repository: repo.Name,
-			BuildType:  pulumi.String("workflow"),
-		}, pulumi.Parent(repo))
-		if err != nil {
-			return nil, err
+			Enabled:    pulumi.Bool(true),
+		},
+		optsWithResourceSpecifics...,
+	)
+	if saErr != nil {
+		return nil, saErr
+	}
+
+	if !utilgithub.IsPrivateRepository(opts.Visibility) && opts.EnablePages != nil && *opts.EnablePages {
+		_, pErr := github.NewRepositoryPages(
+			ctx,
+			fmt.Sprintf("github-repo-%s-pages", name),
+			&github.RepositoryPagesArgs{
+				Repository: repo.Name,
+				BuildType:  pulumi.String("workflow"),
+			},
+			optsWithResourceSpecifics...,
+		)
+		if pErr != nil {
+			return nil, pErr
 		}
 	}
 

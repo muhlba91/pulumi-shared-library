@@ -60,6 +60,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 		pulumi.RetainOnDelete(!defaults.GetOrDefault(opts.DeleteOnDestroy, false)),
 		pulumi.DependsOn([]pulumi.Resource{opts.Repository}),
 	)
+	optsWithRepoSpecifics = append(optsWithRepoSpecifics, pulumi.Parent(opts.Repository))
 
 	mergeQueue := buildMergeQueueArgs(opts)
 	bypassActors := buildBypassActorsArgs(opts)

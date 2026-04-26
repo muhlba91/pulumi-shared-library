@@ -35,15 +35,16 @@ func Create(
 	} else {
 		pulumiOpts = append(pulumiOpts, pulumi.DependsOn([]pulumi.Resource{opts.Repository}))
 	}
+	pulumiOpts = append(pulumiOpts, pulumi.Parent(opts.Repository))
 	pulumiOpts = append(pulumiOpts, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"remoteUpdatedAt"}))
 
 	return opts.Repository.Name.ApplyT(func(repositoryName string) *github.ActionsSecret {
 		name := fmt.Sprintf("github-actions-secret-%s-%s", repositoryName, opts.Key)
 
 		as, err := github.NewActionsSecret(ctx, name, &github.ActionsSecretArgs{
-			Repository:     pulumi.String(repositoryName),
-			SecretName:     pulumi.String(opts.Key),
-			PlaintextValue: opts.Value,
+			Repository: pulumi.String(repositoryName),
+			SecretName: pulumi.String(opts.Key),
+			Value:      opts.Value,
 		}, pulumiOpts...)
 		if err != nil {
 			log.Error().Msgf("Failed to create GitHub Actions secret: %v", err)
