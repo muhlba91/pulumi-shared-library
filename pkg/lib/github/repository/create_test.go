@@ -85,7 +85,7 @@ func TestCreateRepository_GhPages(t *testing.T) {
 			Homepage:                pulumi.String("https://example.com"),
 			Topics:                  []string{"z", "a"},
 			Visibility:              &visibility,
-			EnabledPages:            &pagesValue,
+			EnablePages:             &pagesValue,
 			Protected:               false,
 			AllowRepositoryDeletion: false,
 		}
@@ -123,7 +123,7 @@ func TestCreateRepository_Private(t *testing.T) {
 			EnableWiki:              pulumi.Bool(false),
 			Homepage:                pulumi.String(""),
 			Topics:                  []string{"b", "a"},
-			EnabledPages:            &pagesValue,
+			EnablePages:             &pagesValue,
 			Visibility:              &visibility,
 			Protected:               true,
 			AllowRepositoryDeletion: true,

@@ -25,8 +25,8 @@ type CreateOptions struct {
 	Homepage pulumi.StringPtrInput
 	// Topics is a list of topics to associate with the repository.
 	Topics []string
-	// EnabledPages indicates whether GitHub Pages is enabled for the repository.
-	EnabledPages *bool
+	// EnablePages indicates whether GitHub Pages is enabled for the repository.
+	EnablePages *bool
 	// Visibility is the visibility level of the repository. Can be "public" or "private".
 	Visibility *string
 	// Protected indicates whether the repository is protected.
@@ -102,7 +102,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 		return nil, rErr
 	}
 
-	if !utilgithub.IsPrivateRepository(opts.Visibility) && opts.EnabledPages != nil && *opts.EnabledPages {
+	if !utilgithub.IsPrivateRepository(opts.Visibility) && opts.EnablePages != nil && *opts.EnablePages {
 		_, err := github.NewRepositoryPages(ctx, fmt.Sprintf("github-repo-%s-pages", name), &github.RepositoryPagesArgs{
 			Repository: repo.Name,
 			BuildType:  pulumi.String("workflow"),
