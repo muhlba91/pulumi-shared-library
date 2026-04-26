@@ -81,12 +81,9 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 			},
 			BypassActors: bypassActors,
 			Rules: &github.RepositoryRulesetRulesArgs{
-				Creation:       pulumi.Bool(defaults.GetOrDefault(opts.RestrictCreation, true)),
-				Deletion:       pulumi.Bool(true),
-				NonFastForward: pulumi.Bool(!defaults.GetOrDefault(opts.AllowForcePush, false)),
-				RequiredDeployments: &github.RepositoryRulesetRulesRequiredDeploymentsArgs{
-					RequiredDeploymentEnvironments: pulumi.StringArray{},
-				},
+				Creation:                  pulumi.Bool(defaults.GetOrDefault(opts.RestrictCreation, true)),
+				Deletion:                  pulumi.Bool(true),
+				NonFastForward:            pulumi.Bool(!defaults.GetOrDefault(opts.AllowForcePush, false)),
 				RequiredLinearHistory:     pulumi.Bool(true),
 				RequiredSignatures:        pulumi.Bool(defaults.GetOrDefault(opts.SignedCommits, false)),
 				Update:                    pulumi.Bool(false),
