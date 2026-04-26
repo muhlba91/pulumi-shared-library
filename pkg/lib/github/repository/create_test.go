@@ -75,7 +75,7 @@ func TestCreateRepository_GhPages(t *testing.T) {
 
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		visibility := "public"
-		ghPagesBranch := "gh-pages"
+		pagesValue := true
 
 		opts := &librepo.CreateOptions{
 			Name:                    pulumi.String("repo-name"),
@@ -85,7 +85,7 @@ func TestCreateRepository_GhPages(t *testing.T) {
 			Homepage:                pulumi.String("https://example.com"),
 			Topics:                  []string{"z", "a"},
 			Visibility:              &visibility,
-			GitHubPagesBranch:       &ghPagesBranch,
+			EnabledPages:            &pagesValue,
 			Protected:               false,
 			AllowRepositoryDeletion: false,
 		}
@@ -114,7 +114,7 @@ func TestCreateRepository_Private(t *testing.T) {
 
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		visibility := "private"
-		gitHubPagesBranch := "gh-pages"
+		pagesValue := true
 
 		opts := &librepo.CreateOptions{
 			Name:                    pulumi.String("repo-private"),
@@ -123,7 +123,7 @@ func TestCreateRepository_Private(t *testing.T) {
 			EnableWiki:              pulumi.Bool(false),
 			Homepage:                pulumi.String(""),
 			Topics:                  []string{"b", "a"},
-			GitHubPagesBranch:       &gitHubPagesBranch,
+			EnabledPages:            &pagesValue,
 			Visibility:              &visibility,
 			Protected:               true,
 			AllowRepositoryDeletion: true,
