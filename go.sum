@@ -219,6 +219,8 @@ github.com/pulumi/pulumi/sdk/v3 v3.232.0 h1:pU9j5qYHYtYZGaIKha1KFuB9ggp2obcMD1U5
 github.com/pulumi/pulumi/sdk/v3 v3.232.0/go.mod h1:33NoTpvQXlTtAuaPbompgZNA3Ye4XEvxNydELFlWza8=
 github.com/pulumi/pulumi/sdk/v3 v3.233.0 h1:r2Z1GtGZUM7olY+vF5Av2nqH1iAvSMKx5DJZxDnqrcY=
 github.com/pulumi/pulumi/sdk/v3 v3.233.0/go.mod h1:Eu9QVad1cSPymhTboINPqK6WZMaW7I0NHQcWOmxLYek=
+github.com/pulumi/pulumi/sdk/v3 v3.234.0 h1:PoXVM2lJoyqavwPQlVQC6KzhGKNOJpz9OFxyojm8RjA=
+github.com/pulumi/pulumi/sdk/v3 v3.234.0/go.mod h1:Eu9QVad1cSPymhTboINPqK6WZMaW7I0NHQcWOmxLYek=
 github.com/pulumiverse/pulumi-scaleway/sdk v1.47.0 h1:AHXNbkUNZLk9uu2hVDzhPtHjydAuZxzNq/AAl+5fREg=
 github.com/pulumiverse/pulumi-scaleway/sdk v1.47.0/go.mod h1:dYY45NvmAVJER4vCDu8o1UesXkVDguFXXevEvv9JUXg=
 github.com/pulumiverse/pulumi-scaleway/sdk v1.48.0 h1:zmelLnuswmPZxT9Atx3oO28wPPXE9omvS8cOBORE2JA=
