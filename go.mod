@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/pulumi/pulumi-aws/sdk/v7 v7.28.0
-	github.com/pulumi/pulumi-gcp/sdk/v9 v9.21.0
+	github.com/pulumi/pulumi-gcp/sdk/v9 v9.22.0
 	github.com/pulumi/pulumi-github/sdk/v6 v6.13.1
 	github.com/pulumi/pulumi-gitlab/sdk/v9 v9.11.0
 	github.com/pulumi/pulumi-google-native/sdk v0.32.0
