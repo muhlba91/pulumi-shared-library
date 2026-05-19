@@ -8,7 +8,7 @@ require (
 	github.com/pulumi/pulumi-github/sdk/v6 v6.13.1
 	github.com/pulumi/pulumi-gitlab/sdk/v9 v9.11.0
 	github.com/pulumi/pulumi-google-native/sdk v0.32.0
-	github.com/pulumi/pulumi-hcloud/sdk v1.35.0
+	github.com/pulumi/pulumi-hcloud/sdk v1.36.0
 	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.31.0
 	github.com/pulumi/pulumi-postgresql/sdk/v3 v3.16.3
 	github.com/pulumi/pulumi-pulumiservice/sdk v0.40.0
