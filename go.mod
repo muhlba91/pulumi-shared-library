@@ -13,7 +13,7 @@ require (
 	github.com/pulumi/pulumi-postgresql/sdk/v3 v3.17.0
 	github.com/pulumi/pulumi-pulumiservice/sdk v0.41.0
 	github.com/pulumi/pulumi-random/sdk/v4 v4.21.0
-	github.com/pulumi/pulumi-tls/sdk/v5 v5.4.0
+	github.com/pulumi/pulumi-tls/sdk/v5 v5.5.0
 	github.com/pulumi/pulumi-vault/sdk/v7 v7.10.0
 	github.com/pulumi/pulumi/sdk/v3 v3.242.0
 	github.com/pulumiverse/pulumi-scaleway/sdk v1.49.0
