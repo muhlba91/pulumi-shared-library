@@ -289,6 +289,8 @@ github.com/pulumi/pulumi-pulumiservice/sdk v1.2.0 h1:dSYZZ+h/0AVTwOoOj1mV4iv8tj+
 github.com/pulumi/pulumi-pulumiservice/sdk v1.2.0/go.mod h1:gjbaAKILeYGO1kXL9rl9RXFt4LGCGWTq3G9/5lT3rG4=
 github.com/pulumi/pulumi-pulumiservice/sdk v1.2.1 h1:mI7YxY6f4kihEeks2fpFn5q8sezvqbn3Rk2N1cHhsyQ=
 github.com/pulumi/pulumi-pulumiservice/sdk v1.2.1/go.mod h1:gjbaAKILeYGO1kXL9rl9RXFt4LGCGWTq3G9/5lT3rG4=
+github.com/pulumi/pulumi-pulumiservice/sdk v1.3.0 h1:bLqSuTnN3lJqsgYnoGH4GxjHR5dORGQzEo3/4CNYGDI=
+github.com/pulumi/pulumi-pulumiservice/sdk v1.3.0/go.mod h1:gjbaAKILeYGO1kXL9rl9RXFt4LGCGWTq3G9/5lT3rG4=
 github.com/pulumi/pulumi-random/sdk/v4 v4.19.2 h1:YDGarxRPtAgpnUg7nXVe+gVfVABBjo88UC6EMAmmvhM=
 github.com/pulumi/pulumi-random/sdk/v4 v4.19.2/go.mod h1:Dyyj49M9eX2ct1b3maqDGikMPVCNxXthG0KAhhj7nmI=
 github.com/pulumi/pulumi-random/sdk/v4 v4.20.0 h1:tVXLwMYLV4F/XkMzAwWoXAA+GyuwoYy1NGP2elMsvGI=
