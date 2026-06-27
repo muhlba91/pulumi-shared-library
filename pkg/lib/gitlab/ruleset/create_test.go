@@ -3,7 +3,7 @@ package ruleset_test
 import (
 	"testing"
 
-	"github.com/pulumi/pulumi-gitlab/sdk/v9/go/gitlab"
+	"github.com/pulumi/pulumi-gitlab/sdk/v10/go/gitlab"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -53,10 +53,6 @@ func TestCreateRuleset(t *testing.T) {
 		})
 		rs.MergeAccessLevel.ApplyT(func(e string) error {
 			assert.Equal(t, "developer", e)
-			return nil
-		})
-		rs.UnprotectAccessLevel.ApplyT(func(e string) error {
-			assert.Equal(t, "maintainer", e)
 			return nil
 		})
 		return nil

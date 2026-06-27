@@ -3,7 +3,7 @@ package ruleset
 import (
 	"fmt"
 
-	"github.com/pulumi/pulumi-gitlab/sdk/v9/go/gitlab"
+	"github.com/pulumi/pulumi-gitlab/sdk/v10/go/gitlab"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/defaults"
@@ -84,7 +84,6 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*gitlab.Bran
 			CodeOwnerApprovalRequired: pulumi.Bool(defaults.GetOrDefault(opts.CodeOwnerReview, false)),
 			MergeAccessLevel:          pulumi.String("developer"),
 			PushAccessLevel:           pulumi.String("maintainer"),
-			UnprotectAccessLevel:      pulumi.String("maintainer"),
 		},
 		optsWithRepoSpecifics...)
 }

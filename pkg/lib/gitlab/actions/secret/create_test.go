@@ -3,7 +3,7 @@ package secret_test
 import (
 	"testing"
 
-	"github.com/pulumi/pulumi-gitlab/sdk/v9/go/gitlab"
+	"github.com/pulumi/pulumi-gitlab/sdk/v10/go/gitlab"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

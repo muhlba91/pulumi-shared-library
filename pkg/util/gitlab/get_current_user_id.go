@@ -3,7 +3,7 @@ package gitlab
 import (
 	"strconv"
 
-	gl "github.com/pulumi/pulumi-gitlab/sdk/v9/go/gitlab"
+	gl "github.com/pulumi/pulumi-gitlab/sdk/v10/go/gitlab"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
