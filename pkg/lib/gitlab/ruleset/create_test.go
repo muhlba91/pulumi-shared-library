@@ -47,14 +47,14 @@ func TestCreateRuleset(t *testing.T) {
 			return nil
 		})
 
-		rs.PushAccessLevel.ApplyT(func(e string) error {
-			assert.Equal(t, "maintainer", e)
-			return nil
-		})
-		rs.MergeAccessLevel.ApplyT(func(e string) error {
-			assert.Equal(t, "developer", e)
-			return nil
-		})
+		// rs.PushAccessLevel.ApplyT(func(e string) error {
+		// 	assert.Equal(t, "maintainer", e)
+		// 	return nil
+		// })
+		// rs.MergeAccessLevel.ApplyT(func(e string) error {
+		// 	assert.Equal(t, "developer", e)
+		// 	return nil
+		// })
 		return nil
 	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
