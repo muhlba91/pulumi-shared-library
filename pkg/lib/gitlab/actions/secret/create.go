@@ -55,7 +55,7 @@ func Create(
 			Key:          pulumi.String(opts.Key),
 			Value:        opts.Value,
 			VariableType: pulumi.String(defaults.GetOrDefault(opts.VariableType, "env_var")),
-			Hidden:       pulumi.Bool(true),
+			Hidden:       pulumi.Bool(defaults.GetOrDefault(opts.Masked, true)),
 			Masked:       pulumi.Bool(defaults.GetOrDefault(opts.Masked, true)),
 			Protected:    pulumi.Bool(defaults.GetOrDefault(opts.Protected, false)),
 			Raw:          pulumi.Bool(defaults.GetOrDefault(opts.DisableVariableExpansion, false)),

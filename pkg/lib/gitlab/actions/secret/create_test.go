@@ -128,7 +128,7 @@ func TestCreate_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 			})
 
 			as.Hidden.ApplyT(func(n bool) error {
-				assert.True(t, n)
+				assert.False(t, n)
 				return nil
 			})
 			as.Masked.ApplyT(func(n bool) error {
