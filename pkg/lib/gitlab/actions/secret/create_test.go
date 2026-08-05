@@ -88,6 +88,7 @@ func TestCreate_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 		key := "MY_SECRET"
 		value := "s3cr3t"
 		trueValue := true
+		falseValue := false
 		variableType := "file"
 
 		opts := &secret.CreateOptions{
@@ -95,6 +96,7 @@ func TestCreate_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 			Value:                    pulumi.String(value),
 			Repository:               repo,
 			Protected:                &trueValue,
+			Masked:                   &falseValue,
 			DisableVariableExpansion: &trueValue,
 			VariableType:             &variableType,
 			PulumiOptions: []pulumi.ResourceOption{
@@ -130,7 +132,7 @@ func TestCreate_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 				return nil
 			})
 			as.Masked.ApplyT(func(n bool) error {
-				assert.True(t, n)
+				assert.False(t, n)
 				return nil
 			})
 			as.Protected.ApplyT(func(n bool) error {

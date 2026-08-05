@@ -22,6 +22,8 @@ type CreateOptions struct {
 	VariableType *string
 	// Protected indicates whether the secret should be protected and be available on protected branches and tags.
 	Protected *bool
+	// Masked indicates whether the secret should be masked in job logs. Optional, defaults to true.
+	Masked *bool
 	// DisableVariableExpansion indicates whether to disable variable expansion for the secret.
 	DisableVariableExpansion *bool
 	// PulumiOptions are additional Pulumi resource options. Optional.
@@ -54,7 +56,7 @@ func Create(
 			Value:        opts.Value,
 			VariableType: pulumi.String(defaults.GetOrDefault(opts.VariableType, "env_var")),
 			Hidden:       pulumi.Bool(true),
-			Masked:       pulumi.Bool(true),
+			Masked:       pulumi.Bool(defaults.GetOrDefault(opts.Masked, true)),
 			Protected:    pulumi.Bool(defaults.GetOrDefault(opts.Protected, false)),
 			Raw:          pulumi.Bool(defaults.GetOrDefault(opts.DisableVariableExpansion, false)),
 		}, pulumiOpts...)
