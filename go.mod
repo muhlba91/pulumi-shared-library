@@ -1,6 +1,6 @@
 module github.com/muhlba91/pulumi-shared-library
 
-go 1.26.0
+go 1.26.6
 
 require (
 	github.com/pulumi/pulumi-aws/sdk/v7 v7.42.0
@@ -15,7 +15,7 @@ require (
 	github.com/pulumi/pulumi-random/sdk/v4 v4.21.1
 	github.com/pulumi/pulumi-tls/sdk/v5 v5.5.1
 	github.com/pulumi/pulumi-vault/sdk/v7 v7.12.0
-	github.com/pulumi/pulumi/sdk/v3 v3.259.0
+	github.com/pulumi/pulumi/sdk/v3 v3.261.0
 	github.com/pulumiverse/pulumi-scaleway/sdk v1.54.0
 	github.com/pulumiverse/pulumi-time/sdk v0.1.0
 	github.com/rs/zerolog v1.35.1
@@ -45,6 +45,7 @@ require (
 	github.com/cloudflare/circl v1.6.3 // indirect
 	github.com/danieljoos/wincred v1.2.3 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
+	github.com/deckarep/golang-set/v2 v2.5.0 // indirect
 	github.com/djherbis/times v1.6.0 // indirect
 	github.com/ebitengine/purego v0.10.2 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
