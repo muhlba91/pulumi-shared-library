@@ -53,7 +53,11 @@ type CreateOptions struct {
 // opts: CreateOptions for the server
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hModel.Server, error) {
 	optsWithProtection := append([]pulumi.ResourceOption{}, opts.PulumiOptions...)
-	optsWithProtection = append(optsWithProtection, pulumi.Protect(opts.Protection))
+	optsWithProtection = append(
+		optsWithProtection,
+		pulumi.Protect(opts.Protection),
+		pulumi.IgnoreChanges([]string{"sshKeys"}),
+	)
 
 	sshKeys := pulumi.StringArray{}
 	for _, key := range opts.SSHKeys {

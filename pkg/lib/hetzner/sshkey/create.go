@@ -10,7 +10,7 @@ import (
 // CreateOptions defines the options for creating a Hetzner Cloud SSH key.
 type CreateOptions struct {
 	// Name is the base name for the SSH key.
-	Name string
+	Name *string
 	// PublicKey is the public key content.
 	PublicKey pulumi.StringInput
 	// Labels are the labels to assign to the SSH key.
@@ -25,7 +25,7 @@ type CreateOptions struct {
 // opts: The options for creating the SSH key.
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hcloud.SshKey, error) {
 	return hcloud.NewSshKey(ctx, fmt.Sprintf("hcloud-ssh-%s", name), &hcloud.SshKeyArgs{
-		Name:      pulumi.String(opts.Name),
+		Name:      pulumi.StringPtrFromPtr(opts.Name),
 		PublicKey: opts.PublicKey,
 		Labels:    pulumi.ToStringMap(opts.Labels),
 	}, opts.PulumiOptions...)
