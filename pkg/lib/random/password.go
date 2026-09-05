@@ -47,7 +47,6 @@ func CreatePassword(ctx *pulumi.Context, name string, opts *PasswordOptions) (*r
 		Special: pulumi.Bool(special),
 		Lower:   pulumi.Bool(true),
 		Upper:   pulumi.Bool(true),
-		Number:  pulumi.Bool(true),
 		Numeric: pulumi.Bool(true),
 	},
 		pulumiOpts...)
