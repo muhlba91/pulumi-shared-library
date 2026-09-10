@@ -15,7 +15,7 @@ require (
 	github.com/pulumi/pulumi-random/sdk/v4 v4.21.1
 	github.com/pulumi/pulumi-tls/sdk/v5 v5.6.0
 	github.com/pulumi/pulumi-vault/sdk/v7 v7.12.0
-	github.com/pulumi/pulumi/sdk/v3 v3.261.0
+	github.com/pulumi/pulumi/sdk/v3 v3.262.0
 	github.com/pulumiverse/pulumi-scaleway/sdk v1.54.0
 	github.com/pulumiverse/pulumi-time/sdk v0.1.0
 	github.com/rs/zerolog v1.35.1
