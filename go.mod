@@ -16,7 +16,7 @@ require (
 	github.com/pulumi/pulumi-tls/sdk/v5 v5.6.0
 	github.com/pulumi/pulumi-vault/sdk/v7 v7.12.0
 	github.com/pulumi/pulumi/sdk/v3 v3.262.0
-	github.com/pulumiverse/pulumi-scaleway/sdk v1.54.0
+	github.com/pulumiverse/pulumi-scaleway/sdk v1.55.1
 	github.com/pulumiverse/pulumi-time/sdk v0.1.0
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.12.1
@@ -129,7 +129,7 @@ require (
 	golang.org/x/tools v0.48.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260819154853-08b0e4226688 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260819154853-08b0e4226688 // indirect
-	google.golang.org/grpc v1.83.1 // indirect
+	google.golang.org/grpc v1.83.2 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	lukechampine.com/frand v1.5.1 // indirect
