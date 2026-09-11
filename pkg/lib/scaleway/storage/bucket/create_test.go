@@ -26,8 +26,8 @@ func TestCreateBucket_Basic(t *testing.T) {
 		req.NoError(err)
 		req.NotNil(b)
 
-		b.Region.ApplyT(func(loc *string) error {
-			assert.Equal("EU", *loc)
+		b.Region.ApplyT(func(loc string) error {
+			assert.Equal("EU", loc)
 			return nil
 		})
 		b.CorsRules.ApplyT(func(cors []object.BucketCorsRule) error {
@@ -93,8 +93,8 @@ func TestCreateBucket_WithOptions(t *testing.T) {
 		req.NoError(err)
 		req.NotNil(b)
 
-		b.Region.ApplyT(func(loc *string) error {
-			assert.Equal("US", *loc)
+		b.Region.ApplyT(func(loc string) error {
+			assert.Equal("US", loc)
 			return nil
 		})
 		b.CorsRules.ApplyT(func(cors []object.BucketCorsRule) error {
