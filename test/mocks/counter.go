@@ -43,6 +43,11 @@ func (c *Counter) NewResource(args pulumi.MockResourceArgs) (string, resource.Pr
 		outs["result"] = resource.NewStringProperty(
 			fmt.Sprintf("mocked-password-%v", args.Inputs["length"].NumberValue()),
 		)
+	case "random:index/randomId:RandomId":
+		length := args.Inputs["byteLength"].NumberValue()
+		outs["hex"] = resource.NewStringProperty(fmt.Sprintf("mocked-bytes-hex-%v", length))
+		outs["b64Std"] = resource.NewStringProperty(fmt.Sprintf("mocked-bytes-b64std-%v", length))
+		outs["b64Url"] = resource.NewStringProperty(fmt.Sprintf("mocked-bytes-b64url-%v", length))
 	case "random:index/randomString:RandomString":
 		outs["result"] = resource.NewStringProperty(
 			fmt.Sprintf("mocked-string-%v", args.Inputs["length"].NumberValue()),
