@@ -88,6 +88,10 @@ func (c *Counter) NewResource(args pulumi.MockResourceArgs) (string, resource.Pr
 				args.Inputs["location"].StringValue(),
 			),
 		)
+	case "netbird:index/setupKey:SetupKey":
+		outs["key"] = resource.MakeSecret(
+			resource.NewStringProperty(fmt.Sprintf("mocked-netbird-setup-key-%s", args.Name)),
+		)
 	case "pulumiservice:index:AccessToken":
 		outs["value"] = resource.MakeSecret(
 			resource.NewStringProperty(fmt.Sprintf("mocked-pulumi-access-token-%s", args.Name)),
