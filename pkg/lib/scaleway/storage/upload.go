@@ -16,9 +16,9 @@ type UploadOptions struct {
 	Key string
 	// BucketID is the ID of the Scaleway bucket.
 	BucketID string
-	// File is a local path to upload (optional).
+	// File is a local path to upload. Exactly one of File or Content should be set.
 	File *string
-	// Content is raw content to store (optional).
+	// Content is raw content to store. Exactly one of File or Content should be set.
 	Content *string
 	// Labels are metadata labels to set on the object (optional).
 	Labels map[string]string
@@ -26,7 +26,8 @@ type UploadOptions struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// Upload uploads a file or content to a Scaleway bucket and returns the Item.
+// Upload uploads a file or content to a Scaleway bucket as a private object with the STANDARD storage class
+// and returns the Item.
 // ctx: Pulumi context.
 // opts: UploadOptions containing the upload and metadata options.
 func Upload(

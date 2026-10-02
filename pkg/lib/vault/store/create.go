@@ -9,11 +9,11 @@ import (
 
 // CreateOptions are the options for creating a Vault store.
 type CreateOptions struct {
-	// Path is the key path to store the value at.
+	// Path is the path the KV v2 store is mounted at.
 	Path pulumi.StringInput
 	// Description is the description of the vault store.
 	Description pulumi.StringInput
-	// NamePrefix is an optional prefix for the resource name.
+	// NamePrefix is an optional prefix for the resource name. Optional, defaults to "store".
 	NamePrefix *string
 	// PulumiOptions are optional resource options (e.g. provider).
 	PulumiOptions []pulumi.ResourceOption
@@ -21,7 +21,7 @@ type CreateOptions struct {
 
 // Create creates a new Vault KV v2 store at the specified path.
 // ctx: Pulumi context
-// name: Name of the vault store resource
+// name: Name of the vault store resource (prefixed with "vault-<prefix>-")
 // opts: CreateOptions containing the path and description.
 func Create(
 	ctx *pulumi.Context,

@@ -9,9 +9,9 @@ import (
 
 // CreateOptions are the options for creating a Vault secret.
 type CreateOptions struct {
-	// Key is the secret key name.
+	// Key is the name of the secret in the KV mount.
 	Key string
-	// Value is the value to store, as JSON string input.
+	// Value is the value to store, as JSON string input (the data of the secret).
 	Value pulumi.StringInput
 	// Path is the KV mount path (e.g. "secret").
 	Path string
@@ -20,6 +20,7 @@ type CreateOptions struct {
 }
 
 // Create stores a value in Vault KV v2 at the given mount/path with the given key.
+// The secret is deleted before it is replaced.
 // ctx: Pulumi context.
 // opts: CreateOptions containing Key, Value, Path, and optional Pulumi options.
 func Create(

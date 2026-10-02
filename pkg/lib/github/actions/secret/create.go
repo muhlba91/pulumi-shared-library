@@ -21,6 +21,8 @@ type CreateOptions struct {
 }
 
 // Create stores a value in GitHub Actions secrets.
+// The secret is a child of the repository, depends on it, and is deleted before it is replaced.
+// Returns an output of the secret, which resolves to nil if the creation failed (the error is logged).
 // ctx: Pulumi context.
 // opts: CreateOptions containing the key, value, and repository.
 func Create(

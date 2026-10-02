@@ -10,12 +10,13 @@ import (
 
 // CreateRSAKey creates a new RSA private key with the specified number of bits.
 // ctx: The Pulumi context.
-// name: The name to use for the key resource.
+// name: The name to use for the key resource (prefixed with "rsa-key-").
 // bits: The number of bits for the RSA key. Defaults to 4096 if set to 0.
 func CreateRSAKey(ctx *pulumi.Context, name string, bits int) (*tls.PrivateKey, error) {
 	return createKey(ctx, fmt.Sprintf("rsa-key-%s", name), bits)
 }
 
+// createKey creates a new RSA private key, defaulting to 4096 bits if bits is 0.
 func createKey(ctx *pulumi.Context, name string, bits int) (*tls.PrivateKey, error) {
 	if bits == 0 {
 		bits = 4096

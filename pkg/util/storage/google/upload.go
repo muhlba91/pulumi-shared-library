@@ -15,13 +15,9 @@ import (
 
 // WriteFileAndUpload writes content to a local file and uploads it to a GCS bucket.
 // It returns a Pulumi Output that resolves to the created BucketObject.
+// If the upload fails, the error is logged and the output resolves to nil.
 // ctx: Pulumi context.
-// name: the name of the object in the bucket.
-// content: the content to write and upload.
-// outputPath: local file path to write the content to.
-// bucketID: the ID of the GCS bucket.
-// bucketPath: the path within the bucket to upload the object to.
-// permissions: optional file permissions for the written file.
+// opts: the options for writing the file and uploading it.
 func WriteFileAndUpload(
 	ctx *pulumi.Context,
 	opts *storage.WriteFileAndUploadOptions,

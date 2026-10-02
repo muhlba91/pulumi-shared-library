@@ -7,7 +7,8 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// GetCurrentUserID is a helper function that retrieves the current user's ID using the GetCurrentUser data source. It returns a pointer to the user ID string, or nil if there was an error retrieving the user information.
+// GetCurrentUserID is a helper function that retrieves the current user's ID using the GetCurrentUser data source.
+// It returns a pointer to the user ID, or nil if there was an error retrieving or parsing the user information.
 // ctx: The Pulumi context used for invoking the GetCurrentUser data source.
 func GetCurrentUserID(ctx *pulumi.Context) *int {
 	user, uErr := gl.GetCurrentUser(ctx)

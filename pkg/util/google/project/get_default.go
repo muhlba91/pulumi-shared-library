@@ -7,7 +7,7 @@ import (
 
 // GetOrDefault returns the provided project if non-empty,
 // otherwise falls back to the Pulumi GCP project configuration value.
-// If neither is set, it returns an empty string.
+// If neither is set, it returns nil.
 // ctx: Pulumi context.
 // project: The project input.
 func GetOrDefault(ctx *pulumi.Context, project *string) *string {

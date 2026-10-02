@@ -9,19 +9,23 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/defaults"
 )
 
+// Repository role IDs of the bypass actors.
 const (
 	maintainerActorID = 2
 	adminActorID      = 5
 )
 
+// Status check context and integration ID of the WIP integration.
 const (
 	wipIntegrationContext = "WIP"
 	wipIntegrationID      = 3414
 )
 
+// githubActionsIntegrationID is the integration ID of GitHub Actions, which reports all other required checks.
 const githubActionsIntegrationID = 15368
 
 // buildMergeQueueArgs builds the merge queue arguments for the ruleset based on the provided options.
+// Returns nil if the merge queue is not enabled.
 // opts: The options for creating the ruleset.
 //
 //nolint:mnd // magic number is acceptable here for configuration defaults
@@ -41,6 +45,7 @@ func buildMergeQueueArgs(opts *CreateOptions) *github.RepositoryRulesetRulesMerg
 }
 
 // buildBypassActorsArgs builds the bypass actors arguments for the ruleset based on the provided options.
+// Maintainers may bypass for pull requests only, admins and integrations always. Returns no actors if bypass is not allowed.
 // opts: The options for creating the ruleset.
 func buildBypassActorsArgs(opts *CreateOptions) github.RepositoryRulesetBypassActorArray {
 	var bypassActors github.RepositoryRulesetBypassActorArray
@@ -80,6 +85,7 @@ func buildBypassActorsArgs(opts *CreateOptions) github.RepositoryRulesetBypassAc
 }
 
 // buildRequiredStatusChecksArgs builds the required status checks args for the ruleset.
+// Returns nil if there are no required checks and the WIP integration is disabled.
 // opts: The options for creating the ruleset.
 func buildRequiredStatusChecksArgs(opts *CreateOptions) *github.RepositoryRulesetRulesRequiredStatusChecksArgs {
 	var reqStatusChecks *github.RepositoryRulesetRulesRequiredStatusChecksArgs

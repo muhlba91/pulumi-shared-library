@@ -12,38 +12,41 @@ import (
 // incompleteMultipartUploadAbortDays is the number of days after which incomplete multipart uploads will be aborted.
 const incompleteMultipartUploadAbortDays = 3
 
-// defaultOneZoneTransitionDays is the number of days after which objects will be transitioned to the ONEZONE storage class.
+// defaultOneZoneTransitionDays is the default number of days after which objects will be transitioned to ONEZONE_IA.
 const defaultOneZoneTransitionDays = 30
 
-// CreateOptions holds optional parameters for Create.
+// CreateOptions defines the options for creating a Scaleway bucket.
 type CreateOptions struct {
 	// Location is the Scaleway region where the bucket will be created.
 	Location pulumi.StringInput
-	// CORs configuration for the bucket.
+	// CORS is the CORS configuration for the bucket. Optional, no CORS is configured if nil.
 	CORS *CreateCorsOptions
-	// OneZoneTransitionDays is the number of days after which objects will be transitioned to the ONEZONE storage class.
+	// OneZoneTransitionDays is the number of days after which objects will be transitioned to the ONEZONE_IA storage class.
+	// Optional, defaults to 30.
 	OneZoneTransitionDays *int
 	// Labels are optional key/value pairs to tag the bucket.
 	Labels map[string]string
-	// PulumiOptions are optional resource options passed to the RecordSet.
+	// PulumiOptions are optional resource options passed to the Bucket.
 	PulumiOptions []pulumi.ResourceOption
 }
 
 // CreateCorsOptions defines CORS configuration data for a Scaleway bucket.
 type CreateCorsOptions struct {
-	// MaxAgeSeconds is the maximum age of the CORS preflight request.
+	// MaxAgeSeconds is the time in seconds browsers may cache the response to a CORS preflight request.
 	MaxAgeSeconds *int
 	// Method is the list of allowed HTTP methods.
 	Method []string
 	// Origin is the list of allowed origins.
 	Origin []string
-	// ResponseHeader is the list of allowed response headers.
+	// ResponseHeader is the list of allowed headers.
 	ResponseHeader []string
 }
 
 // Create creates a Scaleway bucket with the given parameters.
+// Incomplete multipart uploads are aborted after 3 days, objects are transitioned to ONEZONE_IA,
+// and the objects are deleted with the bucket.
 // ctx: Pulumi context.
-// name: Name for the bucket.
+// name: The logical name for the Pulumi resource (prefixed with "scaleway-bucket-").
 // opts: CreateOptions with parameters for the bucket.
 func Create(
 	ctx *pulumi.Context,

@@ -13,9 +13,12 @@ import (
 )
 
 const (
-	defaultCiDefaultGitDepth          = 1
-	defaultCiDeletePipelinesInSeconds = 31536000 // 1 year in seconds
-	defaultVisibility                 = "public"
+	// defaultCiDefaultGitDepth is the default git depth of CI jobs.
+	defaultCiDefaultGitDepth = 1
+	// defaultCiDeletePipelinesInSeconds is the default age after which pipelines are deleted (1 year in seconds).
+	defaultCiDeletePipelinesInSeconds = 31536000
+	// defaultVisibility is the default visibility level of the repository.
+	defaultVisibility = "public"
 )
 
 // CreateOptions defines the options for creating a GitLab repository.
@@ -24,27 +27,30 @@ type CreateOptions struct {
 	Name pulumi.StringInput
 	// Description is the description of the repository.
 	Description pulumi.StringInput
-	// NamespaceID is the ID of the namespace under which the repository will be created (group or user).
+	// NamespaceID is the ID of the namespace under which the repository will be created (group or user). Optional.
 	NamespaceID pulumi.IntPtrInput
-	// EnableWiki indicates whether to enable the wiki for the repository.
+	// EnableWiki indicates whether to enable the wiki for the repository. Optional, defaults to false.
 	EnableWiki *bool
 	// Topics is a list of topics to associate with the repository.
 	Topics []string
-	// Visibility is the visibility level of the repository. Can be "public" or "private".
+	// Visibility is the visibility level of the repository ("public", "internal", or "private"). Optional, defaults to "public".
+	// Feature access is restricted to project members unless the repository is "private" or "internal".
 	Visibility *string
-	// ConversationResolution indicates whether to require conversation resolution.
+	// ConversationResolution indicates whether to require conversation resolution. Optional, defaults to true.
 	ConversationResolution *bool
-	// AutoDevopsEnabled indicates whether to enable Auto DevOps for the repository.
+	// AutoDevopsEnabled indicates whether to enable Auto DevOps for the repository. Optional, defaults to false.
 	AutoDevopsEnabled *bool
-	// EnableMergeQueue indicates whether to enable the merge queue.
+	// EnableMergeQueue indicates whether to enable merged results pipelines and merge trains. Optional, defaults to false.
 	EnableMergeQueue *bool
 	// DeletePipelinesInSeconds is the number of seconds after which pipelines should be automatically deleted.
+	// Optional, defaults to 1 year.
 	DeletePipelinesInSeconds *int
-	// Protected indicates whether the repository is protected.
+	// Protected indicates whether the repository is archived instead of deleted on destroy.
 	Protected bool
-	// AllowRepositoryDeletion indicates whether the repository should be protected from deletion.
+	// AllowRepositoryDeletion indicates whether the repository may be deleted.
+	// If false, the Pulumi resource is protected from deletion.
 	AllowRepositoryDeletion bool
-	// RetainOnDelete indicates whether the repository should be retained on deletion.
+	// RetainOnDelete indicates whether the repository should be retained on deletion. Optional, defaults to true.
 	RetainOnDelete *bool
 	// PulumiOptions are additional options to pass to the Pulumi resource.
 	PulumiOptions []pulumi.ResourceOption

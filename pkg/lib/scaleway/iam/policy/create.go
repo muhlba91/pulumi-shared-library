@@ -15,9 +15,9 @@ type CreateOptions struct {
 	Description pulumi.StringInput
 	// Rules are the rules of the IAM Policy.
 	Rules []iam.PolicyRuleInput
-	// UserID is the ID of the user to attach the policy to.
+	// UserID is the ID of the user to attach the policy to. Only one of UserID or ApplicationID can be set.
 	UserID pulumi.StringPtrInput
-	// ApplicationID is the ID of the application to attach the policy to.
+	// ApplicationID is the ID of the application to attach the policy to. Only one of UserID or ApplicationID can be set.
 	ApplicationID pulumi.StringPtrInput
 	// Labels are the tags to apply to the IAM Policy.
 	Labels []string

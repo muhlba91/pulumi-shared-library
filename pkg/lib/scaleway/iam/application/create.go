@@ -11,7 +11,7 @@ import (
 type CreateOptions struct {
 	// Description is the description associated with the application.
 	Description pulumi.StringPtrInput
-	// Labels are key/value pairs to tag the application with.
+	// Labels are the tags to assign to the application.
 	Labels []string
 	// PulumiOptions are additional options to pass to Pulumi resource creation.
 	PulumiOptions []pulumi.ResourceOption

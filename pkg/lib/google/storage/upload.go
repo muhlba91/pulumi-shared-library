@@ -12,13 +12,13 @@ import (
 
 // UploadOptions holds the options for uploading to GCS.
 type UploadOptions struct {
-	// Key is the object key in the bucket.
+	// Key is the object key (name) in the bucket.
 	Key string
 	// BucketID is the ID of the GCS bucket.
 	BucketID string
-	// File is a local path to upload (optional).
+	// File is a local path to upload. Exactly one of File or Content should be set.
 	File *string
-	// Content is raw content to store (optional).
+	// Content is raw content to store. Exactly one of File or Content should be set.
 	Content *string
 	// Labels are metadata labels to set on the object (optional).
 	Labels map[string]string

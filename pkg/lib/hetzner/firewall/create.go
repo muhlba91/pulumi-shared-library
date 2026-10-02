@@ -12,12 +12,13 @@ type Rule struct {
 	// Description is an optional description of the rule.
 	Description pulumi.StringInput
 	// Direction is the direction of the rule (in or out).
+	// Only source IPs can be set, therefore the rule is only meaningful for the direction in.
 	Direction string
-	// Protocol is the protocol of the rule (e.g., tcp, udp).
+	// Protocol is the protocol of the rule (e.g., tcp, udp, icmp).
 	Protocol string
-	// Port is the port or port range of the rule.
+	// Port is the port or port range (e.g., "80" or "8000-8100") of the rule.
 	Port string
-	// SourceIPs are the source IPs or CIDR blocks for the rule.
+	// SourceIPs are the source IPs or CIDR blocks for the rule. Optional, defaults to all IPv4 and IPv6 addresses.
 	SourceIPs []pulumi.StringInput
 }
 
@@ -35,7 +36,7 @@ type CreateOptions struct {
 
 // Create creates a Hetzner firewall with the given options.
 // ctx: Pulumi context.
-// name: The name of the firewall.
+// name: The logical name for the Pulumi resource (prefixed with "hcloud-firewall-").
 // opts: The options for creating the firewall.
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hcloud.Firewall, error) {
 	rules := hcloud.FirewallRuleArray{}

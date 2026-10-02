@@ -11,39 +11,41 @@ import (
 
 // CreateOptions defines the options for creating a GitHub Repository Ruleset.
 type CreateOptions struct {
-	// Repository is the name of the repository to which the ruleset will be applied.
+	// Repository is the repository to which the ruleset will be applied.
 	Repository *github.Repository
-	// Patterns are the branch name patterns to which the ruleset will apply.
+	// Patterns are the branch name patterns to which the ruleset will apply (see DefaultBranchRulesetPattern).
 	Patterns []string
-	// RestrictCreation indicates whether to restrict branch creation.
+	// RestrictCreation indicates whether to restrict branch creation. Optional, defaults to true.
 	RestrictCreation *bool
-	// AllowForcePush indicates whether to allow force pushes.
+	// AllowForcePush indicates whether to allow force pushes. Optional, defaults to false.
 	AllowForcePush *bool
-	// SignedCommits indicates whether to require signed commits.
+	// SignedCommits indicates whether to require signed commits. Optional, defaults to false.
 	SignedCommits *bool
-	// CodeOwnerReview indicates whether to require code owner review.
+	// CodeOwnerReview indicates whether to require code owner review. Optional, defaults to false.
 	CodeOwnerReview *bool
-	// ConversationResolution indicates whether to require conversation resolution.
+	// ConversationResolution indicates whether to require conversation resolution. Optional, defaults to true.
 	ConversationResolution *bool
-	// LastPushApproval indicates whether to require approval for the last push.
+	// LastPushApproval indicates whether to require approval for the last push. Optional, defaults to true.
 	LastPushApproval *bool
-	// ReviewerCount is the number of required approving reviews.
+	// ReviewerCount is the number of required approving reviews. Optional, defaults to 0.
 	ReviewerCount *int
-	// EnableMergeQueue indicates whether to enable the merge queue.
+	// EnableMergeQueue indicates whether to enable the merge queue. Optional, defaults to false.
 	EnableMergeQueue *bool
-	// DeleteOnDestroy indicates whether to delete the ruleset on destroy.
+	// DeleteOnDestroy indicates whether to delete the ruleset on destroy. Optional, defaults to false (retained).
 	DeleteOnDestroy *bool
-	// AllowBypass indicates whether to allow bypassing the ruleset.
+	// AllowBypass indicates whether repository maintainers (pull requests only) and admins may bypass the ruleset.
+	// Optional, defaults to true.
 	AllowBypass *bool
-	// AllowBypassIntegrations are the IDs of integrations allowed to bypass the ruleset.
+	// AllowBypassIntegrations are the IDs of integrations allowed to bypass the ruleset. Only applies if bypass is allowed.
 	AllowBypassIntegrations []int
-	// UpdatedBranchBeforeMerge indicates whether to require an updated branch before merging.
+	// UpdatedBranchBeforeMerge indicates whether to require an updated branch before merging. Optional, defaults to true.
+	// Only applies if there are required status checks.
 	UpdatedBranchBeforeMerge *bool
-	// RequiredChecks are the required status checks for the ruleset.
+	// RequiredChecks are the required status checks for the ruleset, expected to be reported by GitHub Actions.
 	RequiredChecks []string
-	// CopilotReview indicates whether to enable Copilot code review.
+	// CopilotReview indicates whether to enable Copilot code review on push. Optional, defaults to true.
 	CopilotReview *bool
-	// WIPIntegration indicates whether to enable WIP integration.
+	// WIPIntegration indicates whether to require the status check of the WIP integration. Optional, defaults to true.
 	WIPIntegration *bool
 	// PulumiOptions are additional options to pass to the Pulumi resource.
 	PulumiOptions []pulumi.ResourceOption
@@ -51,7 +53,7 @@ type CreateOptions struct {
 
 // Create creates a new GitHub Repository Ruleset with the given options.
 // ctx: The Pulumi context.
-// name: The name of the ruleset.
+// name: The logical name for the Pulumi resource (prefixed with "github-repository-ruleset-").
 // opts: The options for creating the ruleset.
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.RepositoryRuleset, error) {
 	optsWithRepoSpecifics := append([]pulumi.ResourceOption{}, opts.PulumiOptions...)

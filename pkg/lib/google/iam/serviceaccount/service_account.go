@@ -13,9 +13,10 @@ import (
 
 // CreateOptions represents the options for creating a service account.
 type CreateOptions struct {
-	// Name is the name of the service account.
+	// Name is the name of the service account, used as account ID and display name.
+	// Must be 6 to 30 characters long, as required for GCP service account IDs.
 	Name string
-	// Roles are the roles to assign to the service account.
+	// Roles are the project roles to assign to the service account. Optional.
 	Roles []string
 	// Project is the GCP project ID where the service account will be created.
 	Project pulumi.StringInput
@@ -26,6 +27,7 @@ type CreateOptions struct {
 // CreateServiceAccount creates a Google Service Account and (optionally) attaches IAM members for the provided roles.
 // ctx: Pulumi context.
 // opts: CreateOptions containing name, roles, project, and optional Pulumi options.
+// Returns the service account and the created IAM members (nil if no roles are provided).
 func CreateServiceAccount(
 	ctx *pulumi.Context,
 	opts *CreateOptions,

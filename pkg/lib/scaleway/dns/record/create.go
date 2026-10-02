@@ -10,21 +10,22 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/sanitize"
 )
 
+// defaultTTL is the default TTL of the record in seconds.
 const defaultTTL = 300
 
-// CreateOptions holds optional parameters for Create.
+// CreateOptions defines the options for creating a DNS record.
 type CreateOptions struct {
-	// Domain is the DNS record's domain (e.g. "web.example.com").
+	// Domain is the DNS record's full domain (e.g. "web.example.com"). The record name is the domain without the zone.
 	Domain string
-	// Zone is the managed zone name (e.g. "example.com").
+	// Zone is the managed zone name (e.g. "example.com"). If it equals the domain, the record is created for the zone apex.
 	Zone string
 	// RecordType is the DNS record type (e.g. "A", "TXT").
 	RecordType string
 	// Record is the data for the record.
 	Record pulumi.StringInput
-	// TTL for the record. If 0, defaultTTL is used.
+	// TTL is the time to live of the record in seconds. Optional, defaults to 300 if 0.
 	TTL int
-	// Project is an optional Scaleway project to set on the Record.
+	// Project is the Scaleway project to set on the Record. Optional, defaults to the provider's project.
 	Project *string
 	// NameAppendix is an optional appendix to append to the resource name (for example for uniqueness).
 	NameAppendix *string

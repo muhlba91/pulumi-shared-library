@@ -23,7 +23,7 @@ type KeyOptions struct {
 // CreateKey creates a new service account key.
 // ctx: Pulumi context.
 // name: name suffix for the key resource.
-// opts: KeyOptions containing the service account ID and optional project ID.
+// opts: KeyOptions containing the service account ID and optional rotation and Pulumi options.
 func CreateKey(
 	ctx *pulumi.Context,
 	name string,

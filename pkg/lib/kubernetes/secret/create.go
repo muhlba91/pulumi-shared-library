@@ -14,7 +14,7 @@ type CreateOptions struct {
 	Name string
 	// Namespace is the namespace in which to create the Secret.
 	Namespace string
-	// Data is the data to store in the Secret.
+	// Data is the data to store in the Secret. The values must be base64-encoded.
 	Data map[string]pulumi.StringInput
 	// PulumiOptions are additional options to pass to the Pulumi resource.
 	PulumiOptions []pulumi.ResourceOption

@@ -13,13 +13,13 @@ type BindingOptions struct {
 	ServiceAccount pulumi.StringInput
 	// Role is the role to assign to the IAM Binding.
 	Role pulumi.StringInput
-	// Members are the members to assign to the IAM Binding.
+	// Members are the members the role is granted to on the Service Account.
 	Members []pulumi.StringInput
 	// PulumiOptions are additional Pulumi resource options. Optional.
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// CreateBinding creates a IAM Binding for a Service Account to provided roles.
+// CreateBinding creates an IAM Binding of a role for a Service Account.
 // ctx: Pulumi context.
 // name: Name for the IAM Binding resource.
 // opts: BindingOptions containing service account, role, members, and optional Pulumi options.

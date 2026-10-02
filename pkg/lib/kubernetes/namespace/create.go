@@ -16,7 +16,7 @@ type CreateOptions struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// Create creates a Kubernetes Namespace with the given name using the provided provider.
+// Create creates a Kubernetes Namespace with the given name.
 // ctx: The Pulumi context.
 // opts: The options for creating the Namespace.
 func Create(ctx *pulumi.Context, opts *CreateOptions) (*corev1.Namespace, error) {

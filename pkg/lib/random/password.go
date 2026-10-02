@@ -11,10 +11,11 @@ import (
 )
 
 // PasswordOptions holds optional parameters.
+// If opts is not nil, Special is used as given, i.e., it is false unless set.
 type PasswordOptions struct {
-	// Length is the desired length of the generated password.
+	// Length is the desired length of the generated password. Defaults to 16 if 0.
 	Length int
-	// Special indicates whether to include special characters in the password.
+	// Special indicates whether to include special characters in the password. Defaults to true only if opts is nil.
 	Special bool
 	// Rotation defines the rotation options for the resource.
 	Rotation *rModel.Options
@@ -23,7 +24,7 @@ type PasswordOptions struct {
 // CreatePassword creates a RandomPassword resource and returns PasswordData.
 // Defaults: length=16, special=true.
 // ctx: Pulumi context.
-// name: Name prefix for the resource.
+// name: Name of the resource.
 // opts: Optional parameters for password generation.
 func CreatePassword(ctx *pulumi.Context, name string, opts *PasswordOptions) (*random.PasswordData, error) {
 	pulumiOpts := []pulumi.ResourceOption{}

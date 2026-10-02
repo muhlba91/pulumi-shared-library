@@ -21,16 +21,19 @@ type CreateOptions struct {
 	// VariableType is the type of the variable (e.g., "env_var", "file"). Optional, defaults to "env_var".
 	VariableType *string
 	// Protected indicates whether the secret should be protected and be available on protected branches and tags.
+	// Optional, defaults to false.
 	Protected *bool
-	// Masked indicates whether the secret should be masked in job logs. Optional, defaults to true.
+	// Masked indicates whether the secret should be masked in job logs and hidden in the UI. Optional, defaults to true.
 	Masked *bool
-	// DisableVariableExpansion indicates whether to disable variable expansion for the secret.
+	// DisableVariableExpansion indicates whether to disable variable expansion for the secret. Optional, defaults to false.
 	DisableVariableExpansion *bool
 	// PulumiOptions are additional Pulumi resource options. Optional.
 	PulumiOptions []pulumi.ResourceOption
 }
 
 // Create stores a value in a GitLab Variable.
+// The variable depends on the project and is deleted before it is replaced.
+// Returns an output of the variable, which resolves to nil if the creation failed (the error is logged).
 // ctx: Pulumi context.
 // opts: CreateOptions containing the key, value, and repository.
 func Create(

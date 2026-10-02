@@ -14,9 +14,9 @@ import (
 type CreateOptions struct {
 	// Description is the description of the IAM API key.
 	Description pulumi.StringInput
-	// UserID is the ID of the user for whom the API key is created.
+	// UserID is the ID of the user for whom the API key is created. Exactly one of UserID or ApplicationID must be set.
 	UserID pulumi.StringPtrInput
-	// ApplicationID is the ID of the application associated with the API key.
+	// ApplicationID is the ID of the application associated with the API key. Exactly one of UserID or ApplicationID must be set.
 	ApplicationID pulumi.StringPtrInput
 	// DefaultProjectID is the default project ID for the API key.
 	DefaultProjectID pulumi.StringPtrInput
@@ -26,7 +26,7 @@ type CreateOptions struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// Create creates a new IAM API key for the specified user.
+// Create creates a new IAM API key for the specified user or application.
 // ctx: The Pulumi context.
 // name: The name of the API key resource.
 // opts: The options for creating the API key.

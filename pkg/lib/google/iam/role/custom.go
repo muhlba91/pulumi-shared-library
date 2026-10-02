@@ -23,7 +23,7 @@ type CustomRoleOptions struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// CreateCustomRole creates a GCP IAM custom role.
+// CreateCustomRole creates a GCP IAM custom role with the stage "GA".
 // ctx: Pulumi context.
 // name: Name prefix for the custom role resource.
 // opts: CustomRoleOptions containing ID, Title, Description, Permissions, Project, and optional Pulumi options.

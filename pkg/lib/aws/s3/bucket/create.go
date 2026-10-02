@@ -9,15 +9,15 @@ import (
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/defaults"
 )
 
-// CreateOptions holds optional parameters for Create.
+// CreateOptions defines the options for creating an S3 bucket.
 type CreateOptions struct {
-	// Name prefix for the bucket.
+	// Name is the logical name used for the Pulumi resources of the bucket.
 	Name string
-	// Prefix for the bucket name.
+	// Prefix is the prefix of the bucket name. Optional, AWS appends a unique suffix to it.
 	Prefix *pulumi.StringPtrInput
-	// Labels to apply to the bucket.
+	// Labels are the tags to apply to the bucket.
 	Labels map[string]string
-	// Additional Pulumi resource options.
+	// PulumiOptions are additional Pulumi resource options.
 	PulumiOptions []pulumi.ResourceOption
 }
 

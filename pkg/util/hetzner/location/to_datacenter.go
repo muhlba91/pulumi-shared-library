@@ -1,9 +1,10 @@
 package location
 
+// defaultDatacenter is the datacenter returned for a nil or unknown location.
 const defaultDatacenter = "fsn1-dc14"
 
 // ToDatacenter converts a Hetzner location key to the datacenter identifier.
-// If the location is unknown it returns the default datacenter.
+// If the location is nil or unknown it returns the default datacenter.
 // location: e.g. "fsn1", "nbg1"
 func ToDatacenter(location *string) string {
 	if location == nil {

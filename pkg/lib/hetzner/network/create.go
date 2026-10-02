@@ -7,10 +7,11 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// CreateOptions defines the options for creating a Hetzner network.
 type CreateOptions struct {
 	// Name is the name of the network.
 	Name string
-	// Cidr is the CIDR block for the network.
+	// Cidr is the CIDR block (IP range) for the network.
 	Cidr pulumi.StringInput
 	// Labels are the labels to apply to the network.
 	Labels map[string]string
@@ -18,7 +19,7 @@ type CreateOptions struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// Create creates a Hetzner network.
+// Create creates a Hetzner network with routes exposed to the vSwitch.
 // ctx: The Pulumi context.
 // opts: The options for creating the network.
 func Create(ctx *pulumi.Context, opts *CreateOptions) (*hcloud.Network, error) {

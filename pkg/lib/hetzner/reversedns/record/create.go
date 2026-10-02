@@ -11,13 +11,13 @@ import (
 
 // CreateOptions defines the options for creating a Hetzner Reverse DNS Record.
 type CreateOptions struct {
-	// DNSName is the DNS name to set for the RDNS record.
+	// DNSName is the DNS name to set as the pointer (PTR) of the RDNS record.
 	DNSName string
 	// PrimaryIP is the primary IP to associate with the RDNS record.
 	PrimaryIP *hcloud.PrimaryIp
-	// IPType is the type of IP address (e.g., "ipv4" or "ipv6").
+	// IPType is the type of IP address (e.g., "ipv4" or "ipv6"). Only used in the name of the Pulumi resource.
 	IPType string
-	// Datacenter is the datacenter where the IP address is located.
+	// Datacenter is the datacenter where the IP address is located. Only used in the name of the Pulumi resource.
 	Datacenter string
 	// PulumiOptions are the options to pass to the Pulumi resource.
 	PulumiOptions []pulumi.ResourceOption

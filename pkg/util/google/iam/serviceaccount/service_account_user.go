@@ -17,7 +17,7 @@ type CreateOptions struct {
 	Roles []string
 }
 
-// CreateServiceAccountUser creates a new service account and key.
+// CreateServiceAccountUser creates a new service account, its project roles, and a key.
 // ctx: Pulumi context.
 // opts: CreateOptions for creating the service account user.
 func CreateServiceAccountUser(

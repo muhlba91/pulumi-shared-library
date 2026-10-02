@@ -7,9 +7,10 @@ import (
 	rModel "github.com/muhlba91/pulumi-shared-library/pkg/model/rotation"
 )
 
-// Trigger creates a rotation schedule if the options are set.
-// Overwrites the name in the options with the provided name.
+// Trigger creates a rotation schedule if the options are set and returns its timestamp to be used as a trigger.
+// Sets the name in the options to the provided name if it is not set, which modifies the provided options.
 // ctx: Pulumi context.
+// name: Name to use for the rotation schedule if the options do not provide one.
 // opts: Rotation options. If nil, no rotation schedule will be created.
 func Trigger(ctx *pulumi.Context, name string, opts *rModel.Options) (*pulumi.StringOutput, error) {
 	if opts == nil {

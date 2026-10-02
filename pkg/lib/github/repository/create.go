@@ -25,21 +25,25 @@ type CreateOptions struct {
 	Homepage pulumi.StringPtrInput
 	// Topics is a list of topics to associate with the repository.
 	Topics []string
-	// EnablePages indicates whether GitHub Pages is enabled for the repository.
+	// EnablePages indicates whether GitHub Pages is enabled for the repository, built from a workflow.
+	// Only applies to repositories not set to "private". Optional, defaults to false.
 	EnablePages *bool
-	// Visibility is the visibility level of the repository. Can be "public" or "private".
+	// Visibility is the visibility level of the repository (e.g., "public" or "private"). Optional, defaults to "public".
+	// Secret scanning is only enabled for repositories not set to "private".
 	Visibility *string
-	// Protected indicates whether the repository is protected.
+	// Protected indicates whether the repository is archived instead of deleted on destroy.
 	Protected bool
-	// AllowRepositoryDeletion indicates whether the repository should be protected from deletion.
+	// AllowRepositoryDeletion indicates whether the repository may be deleted.
+	// If false, the Pulumi resource is protected from deletion.
 	AllowRepositoryDeletion bool
-	// RetainOnDelete indicates whether the repository should be retained on deletion.
+	// RetainOnDelete indicates whether the repository should be retained on deletion. Optional, defaults to true.
 	RetainOnDelete *bool
 	// PulumiOptions are additional options to pass to the Pulumi resource.
 	PulumiOptions []pulumi.ResourceOption
 }
 
 // Create creates a new GitHub repository with the specified options.
+// Also enables vulnerability alerts and, if requested, GitHub Pages.
 // ctx: The Pulumi context.
 // name: The logical name for the Pulumi resource.
 // opts: The options for creating the repository.

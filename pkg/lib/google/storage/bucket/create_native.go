@@ -7,21 +7,21 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// CreateNativeOptions holds optional parameters for Create.
+// CreateNativeOptions defines the options for creating a GCS bucket with the native provider.
 type CreateNativeOptions struct {
-	// Location is the GCP region where the bucket will be created.
+	// Location is the GCP location (region or multi-region) where the bucket will be created.
 	Location pulumi.StringInput
-	// CORs configuration for the bucket.
+	// CORS is the CORS configuration for the bucket. Optional, no CORS is configured if nil.
 	CORS *CreateNativeCorsOptions
 	// Labels are optional key/value pairs to tag the bucket.
 	Labels map[string]string
-	// PulumiOptions are optional resource options passed to the RecordSet.
+	// PulumiOptions are optional resource options passed to the Bucket.
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// CreateNativeCorsOptions defines CORS configuration data for an GCS bucket.
+// CreateNativeCorsOptions defines CORS configuration data for a GCS bucket.
 type CreateNativeCorsOptions struct {
-	// MaxAgeSeconds is the maximum age of the CORS preflight request.
+	// MaxAgeSeconds is the time in seconds browsers may cache the response to a CORS preflight request.
 	MaxAgeSeconds *int
 	// Method is the list of allowed HTTP methods.
 	Method []string
@@ -31,9 +31,10 @@ type CreateNativeCorsOptions struct {
 	ResponseHeader []string
 }
 
-// CreateNative creates a GCS bucket with the given parameters.
+// CreateNative creates a GCS bucket with the given parameters using the native provider.
+// The bucket uses the STANDARD storage class.
 // ctx: Pulumi context.
-// name: Name for the bucket.
+// name: The logical name for the Pulumi resource (prefixed with "gcs-bucket-").
 // opts: CreateNativeOptions with parameters for the bucket.
 func CreateNative(
 	ctx *pulumi.Context,

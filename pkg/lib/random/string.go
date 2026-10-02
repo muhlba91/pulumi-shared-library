@@ -8,17 +8,18 @@ import (
 )
 
 // StringOptions holds optional parameters.
+// If opts is not nil, Special is used as given, i.e., it is false unless set.
 type StringOptions struct {
-	// Length is the desired length of the generated string.
+	// Length is the desired length of the generated string. Defaults to 16 if 0.
 	Length int
-	// Special indicates whether to include special characters in the string.
+	// Special indicates whether to include special characters in the string. Defaults to true only if opts is nil.
 	Special bool
 }
 
 // CreateString creates a RandomString resource and returns StringData.
 // Defaults: length=16, special=true.
 // ctx: Pulumi context.
-// name: Name prefix for the resource.
+// name: Name of the resource.
 // opts: Optional parameters for string generation.
 func CreateString(ctx *pulumi.Context, name string, opts *StringOptions) (*random.StringData, error) {
 	length := 16

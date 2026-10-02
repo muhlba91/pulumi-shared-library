@@ -10,7 +10,9 @@ import (
 )
 
 const (
-	defaultExpirationDays               = 365
+	// defaultExpirationDays is the number of days after which the token expires.
+	defaultExpirationDays = 365
+	// defaultRotationBeforeExpirationDays is the number of days before the expiration at which the token is rotated.
 	defaultRotationBeforeExpirationDays = 30
 )
 
@@ -22,13 +24,14 @@ type CreateOptions struct {
 	Description pulumi.StringInput
 	// Group is the ID or full path of the group for which the access token will be created.
 	Group string
-	// Scopes is a list of scopes to assign to the group access token.
+	// Scopes is a list of scopes to assign to the group access token. The "self_rotate" scope is always added.
 	Scopes []string
 	// PulumiOptions are additional options to pass to the Pulumi resource.
 	PulumiOptions []pulumi.ResourceOption
 }
 
 // Create creates a new GitLab group access token with the specified options.
+// The token has the owner access level and is rotated by GitLab before it expires.
 // ctx: The Pulumi context.
 // name: The logical name for the Pulumi resource.
 // opts: The options for creating the group access token.

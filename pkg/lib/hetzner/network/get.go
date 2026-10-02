@@ -5,7 +5,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// Get gets or creates a Hetzner network.
+// Get looks up an existing Hetzner network by its name.
 // ctx: The Pulumi context.
 // name: The name of the network.
 func Get(ctx *pulumi.Context, name string) (*hcloud.LookupNetworkResult, error) {

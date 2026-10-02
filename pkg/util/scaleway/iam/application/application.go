@@ -14,15 +14,15 @@ type CreateOptions struct {
 	Name string
 	// Description is a brief description of the application.
 	Description pulumi.StringPtrInput
-	// DefaultProjectID is the default project ID for the API key.
+	// DefaultProjectID is the default project ID for the API key. Optional.
 	DefaultProjectID pulumi.StringPtrInput
-	// Labels are key/value pairs to tag the application with.
+	// Labels are the tags to assign to the application.
 	Labels []string
 	// PulumiOptions are additional options to pass to Pulumi resource creation.
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// CreateApplication creates a new application and key.
+// CreateApplication creates a new application and API key.
 // ctx: Pulumi context.
 // opts: CreateOptions for creating the application.
 func CreateApplication(

@@ -7,19 +7,21 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// CreateOptions holds optional parameters for Create.
+// CreateOptions defines the options for creating a GCS bucket.
 type CreateOptions struct {
-	// Location is the GCP region where the bucket will be created.
+	// Location is the GCP location (region or multi-region) where the bucket will be created.
 	Location pulumi.StringInput
 	// Labels are optional key/value pairs to tag the bucket.
 	Labels map[string]string
-	// PulumiOptions are optional resource options passed to the RecordSet.
+	// PulumiOptions are optional resource options passed to the Bucket.
 	PulumiOptions []pulumi.ResourceOption
 }
 
 // Create creates a GCP bucket with the given parameters.
+// The bucket uses the STANDARD storage class, uniform bucket-level access, enforced public access prevention,
+// and its objects are deleted with the bucket.
 // ctx: Pulumi context.
-// name: Name for the bucket.
+// name: The logical name for the Pulumi resource (prefixed with "gcp-bucket-").
 // opts: CreateOptions with parameters for the bucket.
 func Create(
 	ctx *pulumi.Context,

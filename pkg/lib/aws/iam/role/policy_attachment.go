@@ -19,7 +19,7 @@ type CreatePolicyAttachmentOptions struct {
 
 // CreatePolicyAttachment creates an IAM Role Policy Attachment.
 // ctx: Pulumi context
-// name: Name of the policy attachment
+// name: The logical name for the Pulumi resource (prefixed with "aws-iam-role-policy-attachment-").
 // opts: Options for creating the policy attachment
 func CreatePolicyAttachment(
 	ctx *pulumi.Context,

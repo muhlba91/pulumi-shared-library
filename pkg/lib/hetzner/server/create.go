@@ -25,21 +25,22 @@ type CreateOptions struct {
 	Location pulumi.StringInput
 	// NetworkID is the ID of the network to attach the server to.
 	NetworkID pulumi.IntInput
-	// IPAddress is the IP address to assign to the server.
+	// IPAddress is the private IP address to assign to the server in the network.
 	IPAddress pulumi.StringInput
-	// PrimaryIPv4Address is the primary IPv4 address for the server's public network.
+	// PrimaryIPv4Address is the primary IPv4 address for the server's public network. Required.
 	PrimaryIPv4Address *hcloud.PrimaryIp
-	// PrimaryIPv6Address is the primary IPv6 address for the server's public network.
+	// PrimaryIPv6Address is the primary IPv6 address for the server's public network. Required.
 	PrimaryIPv6Address *hcloud.PrimaryIp
-	// EnableIPv6 indicates whether IPv6 should be enabled for the server.
+	// EnableIPv6 indicates whether IPv6 should be enabled for the server. Optional, defaults to true.
 	EnableIPv6 *bool
 	// Firewalls are the firewalls to add to the server.
 	Firewalls []pulumi.IntInput
 	// Backups indicates whether backups should be enabled for the server.
 	Backups pulumi.BoolInput
 	// Protection indicates whether delete and rebuild protection should be enabled for the server.
+	// Also protects the Pulumi resource and keeps the disk when the server type is changed.
 	Protection bool
-	// PublicSSH indicates whether the server should have a public SSH access.
+	// PublicSSH indicates whether SSH should use the public IPv4 address instead of the private IP address.
 	PublicSSH bool
 	// Labels are the labels to assign to the server.
 	Labels map[string]string
@@ -47,9 +48,9 @@ type CreateOptions struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// Create creates a Hetzner server.
+// Create creates a Hetzner server. Changes to the SSH keys are ignored after creation.
 // ctx: Pulumi context
-// name: the name of the server
+// name: the logical name for the Pulumi resource (prefixed with "hcloud-server-")
 // opts: CreateOptions for the server
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hModel.Server, error) {
 	optsWithProtection := append([]pulumi.ResourceOption{}, opts.PulumiOptions...)

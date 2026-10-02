@@ -9,7 +9,7 @@ import (
 
 const defaultPermissions os.FileMode = 0o644
 
-// WriteContents writes content to the given path with the provided permissions.
+// WriteContents writes content to the given path with the provided permissions and returns the content.
 // path: file path to write to.
 // content: content to write.
 // permissions: file permissions (os.FileMode, default is 0644), optional.

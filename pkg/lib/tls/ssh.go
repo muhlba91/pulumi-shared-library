@@ -8,9 +8,9 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// CreateSSHKey creates a new SSH private key with the specified number of bits.
+// CreateSSHKey creates a new RSA private key to be used for SSH with the specified number of bits.
 // ctx: The Pulumi context.
-// name: The name to use for the key resource.
+// name: The name to use for the key resource (prefixed with "ssh-key-").
 // bits: The number of bits for the SSH key. Defaults to 4096 if set to 0.
 func CreateSSHKey(ctx *pulumi.Context, name string, bits int) (*tls.PrivateKey, error) {
 	return createKey(ctx, fmt.Sprintf("ssh-key-%s", name), bits)

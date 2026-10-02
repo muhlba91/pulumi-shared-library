@@ -9,10 +9,10 @@ import (
 	rModel "github.com/muhlba91/pulumi-shared-library/pkg/model/rotation"
 )
 
-// Create creates a rotating resource.
+// Create creates a rotating resource named "rotation-<name>".
 // If days is <= 0 it defaults to 30.
 // ctx: Pulumi context.
-// opts: Options for creating the rotation resource.
+// opts: Options for creating the rotation resource. The name must be set.
 func Create(ctx *pulumi.Context, opts *rModel.Options) (*time.Rotating, error) {
 	days := opts.Days
 	if days <= 0 {

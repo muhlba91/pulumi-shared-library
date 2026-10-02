@@ -12,7 +12,7 @@ import (
 
 // BytesOptions holds optional parameters.
 type BytesOptions struct {
-	// Length is the desired number of random bytes.
+	// Length is the desired number of random bytes. Defaults to 16 if 0.
 	Length int
 	// Rotation defines the rotation options for the resource.
 	Rotation *rModel.Options
@@ -21,7 +21,7 @@ type BytesOptions struct {
 // CreateBytes creates a RandomId resource and returns BytesData.
 // Defaults: length=16.
 // ctx: Pulumi context.
-// name: Name prefix for the resource.
+// name: Name of the resource.
 // opts: Optional parameters for bytes generation.
 func CreateBytes(ctx *pulumi.Context, name string, opts *BytesOptions) (*random.BytesData, error) {
 	pulumiOpts := []pulumi.ResourceOption{}

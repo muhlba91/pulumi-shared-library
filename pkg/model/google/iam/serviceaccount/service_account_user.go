@@ -5,7 +5,7 @@ import (
 	iam "github.com/pulumi/pulumi-google-native/sdk/go/google/iam/v1"
 )
 
-// User defines a user for a service account.
+// User bundles a Google service account and its key.
 type User struct {
 	// ServiceAccount is the Pulumi ServiceAccount resource.
 	ServiceAccount *iam.ServiceAccount

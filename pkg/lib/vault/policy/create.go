@@ -11,7 +11,7 @@ import (
 type CreateOptions struct {
 	// Name is the name of the policy.
 	Name string
-	// Policy is the policy document for the vault.
+	// Policy is the policy document (HCL) of the Vault policy.
 	Policy pulumi.StringInput
 	// PulumiOptions are optional resource options (e.g. provider).
 	PulumiOptions []pulumi.ResourceOption

@@ -9,13 +9,13 @@ import (
 
 // CreateOptions defines the options for creating a Hetzner Primary IP.
 type CreateOptions struct {
-	// Name is the base name for the Primary IP.
+	// Name is the base name for the Primary IP. The Primary IP is named "<Name>-<IPType>-<Location>".
 	Name string
-	// IPType is the type of the Primary IP.
+	// IPType is the type of the Primary IP ("ipv4" or "ipv6").
 	IPType string
 	// Location is the location where the Primary IP will be created.
 	Location string
-	// Datacenter is the datacenter where the Primary IP will be created.
+	// Datacenter is used instead of the Location in the name of the Pulumi resource if set. Optional.
 	Datacenter *string
 	// AutoDelete indicates whether the Primary IP should be automatically deleted when the assignee is deleted.
 	AutoDelete pulumi.BoolInput
@@ -25,8 +25,9 @@ type CreateOptions struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// Create creates a Hetzner Primary IP with the given options.
+// Create creates a Hetzner Primary IP, assignable to a server, with the given options.
 // ctx: Pulumi context for resource creation.
+// name: The logical name for the Pulumi resource (prefixed with "hcloud-primary-ip-").
 // opts: Options for creating the Primary IP.
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hcloud.PrimaryIp, error) {
 	location := opts.Location

@@ -11,29 +11,32 @@ import (
 
 // CreateOptions defines the options for creating a GitLab Repository Ruleset.
 type CreateOptions struct {
-	// Repository is the name of the repository to which the ruleset will be applied.
+	// Repository is the repository to which the ruleset will be applied.
 	Repository *gitlab.Project
-	// Branch is the branch pattern to which the ruleset will apply.
+	// Branch is the branch name or wildcard pattern to which the ruleset will apply (see DefaultBranch).
 	Branch string
-	// ReviewerCount is the number of required approving reviews.
+	// ReviewerCount is the number of required approving reviews. Optional, no approval rule is created if nil or 0.
 	ReviewerCount *int
-	// AllowForcePush indicates whether to allow force pushes.
+	// AllowForcePush indicates whether to allow force pushes. Optional, defaults to false.
 	AllowForcePush *bool
-	// SignedCommits indicates whether to require signed commits.
+	// SignedCommits indicates whether to reject unsigned commits. Optional, defaults to false.
 	SignedCommits *bool
-	// MemberCheck indicates whether to require member e-mails for pushing.
+	// MemberCheck indicates whether to require commit authors to be existing GitLab users and committers to use a verified
+	// e-mail address of their own. Optional, defaults to true.
 	MemberCheck *bool
-	// CodeOwnerReview indicates whether to require code owner review.
+	// CodeOwnerReview indicates whether to require code owner review. Optional, defaults to false.
 	CodeOwnerReview *bool
-	// DeleteOnDestroy indicates whether to delete the ruleset on destroy.
+	// DeleteOnDestroy indicates whether to delete the ruleset on destroy. Optional, defaults to false (retained).
 	DeleteOnDestroy *bool
 	// PulumiOptions are additional options to pass to the Pulumi resource.
 	PulumiOptions []pulumi.ResourceOption
 }
 
 // Create creates a new GitLab Repository Ruleset with the given options.
+// Consists of a branch protection, push rules, and, if reviewers are required, an approval rule.
+// Returns the branch protection.
 // ctx: The Pulumi context.
-// name: The name of the ruleset.
+// name: The logical name for the Pulumi resources of the ruleset.
 // opts: The options for creating the ruleset.
 func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*gitlab.BranchProtection, error) {
 	optsWithRepoSpecifics := append([]pulumi.ResourceOption{}, opts.PulumiOptions...)

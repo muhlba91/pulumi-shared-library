@@ -10,21 +10,21 @@ import (
 
 // CreateOptions represents the options for creating a Scaleway IAM user.
 type CreateOptions struct {
-	// Name is the name of the service account.
+	// Name is the name of the user.
 	Name string
 	// Email is the email address associated with the user.
 	Email pulumi.StringInput
-	// DefaultProjectID is the default project ID for the API key.
+	// DefaultProjectID is the default project ID for the API key. Optional.
 	DefaultProjectID pulumi.StringPtrInput
-	// Labels are key/value pairs to tag the user with.
+	// Labels are the tags to assign to the user.
 	Labels []string
 	// PulumiOptions are additional options to pass to Pulumi resource creation.
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// CreateUser creates a new service account and key.
+// CreateUser creates a new user and API key.
 // ctx: Pulumi context.
-// opts: CreateOptions for creating the service account.
+// opts: CreateOptions for creating the user.
 func CreateUser(
 	ctx *pulumi.Context,
 	opts *CreateOptions,

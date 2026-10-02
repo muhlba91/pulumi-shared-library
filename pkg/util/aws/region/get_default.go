@@ -7,7 +7,7 @@ import (
 
 // GetOrDefault returns the provided region if non-empty,
 // otherwise falls back to the Pulumi AWS region configuration value.
-// If neither is set, it returns an empty string.
+// If neither is set, it returns nil.
 // ctx: Pulumi context.
 // region: The region input.
 func GetOrDefault(ctx *pulumi.Context, region *string) *string {

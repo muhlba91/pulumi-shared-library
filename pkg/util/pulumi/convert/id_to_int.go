@@ -7,6 +7,7 @@ import (
 )
 
 // IDToInt converts a Pulumi IDOutput (string) to an IntOutput.
+// Resolves to 0 if the ID is not numeric.
 // id: The Pulumi IDOutput to convert.
 func IDToInt(id pulumi.IDOutput) pulumi.IntOutput {
 	cID, _ := id.ApplyT(func(id string) int {

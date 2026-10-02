@@ -10,9 +10,10 @@ import (
 	pgModel "github.com/muhlba91/pulumi-shared-library/pkg/model/postgresql"
 )
 
+// defaultPasswordLength is the length of the generated password.
 const defaultPasswordLength = 32
 
-// CreateOptions represents the created PostgreSQL user data.
+// CreateOptions represents the options for creating a PostgreSQL user.
 type CreateOptions struct {
 	// Username is the name of the PostgreSQL user to create.
 	Username string
@@ -20,9 +21,9 @@ type CreateOptions struct {
 	PulumiOptions []pulumi.ResourceOption
 }
 
-// Create creates a Postgresql role and a random password for the given username.
+// Create creates a Postgresql role able to log in and a random password without special characters for the given username.
 // ctx: Pulumi context
-// options: CreateOptions for customizing the user creation
+// opts: CreateOptions for customizing the user creation
 func Create(ctx *pulumi.Context, opts *CreateOptions) (*pgModel.UserData, error) {
 	pw, err := random.CreatePassword(ctx, fmt.Sprintf("password-pg-user-%s", opts.Username), &random.PasswordOptions{
 		Length:  defaultPasswordLength,
