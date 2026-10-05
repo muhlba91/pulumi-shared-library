@@ -126,6 +126,13 @@ func (c *Counter) Call(
 		}
 		outs["name"] = resource.NewStringProperty(name)
 		outs["id"] = resource.NewStringProperty("1")
+	case "netbird:index/getPeer:getPeer":
+		name := ""
+		if v, ok := args.Args["name"]; ok {
+			name = v.StringValue()
+		}
+		outs["name"] = resource.NewStringProperty(name)
+		outs["id"] = resource.NewStringProperty("1")
 	case "gitlab:index/getCurrentUser:getCurrentUser":
 		outs["id"] = resource.NewStringProperty("1")
 	}
