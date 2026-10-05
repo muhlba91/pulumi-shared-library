@@ -6,12 +6,12 @@ import (
 )
 
 // GetOptions defines the options for looking up a NetBird peer.
-// At least one of Id, Ip, or Name must be set.
+// At least one of ID, IP, or Name must be set.
 type GetOptions struct {
-	// Id is the ID of the peer. Optional.
-	Id *string
-	// Ip is the NetBird IP address of the peer. Optional.
-	Ip *string
+	// ID is the ID of the peer. Optional.
+	ID *string
+	// IP is the NetBird IP address of the peer. Optional.
+	IP *string
 	// Name is the name of the peer. Optional.
 	Name *string
 	// PulumiOptions are additional options to pass to the Pulumi invoke.
@@ -23,8 +23,8 @@ type GetOptions struct {
 // opts: The options for looking up the peer. Must not be nil.
 func Get(ctx *pulumi.Context, opts *GetOptions) (*netbird.LookupPeerResult, error) {
 	return netbird.LookupPeer(ctx, &netbird.LookupPeerArgs{
-		Id:   opts.Id,
-		Ip:   opts.Ip,
+		Id:   opts.ID,
+		Ip:   opts.IP,
 		Name: opts.Name,
 	}, opts.PulumiOptions...)
 }
