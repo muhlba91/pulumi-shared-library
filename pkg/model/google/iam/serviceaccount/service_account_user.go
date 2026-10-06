@@ -1,7 +1,7 @@
 package serviceaccount
 
 import (
-	svcaccount "github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/serviceaccount"
+	svcaccount "github.com/pulumi/pulumi-gcp/sdk/v10/go/gcp/serviceaccount"
 	iam "github.com/pulumi/pulumi-google-native/sdk/go/google/iam/v1"
 )
 

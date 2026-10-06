@@ -1,7 +1,7 @@
 package iam
 
 import (
-	gcpStorage "github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/storage"
+	gcpStorage "github.com/pulumi/pulumi-gcp/sdk/v10/go/gcp/storage"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/sanitize"

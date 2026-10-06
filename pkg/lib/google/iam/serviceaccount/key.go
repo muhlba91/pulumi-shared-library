@@ -3,7 +3,7 @@ package serviceaccount
 import (
 	"fmt"
 
-	gsa "github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/serviceaccount"
+	gsa "github.com/pulumi/pulumi-gcp/sdk/v10/go/gcp/serviceaccount"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	rModel "github.com/muhlba91/pulumi-shared-library/pkg/model/rotation"

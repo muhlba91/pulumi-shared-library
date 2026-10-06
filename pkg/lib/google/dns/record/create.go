@@ -3,7 +3,7 @@ package record
 import (
 	"fmt"
 
-	gcpdns "github.com/pulumi/pulumi-gcp/sdk/v9/go/gcp/dns"
+	gcpdns "github.com/pulumi/pulumi-gcp/sdk/v10/go/gcp/dns"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/sanitize"
