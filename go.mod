@@ -16,7 +16,7 @@ require (
 	github.com/pulumi/pulumi-random/sdk/v4 v4.21.4
 	github.com/pulumi/pulumi-tls/sdk/v5 v5.6.2
 	github.com/pulumi/pulumi-vault/sdk/v7 v7.14.0
-	github.com/pulumi/pulumi/sdk/v3 v3.270.0
+	github.com/pulumi/pulumi/sdk/v3 v3.271.0
 	github.com/pulumiverse/pulumi-scaleway/sdk v1.58.0
 	github.com/pulumiverse/pulumi-time/sdk v0.1.0
 	github.com/rs/zerolog v1.35.1
@@ -125,7 +125,7 @@ require (
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.57.0 // indirect
 	golang.org/x/mod v0.41.0 // indirect
-	golang.org/x/net v0.59.0 // indirect
+	golang.org/x/net v0.60.0 // indirect
 	golang.org/x/sync v0.23.0 // indirect
 	golang.org/x/sys v0.48.0 // indirect
 	golang.org/x/term v0.46.0 // indirect
