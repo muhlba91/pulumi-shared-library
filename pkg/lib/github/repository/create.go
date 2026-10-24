@@ -65,17 +65,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 
 	sort.Strings(opts.Topics)
 
-	var secAnalysis *github.RepositorySecurityAndAnalysisArgs
-	if !utilgithub.IsPrivateRepository(opts.Visibility) {
-		secAnalysis = &github.RepositorySecurityAndAnalysisArgs{
-			SecretScanning: &github.RepositorySecurityAndAnalysisSecretScanningArgs{
-				Status: pulumi.String("enabled"),
-			},
-			SecretScanningPushProtection: &github.RepositorySecurityAndAnalysisSecretScanningPushProtectionArgs{
-				Status: pulumi.String("enabled"),
-			},
-		}
-	}
+	secAnalysis := securityAndAnalysis(opts.Visibility)
 
 	repo, rErr := github.NewRepository(ctx, fmt.Sprintf("github-repo-%s", name), &github.RepositoryArgs{
 		Name:                     opts.Name,
@@ -122,6 +112,20 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 		return nil, saErr
 	}
 
+	_, wfpErr := github.NewWorkflowRepositoryPermissions(
+		ctx,
+		fmt.Sprintf("github-repo-%s-workflow-permissions", name),
+		&github.WorkflowRepositoryPermissionsArgs{
+			Repository:                   repo.Name,
+			DefaultWorkflowPermissions:   pulumi.String("read"),
+			CanApprovePullRequestReviews: pulumi.Bool(true),
+		},
+		optsWithResourceSpecifics...,
+	)
+	if wfpErr != nil {
+		return nil, wfpErr
+	}
+
 	if !utilgithub.IsPrivateRepository(opts.Visibility) && opts.EnablePages != nil && *opts.EnablePages {
 		_, pErr := github.NewRepositoryPages(
 			ctx,
@@ -138,4 +142,21 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*github.Repo
 	}
 
 	return repo, nil
+}
+
+// securityAndAnalysis returns the security and analysis settings for the given visibility.
+// Secret scanning is only enabled for non-private repositories.
+func securityAndAnalysis(visibility *string) *github.RepositorySecurityAndAnalysisArgs {
+	if utilgithub.IsPrivateRepository(visibility) {
+		return nil
+	}
+
+	return &github.RepositorySecurityAndAnalysisArgs{
+		SecretScanning: &github.RepositorySecurityAndAnalysisSecretScanningArgs{
+			Status: pulumi.String("enabled"),
+		},
+		SecretScanningPushProtection: &github.RepositorySecurityAndAnalysisSecretScanningPushProtectionArgs{
+			Status: pulumi.String("enabled"),
+		},
+	}
 }
