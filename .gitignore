@@ -211,3 +211,6 @@ dist
 local.env
 covprofile
 coverage.html
+
+# mise
+mise.local.toml
