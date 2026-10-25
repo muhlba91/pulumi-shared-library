@@ -55,10 +55,7 @@ func main() {
 
 ## Development
 
-### Requirements
-
-- Go 1.22+
-- `golangci-lint`
+Tool versions (Go, golangci-lint) are managed with [mise](https://mise.jdx.dev): run `mise trust` and `mise install` once, then use the usual commands (`make ...`, `go test ./...`).
 
 ### Makefile Commands
 

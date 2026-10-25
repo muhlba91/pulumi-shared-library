@@ -8,6 +8,7 @@
   "enabledManagers": [
     "github-actions",
     "gomod",
-    "pre-commit"
+    "pre-commit",
+    "mise"
   ]
 }
