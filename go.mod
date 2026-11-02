@@ -6,7 +6,7 @@ require (
 	github.com/KitStream/netbird-pulumi-provider/sdk/go/netbird v0.0.0-20260919191558-542a8c184da4
 	github.com/pulumi/pulumi-aws/sdk/v7 v7.52.1
 	github.com/pulumi/pulumi-gcp/sdk/v10 v10.2.0
-	github.com/pulumi/pulumi-github/sdk/v6 v6.15.0
+	github.com/pulumi/pulumi-github/sdk/v6 v6.15.1
 	github.com/pulumi/pulumi-gitlab/sdk/v10 v10.4.1
 	github.com/pulumi/pulumi-google-native/sdk v0.32.0
 	github.com/pulumi/pulumi-hcloud/sdk v1.43.4
