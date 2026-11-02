@@ -12,7 +12,7 @@ require (
 	github.com/pulumi/pulumi-hcloud/sdk v1.43.4
 	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.34.2
 	github.com/pulumi/pulumi-postgresql/sdk/v3 v3.18.3
-	github.com/pulumi/pulumi-pulumiservice/sdk v1.5.0
+	github.com/pulumi/pulumi-pulumiservice/sdk v1.6.0
 	github.com/pulumi/pulumi-random/sdk/v4 v4.21.6
 	github.com/pulumi/pulumi-tls/sdk/v5 v5.6.3
 	github.com/pulumi/pulumi-vault/sdk/v7 v7.14.1
