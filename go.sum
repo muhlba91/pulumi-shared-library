@@ -237,6 +237,8 @@ github.com/pulumi/pulumi-postgresql/sdk/v3 v3.18.1 h1:eFThyCom3zdEkRAH/vs/R8AWU+
 github.com/pulumi/pulumi-postgresql/sdk/v3 v3.18.1/go.mod h1:0zW40bFq02VKXCEJ5SATTxLCI8tgnz3CxfZaXOX4j8w=
 github.com/pulumi/pulumi-postgresql/sdk/v3 v3.18.2 h1:W0AhGDw8jfyV0IOQ3KMr1Jy8DjPaotGx3SQsdPx+oo4=
 github.com/pulumi/pulumi-postgresql/sdk/v3 v3.18.2/go.mod h1:zjt4nrFybY63nI2kiWrUBee1UFZ6a+jh7obyKGw7bb8=
+github.com/pulumi/pulumi-postgresql/sdk/v3 v3.18.3 h1:Xg7R1cD5tTrbrk7ftv4bD8EpA0ALhrwHasuTt5u1RYY=
+github.com/pulumi/pulumi-postgresql/sdk/v3 v3.18.3/go.mod h1:R2EHqP2scIxbvM0Ua1z3iwWnW0yqOHRShKqZBTxI+J8=
 github.com/pulumi/pulumi-pulumiservice/sdk v1.4.0 h1:HXUufiLihBVjxXUGtM6Ez0wzfZVxbm1Xnw8E4D4KVwY=
 github.com/pulumi/pulumi-pulumiservice/sdk v1.4.0/go.mod h1:3Pr6nrLU3KlGhe4LBMwBPh251OxuEynaadfNoHwkrwQ=
 github.com/pulumi/pulumi-pulumiservice/sdk v1.5.0 h1:NRllj4axEeLIM749cD6UVzsVtanfjYD/yolgQIAsMF8=
