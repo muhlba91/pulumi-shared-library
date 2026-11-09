@@ -13,5 +13,10 @@ import (
 // name: The name to use for the key resource (prefixed with "ssh-key-").
 // bits: The number of bits for the SSH key. Defaults to 4096 if set to 0.
 func CreateSSHKey(ctx *pulumi.Context, name string, bits int) (*tls.PrivateKey, error) {
-	return createKey(ctx, fmt.Sprintf("ssh-key-%s", name), bits)
+	opts := &CreateOptions{Algorithm: AlgorithmRSA}
+	if bits != 0 {
+		opts.RSABits = &bits
+	}
+
+	return createKey(ctx, fmt.Sprintf("ssh-key-%s", name), opts)
 }

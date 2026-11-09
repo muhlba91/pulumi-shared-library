@@ -53,22 +53,15 @@ func (c *Counter) NewResource(args pulumi.MockResourceArgs) (string, resource.Pr
 			fmt.Sprintf("mocked-string-%v", args.Inputs["length"].NumberValue()),
 		)
 	case "tls:index/privateKey:PrivateKey":
+		key := privateKeyMockSuffix(args.Inputs)
 		outs["privateKeyPem"] = resource.MakeSecret(
-			resource.NewStringProperty(
-				fmt.Sprintf(
-					"mocked-private-key-%s-%v",
-					args.Inputs["algorithm"].StringValue(),
-					args.Inputs["rsaBits"].NumberValue(),
-				),
-			),
+			resource.NewStringProperty(fmt.Sprintf("mocked-private-key-%s", key)),
 		)
-		outs["publicKeyPem"] = resource.NewStringProperty(
-			fmt.Sprintf(
-				"mocked-public-key-%s-%v",
-				args.Inputs["algorithm"].StringValue(),
-				args.Inputs["rsaBits"].NumberValue(),
-			),
+		outs["publicKeyPem"] = resource.NewStringProperty(fmt.Sprintf("mocked-public-key-%s", key))
+		outs["privateKeyOpenssh"] = resource.MakeSecret(
+			resource.NewStringProperty(fmt.Sprintf("mocked-private-key-openssh-%s", key)),
 		)
+		outs["publicKeyOpenssh"] = resource.NewStringProperty(fmt.Sprintf("mocked-public-key-openssh-%s", key))
 	case "aws:iam/accessKey:AccessKey":
 		outs["secret"] = resource.MakeSecret(
 			resource.NewStringProperty(fmt.Sprintf("mocked-secret-%s", args.Name)),
@@ -107,6 +100,21 @@ func (c *Counter) NewResource(args pulumi.MockResourceArgs) (string, resource.Pr
 	}
 
 	return id, outs, nil
+}
+
+// privateKeyMockSuffix returns the algorithm and its parameter of a mocked private key, e.g. "RSA-4096".
+// inputs: The inputs of the private key resource.
+func privateKeyMockSuffix(inputs resource.PropertyMap) string {
+	algorithm := inputs["algorithm"].StringValue()
+
+	switch {
+	case inputs["rsaBits"].IsNumber():
+		return fmt.Sprintf("%s-%v", algorithm, inputs["rsaBits"].NumberValue())
+	case inputs["ecdsaCurve"].IsString():
+		return fmt.Sprintf("%s-%s", algorithm, inputs["ecdsaCurve"].StringValue())
+	default:
+		return algorithm
+	}
 }
 
 // Call mocks function calls for Pulumi.

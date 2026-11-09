@@ -2,8 +2,6 @@
 package tls
 
 import (
-	"fmt"
-
 	tls "github.com/pulumi/pulumi-tls/sdk/v5/go/tls"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -13,17 +11,10 @@ import (
 // name: The name to use for the key resource (prefixed with "rsa-key-").
 // bits: The number of bits for the RSA key. Defaults to 4096 if set to 0.
 func CreateRSAKey(ctx *pulumi.Context, name string, bits int) (*tls.PrivateKey, error) {
-	return createKey(ctx, fmt.Sprintf("rsa-key-%s", name), bits)
-}
-
-// createKey creates a new RSA private key, defaulting to 4096 bits if bits is 0.
-func createKey(ctx *pulumi.Context, name string, bits int) (*tls.PrivateKey, error) {
-	if bits == 0 {
-		bits = 4096
+	opts := &CreateOptions{Algorithm: AlgorithmRSA}
+	if bits != 0 {
+		opts.RSABits = &bits
 	}
 
-	return tls.NewPrivateKey(ctx, name, &tls.PrivateKeyArgs{
-		Algorithm: pulumi.String("RSA"),
-		RsaBits:   pulumi.Int(bits),
-	})
+	return Create(ctx, name, opts)
 }
