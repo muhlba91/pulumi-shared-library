@@ -47,9 +47,10 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*gitlab.Bran
 	)
 
 	if opts.ReviewerCount != nil && *opts.ReviewerCount > 0 {
-		// the rule name must be unique per project: delete before replacing to avoid "name has already been taken".
+		// the rule name must be unique per project: the old rule must really be deleted (not retained) before the
+		// replacement is created, otherwise GitLab rejects it with "name has already been taken".
 		approvalRuleOpts := append([]pulumi.ResourceOption{}, optsWithRepoSpecifics...)
-		approvalRuleOpts = append(approvalRuleOpts, pulumi.DeleteBeforeReplace(true))
+		approvalRuleOpts = append(approvalRuleOpts, pulumi.DeleteBeforeReplace(true), pulumi.RetainOnDelete(false))
 		_, bpErr := gitlab.NewProjectApprovalRule(
 			ctx,
 			fmt.Sprintf("gitlab-project-approval-rule-%s", name),
