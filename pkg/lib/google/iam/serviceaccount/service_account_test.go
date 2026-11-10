@@ -12,58 +12,75 @@ import (
 )
 
 func TestCreateServiceAccount_NoRoles(t *testing.T) {
-	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		name := "sa-no-roles"
-		var roles []string
-		project := "proj-no-roles"
+	counter := mocks.NewCounter()
 
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		opts := &serviceaccount.CreateOptions{
-			Name:    name,
-			Roles:   roles,
-			Project: pulumi.String(project),
+			Name:    "sa-no-roles",
+			Project: pulumi.String("proj-no-roles"),
 		}
 
 		sa, members, err := serviceaccount.CreateServiceAccount(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, sa)
 		assert.Nil(t, members)
+
+		pulumi.All(sa.AccountId, sa.DisplayName, sa.Description, sa.CreateIgnoreAlreadyExists).
+			ApplyT(func(all []any) error {
+				assert.Equal(t, "sa-no-roles", all[0])
+				assert.Equal(t, "sa-no-roles", *all[1].(*string))
+				assert.Nil(t, all[2].(*string))
+				assert.Nil(t, all[3].(*bool))
+				return nil
+			})
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Equal(t, []string{"gcp-sa-sa-no-roles"}, counter.Resources["gcp:serviceaccount/account:Account"])
+	assert.Empty(t, counter.Resources["gcp:projects/iAMMember:IAMMember"])
 }
 
-func TestCreateServiceAccount_NoRoles_WithOptionalArgs(t *testing.T) {
+func TestCreateServiceAccount_WithOptionalArgs(t *testing.T) {
 	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		name := "sa-no-roles"
-		var roles []string
-		project := pulumi.String("proj-no-roles")
+		displayName := "Service Account"
+		description := "a description"
+		ignoreExisting := true
 
 		opts := &serviceaccount.CreateOptions{
-			Name:          name,
-			Roles:         roles,
-			Project:       project,
-			PulumiOptions: []pulumi.ResourceOption{},
+			Name:                      "sa-optional",
+			DisplayName:               &displayName,
+			Description:               &description,
+			Project:                   pulumi.String("proj-optional"),
+			CreateIgnoreAlreadyExists: &ignoreExisting,
+			PulumiOptions:             []pulumi.ResourceOption{},
 		}
 
 		sa, members, err := serviceaccount.CreateServiceAccount(ctx, opts)
 		require.NoError(t, err)
 		require.NotNil(t, sa)
 		assert.Nil(t, members)
+
+		pulumi.All(sa.DisplayName, sa.Description, sa.CreateIgnoreAlreadyExists).ApplyT(func(all []any) error {
+			assert.Equal(t, displayName, *all[0].(*string))
+			assert.Equal(t, description, *all[1].(*string))
+			assert.True(t, *all[2].(*bool))
+			return nil
+		})
 		return nil
 	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
 
 func TestCreateServiceAccount_WithRoles(t *testing.T) {
-	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
-		name := "sa-with-roles"
-		roles := []string{"roles/viewer", "roles/storage.objectAdmin"}
-		project := pulumi.String("proj-123")
+	counter := mocks.NewCounter()
+	roles := []string{"roles/viewer", "roles/storage.objectAdmin"}
 
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
 		opts := &serviceaccount.CreateOptions{
-			Name:    name,
+			Name:    "sa-with-roles",
 			Roles:   roles,
-			Project: project,
+			Project: pulumi.String("proj-123"),
 		}
 
 		sa, members, err := serviceaccount.CreateServiceAccount(ctx, opts)
@@ -82,16 +99,16 @@ func TestCreateServiceAccount_WithRoles(t *testing.T) {
 				assert.Equal(t, "proj-123", p)
 				return nil
 			})
-			mres.Member.ApplyT(func(memberStr string) error {
-				sa.Email.ApplyT(func(email string) error {
-					assert.Equal(t, "serviceAccount:"+email, memberStr)
-					return nil
-				})
+			pulumi.All(mres.Member, sa.Email).ApplyT(func(all []any) error {
+				assert.Equal(t, "serviceAccount:"+all[1].(string), all[0])
 				return nil
 			})
 		}
 
 		return nil
-	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	}, pulumi.WithMocks("project", "stack", counter))
 	require.NoError(t, err)
+
+	assert.Len(t, counter.Resources["gcp:serviceaccount/account:Account"], 1)
+	assert.Len(t, counter.Resources["gcp:projects/iAMMember:IAMMember"], len(roles))
 }
