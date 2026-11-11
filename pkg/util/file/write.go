@@ -2,12 +2,16 @@ package file
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/rs/zerolog/log"
 )
 
-const defaultPermissions os.FileMode = 0o644
+const (
+	defaultPermissions    os.FileMode = 0o644
+	defaultDirPermissions os.FileMode = 0o750
+)
 
 // WriteContents writes content to the given path with the provided permissions and returns the content.
 // path: file path to write to.
@@ -36,5 +40,22 @@ func WritePulumi(path string, content pulumi.StringInput, permissions ...os.File
 		}
 
 		return v
+	}).(pulumi.StringOutput)
+}
+
+// WritePulumiStrict writes a Pulumi StringInput to a file and returns a pulumi.StringOutput
+// that resolves to the written content. In contrast to WritePulumi, a failed write rejects the
+// returned Output instead of only logging, so a resource consuming it fails the program.
+// Missing parent directories are created. Secrecy of the input is preserved.
+// path: file path to write to.
+// content: Pulumi StringInput content to write.
+// permissions: optional file permissions (os.FileMode), default is 0644.
+func WritePulumiStrict(path string, content pulumi.StringInput, permissions ...os.FileMode) pulumi.StringOutput {
+	return content.ToStringOutput().ApplyT(func(v string) (string, error) { //nolint:errcheck // the type is known
+		if err := os.MkdirAll(filepath.Dir(path), defaultDirPermissions); err != nil {
+			return "", err
+		}
+
+		return WriteContents(path, v, permissions...)
 	}).(pulumi.StringOutput)
 }

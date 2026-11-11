@@ -107,3 +107,30 @@ func TestWritePulumiError(t *testing.T) {
 	require.NoError(t, statErr)
 	assert.True(t, info.IsDir())
 }
+
+func TestWritePulumiStrict(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "nested", "dir", "out.txt")
+
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		ctx.Export("written", file.WritePulumiStrict(path, pulumi.String("a\n"), 0o600))
+		return nil
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	require.NoError(t, err)
+
+	b, err := os.ReadFile(path)
+	require.NoError(t, err)
+	assert.Equal(t, "a\n", string(b))
+	info, err := os.Stat(path)
+	require.NoError(t, err)
+	assert.Equal(t, os.FileMode(0o600), info.Mode().Perm())
+}
+
+func TestWritePulumiStrictFailsRun(t *testing.T) {
+	dir := t.TempDir() // a directory cannot be written as a file
+
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		ctx.Export("written", file.WritePulumiStrict(dir, pulumi.String("x")))
+		return nil
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	require.Error(t, err)
+}
