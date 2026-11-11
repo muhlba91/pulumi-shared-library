@@ -16,10 +16,14 @@ type UploadOptions struct {
 	Key string
 	// BucketID is the ID of the GCS bucket.
 	BucketID string
-	// File is a local path to upload. Exactly one of File or Content should be set.
+	// File is a local path to upload. Exactly one of File, Content or ContentInput should be set.
 	File *string
-	// Content is raw content to store. Exactly one of File or Content should be set.
+	// Content is raw content to store. Exactly one of File, Content or ContentInput should be set.
 	Content *string
+	// ContentInput is content to store as a Pulumi input. Secrecy and failures of the input are preserved,
+	// and the content is always stored as a secret.
+	// Exactly one of File, Content or ContentInput should be set.
+	ContentInput pulumi.StringPtrInput
 	// Labels are metadata labels to set on the object (optional).
 	Labels map[string]string
 	// PulumiOptions are additional Pulumi resource options. Optional.
@@ -41,8 +45,19 @@ func Upload(
 	}
 
 	var content pulumi.StringPtrInput
-	if opts.Content != nil {
+	switch {
+	case opts.ContentInput != nil:
+		content = pulumi.ToSecret(opts.ContentInput.ToStringPtrOutput()).(pulumi.StringPtrOutput) //nolint:errcheck // the type is known
+	case opts.Content != nil:
 		content = pulumi.StringPtr(*opts.Content)
+	}
+
+	resOpts := opts.PulumiOptions
+	if opts.ContentInput != nil {
+		resOpts = append(
+			[]pulumi.ResourceOption{pulumi.AdditionalSecretOutputs([]string{"content"})},
+			opts.PulumiOptions...,
+		)
 	}
 
 	labels := metadata.LabelsToStringMap(opts.Labels)
@@ -53,5 +68,5 @@ func Upload(
 		Source:   source,
 		Content:  content,
 		Metadata: labels,
-	}, opts.PulumiOptions...)
+	}, resOpts...)
 }
