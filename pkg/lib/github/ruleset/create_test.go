@@ -80,7 +80,7 @@ func TestCreateRuleset(t *testing.T) {
 
 			if r.CopilotCodeReview != nil {
 				assert.False(t, *r.CopilotCodeReview.ReviewDraftPullRequests)
-				assert.True(t, *r.CopilotCodeReview.ReviewOnPush)
+				assert.False(t, *r.CopilotCodeReview.ReviewOnPush)
 			} else {
 				assert.Fail(t, "expected CopilotCodeReview to be present")
 			}
@@ -137,6 +137,7 @@ func TestCreateRuleset_Custom(t *testing.T) {
 		updatedBeforeMerge := false
 		requiredChecks := []string{"ci", "lint"}
 		wipIntegration := false
+		copilotReview := true
 
 		opts := &libruleset.CreateOptions{
 			Repository:               repo,
@@ -155,6 +156,7 @@ func TestCreateRuleset_Custom(t *testing.T) {
 			UpdatedBranchBeforeMerge: &updatedBeforeMerge,
 			RequiredChecks:           requiredChecks,
 			WIPIntegration:           &wipIntegration,
+			CopilotReview:            &copilotReview,
 		}
 
 		rs, err := libruleset.Create(ctx, "custom", opts)
@@ -205,6 +207,13 @@ func TestCreateRuleset_Custom(t *testing.T) {
 		})
 
 		rs.Rules.ApplyT(func(r github.RepositoryRulesetRules) error {
+			if r.CopilotCodeReview != nil {
+				assert.False(t, *r.CopilotCodeReview.ReviewDraftPullRequests)
+				assert.True(t, *r.CopilotCodeReview.ReviewOnPush)
+			} else {
+				assert.Fail(t, "expected CopilotCodeReview to be present")
+			}
+
 			if r.RequiredStatusChecks != nil && len(r.RequiredStatusChecks.RequiredChecks) > 0 {
 				found := map[string]bool{}
 				for _, c := range r.RequiredStatusChecks.RequiredChecks {
