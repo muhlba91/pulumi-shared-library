@@ -140,3 +140,27 @@ func TestCreate_CustomTTLAndProject(t *testing.T) {
 	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
 }
+
+func TestCreate_NameAppendix(t *testing.T) {
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		appendix := "Second Record"
+
+		rs, err := librecord.Create(ctx, &librecord.CreateOptions{
+			Domain:       "web.example.com",
+			Zone:         "example.com",
+			RecordType:   "A",
+			Record:       pulumi.String("1.2.3.4"),
+			NameAppendix: &appendix,
+		})
+		require.NoError(t, err)
+		require.NotNil(t, rs)
+
+		rs.URN().ApplyT(func(urn pulumi.URN) error {
+			assert.Contains(t, string(urn), "dns-record-A-web-example-com-Second-Record")
+			return nil
+		})
+
+		return nil
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	require.NoError(t, err)
+}

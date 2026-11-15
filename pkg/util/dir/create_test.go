@@ -88,3 +88,19 @@ func TestCreate(t *testing.T) {
 		})
 	}
 }
+
+func TestCreate_RemoveFails(t *testing.T) {
+	if os.Geteuid() == 0 {
+		t.Skip("permission checks do not apply to root")
+	}
+
+	parent := t.TempDir()
+	target := filepath.Join(parent, "target")
+	require.NoError(t, os.MkdirAll(target, 0o755))
+	require.NoError(t, os.WriteFile(filepath.Join(target, "file.txt"), []byte("x"), 0o644))
+	// a read-only parent prevents removing the target's entries
+	require.NoError(t, os.Chmod(target, 0o555))
+	t.Cleanup(func() { _ = os.Chmod(target, 0o755) })
+
+	assert.Error(t, dir.Create(target))
+}

@@ -134,3 +134,15 @@ func TestWritePulumiStrictFailsRun(t *testing.T) {
 	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.Error(t, err)
 }
+
+func TestWritePulumiStrictFailsOnParentDir(t *testing.T) {
+	blocker := filepath.Join(t.TempDir(), "blocker")
+	require.NoError(t, os.WriteFile(blocker, []byte("x"), 0o644))
+
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		// the parent "directory" is a regular file, so it cannot be created
+		ctx.Export("written", file.WritePulumiStrict(filepath.Join(blocker, "out.txt"), pulumi.String("x")))
+		return nil
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	require.Error(t, err)
+}
