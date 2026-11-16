@@ -45,8 +45,6 @@ type CreateOptions struct {
 	RequiredChecks []string
 	// CopilotReview indicates whether to enable Copilot code review on push. Optional, defaults to false.
 	CopilotReview *bool
-	// WIPIntegration indicates whether to require the status check of the WIP integration. Optional, defaults to true.
-	WIPIntegration *bool
 	// PulumiOptions are additional options to pass to the Pulumi resource.
 	PulumiOptions []pulumi.ResourceOption
 }

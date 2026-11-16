@@ -74,54 +74,27 @@ func TestBuildBypassActorsArgs_DefaultAndWithIntegrations(t *testing.T) {
 func TestBuildRequiredStatusChecksArgs_DefaultsAndCustom(t *testing.T) {
 	opts := &CreateOptions{
 		RequiredChecks: []string{},
-		WIPIntegration: nil,
 	}
-	req := buildRequiredStatusChecksArgs(opts)
-	require.NotNil(t, req)
-	require.Len(t, req.RequiredChecks, 1)
-	req.ToRepositoryRulesetRulesRequiredStatusChecksOutput().
-		RequiredChecks().
-		ApplyT(func(cs []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheck) error {
-			assert.Equal(t, "WIP", cs[0].Context)
-			return nil
-		})
-	req.ToRepositoryRulesetRulesRequiredStatusChecksOutput().
-		RequiredChecks().
-		ApplyT(func(cs []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheck) error {
-			assert.Equal(t, 3414, *cs[0].IntegrationId)
-			return nil
-		})
-	req.ToRepositoryRulesetRulesRequiredStatusChecksOutput().
-		StrictRequiredStatusChecksPolicy().
-		ApplyT(func(b *bool) error {
-			assert.True(t, *b)
-			return nil
-		})
+	assert.Nil(t, buildRequiredStatusChecksArgs(opts))
 
-	falseVal := false
 	opts = &CreateOptions{
 		RequiredChecks: []string{"z", "a"},
-		WIPIntegration: &falseVal,
 	}
-	req = buildRequiredStatusChecksArgs(opts)
+	req := buildRequiredStatusChecksArgs(opts)
 	require.NotNil(t, req)
 	require.Len(t, req.RequiredChecks, 2)
 	req.ToRepositoryRulesetRulesRequiredStatusChecksOutput().
 		RequiredChecks().
 		ApplyT(func(cs []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheck) error {
 			assert.Equal(t, "a", cs[0].Context)
-			return nil
-		})
-	req.ToRepositoryRulesetRulesRequiredStatusChecksOutput().
-		RequiredChecks().
-		ApplyT(func(cs []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheck) error {
 			assert.Equal(t, 15368, *cs[0].IntegrationId)
+			assert.Equal(t, "z", cs[1].Context)
 			return nil
 		})
 	req.ToRepositoryRulesetRulesRequiredStatusChecksOutput().
-		RequiredChecks().
-		ApplyT(func(cs []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheck) error {
-			assert.Equal(t, "z", cs[1].Context)
+		StrictRequiredStatusChecksPolicy().
+		ApplyT(func(b *bool) error {
+			assert.True(t, *b)
 			return nil
 		})
 }

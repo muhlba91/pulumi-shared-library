@@ -85,16 +85,7 @@ func TestCreateRuleset(t *testing.T) {
 				assert.Fail(t, "expected CopilotCodeReview to be present")
 			}
 
-			if r.RequiredStatusChecks != nil && len(r.RequiredStatusChecks.RequiredChecks) > 0 {
-				found := map[string]bool{}
-				for _, c := range r.RequiredStatusChecks.RequiredChecks {
-					found[c.Context] = true
-				}
-				assert.True(t, found["WIP"])
-				assert.True(t, *r.RequiredStatusChecks.StrictRequiredStatusChecksPolicy)
-			} else {
-				assert.Fail(t, "RequiredStatusChecks missing")
-			}
+			assert.Nil(t, r.RequiredStatusChecks)
 
 			if r.PullRequest != nil {
 				hasRebase := false
@@ -136,7 +127,6 @@ func TestCreateRuleset_Custom(t *testing.T) {
 		allowBypassIntegrations := []int{10, 3}
 		updatedBeforeMerge := false
 		requiredChecks := []string{"ci", "lint"}
-		wipIntegration := false
 		copilotReview := true
 
 		opts := &libruleset.CreateOptions{
@@ -155,7 +145,6 @@ func TestCreateRuleset_Custom(t *testing.T) {
 			AllowBypassIntegrations:  allowBypassIntegrations,
 			UpdatedBranchBeforeMerge: &updatedBeforeMerge,
 			RequiredChecks:           requiredChecks,
-			WIPIntegration:           &wipIntegration,
 			CopilotReview:            &copilotReview,
 		}
 

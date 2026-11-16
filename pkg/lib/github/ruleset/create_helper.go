@@ -15,12 +15,6 @@ const (
 	adminActorID      = 5
 )
 
-// Status check context and integration ID of the WIP integration.
-const (
-	wipIntegrationContext = "WIP"
-	wipIntegrationID      = 3414
-)
-
 // githubActionsIntegrationID is the integration ID of GitHub Actions, which reports all other required checks.
 const githubActionsIntegrationID = 15368
 
@@ -85,30 +79,19 @@ func buildBypassActorsArgs(opts *CreateOptions) github.RepositoryRulesetBypassAc
 }
 
 // buildRequiredStatusChecksArgs builds the required status checks args for the ruleset.
-// Returns nil if there are no required checks and the WIP integration is disabled.
+// Returns nil if there are no required checks.
 // opts: The options for creating the ruleset.
 func buildRequiredStatusChecksArgs(opts *CreateOptions) *github.RepositoryRulesetRulesRequiredStatusChecksArgs {
 	var reqStatusChecks *github.RepositoryRulesetRulesRequiredStatusChecksArgs
-	wipIntegration := defaults.GetOrDefault(opts.WIPIntegration, true)
-	if len(opts.RequiredChecks) > 0 || wipIntegration {
-		contexts := []string{}
-		if wipIntegration {
-			contexts = append(contexts, wipIntegrationContext)
-		}
-		contexts = append(contexts, opts.RequiredChecks...)
+	if len(opts.RequiredChecks) > 0 {
+		contexts := append([]string{}, opts.RequiredChecks...)
 		sort.Strings(contexts)
 
 		checks := github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{}
 		for _, c := range contexts {
-			var integrationID int
-			if wipIntegration && c == wipIntegrationContext {
-				integrationID = wipIntegrationID
-			} else {
-				integrationID = githubActionsIntegrationID
-			}
 			checks = append(checks, &github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
 				Context:       pulumi.String(c),
-				IntegrationId: pulumi.Int(integrationID),
+				IntegrationId: pulumi.Int(githubActionsIntegrationID),
 			})
 		}
 
