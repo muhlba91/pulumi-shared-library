@@ -46,6 +46,14 @@ func TestCreateRuleset(t *testing.T) {
 			assert.False(t, e)
 			return nil
 		})
+		rs.AllowedToMerges.ApplyT(func(a []gitlab.BranchProtectionAllowedToMerge) error {
+			assert.Empty(t, a)
+			return nil
+		})
+		rs.AllowedToPushes.ApplyT(func(a []gitlab.BranchProtectionAllowedToPush) error {
+			assert.Empty(t, a)
+			return nil
+		})
 
 		// rs.PushAccessLevel.ApplyT(func(e string) error {
 		// 	assert.Equal(t, "maintainer", e)
@@ -74,6 +82,8 @@ func TestCreateRuleset_Custom(t *testing.T) {
 		memberCheck := true
 		deleteOnDestroy := true
 		reviewerCount := 1
+		allowedToMerge := "developer"
+		allowedToPush := "maintainer"
 
 		opts := &libruleset.CreateOptions{
 			Repository:      repo,
@@ -84,6 +94,8 @@ func TestCreateRuleset_Custom(t *testing.T) {
 			DeleteOnDestroy: &deleteOnDestroy,
 			MemberCheck:     &memberCheck,
 			ReviewerCount:   &reviewerCount,
+			AllowedToMerge:  &allowedToMerge,
+			AllowedToPush:   &allowedToPush,
 		}
 
 		rs, err := libruleset.Create(ctx, "custom", opts)
@@ -96,6 +108,16 @@ func TestCreateRuleset_Custom(t *testing.T) {
 		})
 		rs.CodeOwnerApprovalRequired.ApplyT(func(e bool) error {
 			assert.True(t, e)
+			return nil
+		})
+		rs.AllowedToMerges.ApplyT(func(a []gitlab.BranchProtectionAllowedToMerge) error {
+			require.Len(t, a, 1)
+			assert.Equal(t, "developer", *a[0].AccessLevel)
+			return nil
+		})
+		rs.AllowedToPushes.ApplyT(func(a []gitlab.BranchProtectionAllowedToPush) error {
+			require.Len(t, a, 1)
+			assert.Equal(t, "maintainer", *a[0].AccessLevel)
 			return nil
 		})
 

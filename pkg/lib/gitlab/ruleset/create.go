@@ -26,6 +26,10 @@ type CreateOptions struct {
 	MemberCheck *bool
 	// CodeOwnerReview indicates whether to require code owner review. Optional, defaults to false.
 	CodeOwnerReview *bool
+	// AllowedToMerge is the access level required to merge into the branch. Optional, defaults to "maintainer".
+	AllowedToMerge *string
+	// AllowedToPush is the access level required to push to the branch. Optional, defaults to "maintainer".
+	AllowedToPush *string
 	// DeleteOnDestroy indicates whether to delete the ruleset on destroy. Optional, defaults to false (retained).
 	DeleteOnDestroy *bool
 	// PulumiOptions are additional options to pass to the Pulumi resource.
@@ -81,6 +85,24 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*gitlab.Bran
 		return nil, pprErr
 	}
 
+	var allowedToMerge gitlab.BranchProtectionAllowedToMergeArray
+	if opts.AllowedToMerge != nil {
+		allowedToMerge = gitlab.BranchProtectionAllowedToMergeArray{
+			&gitlab.BranchProtectionAllowedToMergeArgs{
+				AccessLevel: pulumi.String(defaults.GetOrDefault(opts.AllowedToMerge, "maintainer")),
+			},
+		}
+	}
+
+	var allowedToPush gitlab.BranchProtectionAllowedToPushArray
+	if opts.AllowedToPush != nil {
+		allowedToPush = gitlab.BranchProtectionAllowedToPushArray{
+			&gitlab.BranchProtectionAllowedToPushArgs{
+				AccessLevel: pulumi.String(defaults.GetOrDefault(opts.AllowedToPush, "maintainer")),
+			},
+		}
+	}
+
 	return gitlab.NewBranchProtection(
 		ctx,
 		fmt.Sprintf("gitlab-branch-protection-%s", name),
@@ -89,8 +111,8 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*gitlab.Bran
 			Branch:                    pulumi.String(opts.Branch),
 			AllowForcePush:            pulumi.Bool(defaults.GetOrDefault(opts.AllowForcePush, false)),
 			CodeOwnerApprovalRequired: pulumi.Bool(defaults.GetOrDefault(opts.CodeOwnerReview, false)),
-			// MergeAccessLevel:          pulumi.String("developer"),
-			// PushAccessLevel:           pulumi.String("maintainer"),
+			AllowedToMerges:           allowedToMerge,
+			AllowedToPushes:           allowedToPush,
 		},
 		optsWithRepoSpecifics...)
 }
