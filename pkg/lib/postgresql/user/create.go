@@ -30,7 +30,7 @@ func Create(ctx *pulumi.Context, opts *CreateOptions) (*pgModel.UserData, error)
 		Special: false,
 	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create the password for the postgresql user %q: %w", opts.Username, err)
 	}
 
 	role, err := postgresql.NewRole(ctx, fmt.Sprintf("pg-db-user-%s", opts.Username), &postgresql.RoleArgs{
@@ -41,7 +41,7 @@ func Create(ctx *pulumi.Context, opts *CreateOptions) (*pgModel.UserData, error)
 		Login:          pulumi.Bool(true),
 	}, opts.PulumiOptions...)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create the postgresql role %q: %w", opts.Username, err)
 	}
 
 	return &pgModel.UserData{

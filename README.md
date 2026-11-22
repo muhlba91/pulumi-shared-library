@@ -9,59 +9,44 @@
 > [!IMPORTANT]
 > This is a personal library. It is tailored to specific infrastructure patterns and may change without notice.
 
-This repository contains shared Pulumi components and utilities used across personal infrastructure-as-code (IaC) projects. It provides high-level abstractions for common cloud resources to ensure consistency and security by default.
+This repository contains a Go library of Pulumi resources and helpers for AWS, Google Cloud, Scaleway, Hetzner, GitHub, GitLab, Vault, Kubernetes, NetBird and PostgreSQL, with secure defaults such as forced S3 encryption.
 
-## Features
-
-- **Multi-Cloud Support**: Helpers for AWS, Google Cloud (GCP), Scaleway, and Hetzner.
-- **Service Integrations**: Utilities for GitHub, GitLab, Vault, and Kubernetes.
-- **Opinionated Defaults**: Security-focused resource configurations (e.g., S3 with forced encryption).
-- **Utility Helpers**: Common tasks like string manipulation, file hashing, and Pulumi type conversions.
-
-## Usage
-
-This library is built with Go. You can include it in your Pulumi project by fetching the module:
+## Installation
 
 ```bash
 go get github.com/muhlba91/pulumi-shared-library
 ```
 
-### Example: Creating an S3 Bucket
+## Usage
+
+Resources live in `pkg/lib`, helpers in `pkg/util` and shared types in `pkg/model`. Most resources follow the `Create(ctx, opts)` pattern.
 
 ```go
 import (
-    "github.com/muhlba91/pulumi-shared-library/pkg/lib/aws/s3/bucket"
-    "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+  "github.com/muhlba91/pulumi-shared-library/pkg/lib/aws/s3/bucket"
+  "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func main() {
-    pulumi.Run(func(ctx *pulumi.Context) error {
-        _, err := bucket.Create(ctx, &bucket.CreateOptions{
-            Name: "my-secure-bucket",
-            Labels: map[string]string{
-                "Environment": "Production",
-            },
-        })
-        return err
+  pulumi.Run(func(ctx *pulumi.Context) error {
+    _, err := bucket.Create(ctx, &bucket.CreateOptions{
+      Name: "my-secure-bucket",
+      Labels: map[string]string{
+        "Environment": "Production",
+      },
     })
+    return err
+  })
 }
 ```
 
-## Structure
-
-- [`pkg/lib/`](pkg/lib/): Domain-specific resource abstractions (AWS, GCP, etc.).
-- [`pkg/util/`](pkg/util/): General purpose utilities and Pulumi-specific helpers.
-- [`pkg/model/`](pkg/model/): Shared data structures and configuration models.
-
 ## Development
 
-Tool versions (Go, golangci-lint) are managed with [mise](https://mise.jdx.dev): run `mise trust` and `mise install` once, then use the usual commands (`make ...`, `go test ./...`).
+Tool versions (Go, golangci-lint) are managed with [mise](https://mise.jdx.dev): run `mise trust` and `mise install` once, then use `make check`.
 
-### Makefile Commands
-
-To simplify common development tasks, use the following `make` commands:
-
-- `make fix`: Automatically fix linting issues using `golangci-lint fmt`.
-- `make lint`: Run code quality checks with `golangci-lint` and `go vet`.
-- `make test`: Run all tests with coverage reporting.
-- `make coverage`: Generate and open a local HTML coverage report.
+- `make help`: list the targets.
+- `make check`: run `make lint` and `make test`.
+- `make fix`: format the code with `golangci-lint fmt`.
+- `make lint`: run `golangci-lint` and `go vet`.
+- `make test`: run the tests with coverage.
+- `make coverage`: open the HTML coverage report.

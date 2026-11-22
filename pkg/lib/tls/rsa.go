@@ -1,4 +1,3 @@
-//nolint:revive,nolintlint // package name is fine as is
 package tls
 
 import (

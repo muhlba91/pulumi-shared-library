@@ -49,7 +49,7 @@ func Create(
 			Value:      opts.Value,
 		}, pulumiOpts...)
 		if err != nil {
-			log.Error().Msgf("Failed to create GitHub Actions secret: %v", err)
+			log.Error().Msgf("failed to create GitHub Actions secret: %v", err)
 			return nil
 		}
 

@@ -63,7 +63,7 @@ func CreateServiceAccount(
 		opts.PulumiOptions...,
 	)
 	if errSa != nil {
-		return nil, nil, errSa
+		return nil, nil, fmt.Errorf("failed to create the service account %q: %w", opts.Name, errSa)
 	}
 
 	if len(opts.Roles) > 0 {
@@ -78,7 +78,7 @@ func CreateServiceAccount(
 			PulumiOptions: opts.PulumiOptions,
 		})
 		if errRoles != nil {
-			return nil, nil, errRoles
+			return nil, nil, fmt.Errorf("failed to create the roles of the service account %q: %w", opts.Name, errRoles)
 		}
 		return sa, created, nil
 	}

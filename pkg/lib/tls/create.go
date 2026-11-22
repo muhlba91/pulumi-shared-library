@@ -1,4 +1,3 @@
-//nolint:revive,nolintlint // package name is fine as is
 package tls
 
 import (
@@ -72,7 +71,7 @@ func createKey(ctx *pulumi.Context, resName string, opts *CreateOptions) (*tls.P
 		args.EcdsaCurve = pulumi.String(defaults.GetOrDefault(opts.ECDSACurve, defaultECDSACurve))
 	case AlgorithmED25519:
 	default:
-		return nil, fmt.Errorf("unsupported key algorithm: %q", opts.Algorithm)
+		return nil, fmt.Errorf("%w: %q", ErrUnsupportedAlgorithm, opts.Algorithm)
 	}
 
 	pulumiOpts := append([]pulumi.ResourceOption{}, opts.PulumiOptions...)

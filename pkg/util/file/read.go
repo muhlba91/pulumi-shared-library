@@ -1,6 +1,7 @@
 package file
 
 import (
+	"fmt"
 	"os"
 )
 
@@ -9,7 +10,7 @@ import (
 func ReadContents(path string) (string, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to read file %q: %w", path, err)
 	}
 
 	return string(b), nil

@@ -64,7 +64,7 @@ func Create(
 			Raw:          pulumi.Bool(defaults.GetOrDefault(opts.DisableVariableExpansion, false)),
 		}, pulumiOpts...)
 		if err != nil {
-			log.Error().Msgf("Failed to create GitLab Project Variable: %v", err)
+			log.Error().Msgf("failed to create GitLab Project Variable: %v", err)
 			return nil
 		}
 

@@ -32,7 +32,7 @@ func WriteFileAndUpload(
 		Labels:       opts.Labels,
 	})
 	if err != nil {
-		log.Error().Msgf("Failed to upload object to GCS: %v", err)
+		log.Error().Msgf("failed to upload object to GCS: %v", err)
 		return pulumi.ToOutput(nil)
 	}
 

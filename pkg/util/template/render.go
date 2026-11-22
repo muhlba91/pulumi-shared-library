@@ -2,6 +2,7 @@ package template
 
 import (
 	"bytes"
+	"fmt"
 	"text/template"
 )
 
@@ -12,12 +13,12 @@ import (
 func Render(path string, data any) (string, error) {
 	tpl, errParse := template.ParseFiles(path)
 	if errParse != nil {
-		return "", errParse
+		return "", fmt.Errorf("failed to parse the template %q: %w", path, errParse)
 	}
 
 	var buf bytes.Buffer
 	if errExec := tpl.Execute(&buf, data); errExec != nil {
-		return "", errExec
+		return "", fmt.Errorf("failed to execute the template %q: %w", path, errExec)
 	}
 
 	return buf.String(), nil

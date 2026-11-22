@@ -1,7 +1,6 @@
 package network
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/KitStream/netbird-pulumi-provider/sdk/go/netbird"
@@ -44,7 +43,7 @@ func CreateRouter(ctx *pulumi.Context, name string, opts *CreateRouterOptions) (
 	resName := fmt.Sprintf("netbird-network-router-%s", name)
 
 	if opts.Peer != nil && len(opts.PeerGroups) > 0 {
-		return nil, errors.New("a network router supports either a peer or peer groups, not both")
+		return nil, ErrPeerAndPeerGroups
 	}
 
 	args := &netbird.NetworkRouterArgs{

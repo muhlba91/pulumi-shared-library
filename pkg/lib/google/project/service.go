@@ -30,7 +30,7 @@ func EnableServices(ctx *pulumi.Context, opts *EnableServicesOptions) ([]*projec
 			Project: pulumi.String(opts.Project),
 		}, opts.PulumiOptions...)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to enable the service %q: %w", svc, err)
 		}
 		res = append(res, s)
 	}

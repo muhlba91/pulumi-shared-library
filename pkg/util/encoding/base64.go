@@ -2,6 +2,7 @@ package encoding
 
 import (
 	"encoding/base64"
+	"fmt"
 )
 
 // B64Encode base64-encodes a string and returns the encoded string.
@@ -14,5 +15,9 @@ func B64Encode(data string) string {
 // data: the base64-encoded string to be decoded.
 func B64Decode(data string) (string, error) {
 	decoded, err := base64.StdEncoding.DecodeString(data)
-	return string(decoded), err
+	if err != nil {
+		return string(decoded), fmt.Errorf("failed to decode the base64 data: %w", err)
+	}
+
+	return string(decoded), nil
 }

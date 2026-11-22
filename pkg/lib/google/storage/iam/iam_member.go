@@ -1,6 +1,8 @@
 package iam
 
 import (
+	"fmt"
+
 	gcpStorage "github.com/pulumi/pulumi-gcp/sdk/v10/go/gcp/storage"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
@@ -40,7 +42,7 @@ func CreateIAMMember(
 		Member: pulumi.String(opts.Member),
 	}, opts.PulumiOptions...)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create the bucket iam member %q: %w", name, err)
 	}
 	return iamMember, nil
 }

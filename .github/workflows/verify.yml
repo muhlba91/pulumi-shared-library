@@ -59,8 +59,7 @@ jobs:
           skip-cache: true
           skip-save-cache: true
 
-      - run: |
-          go vet ./...
+      - run: go vet ./...
 
   test:
     runs-on: ubuntu-latest
@@ -80,8 +79,7 @@ jobs:
       # Go comes from mise; setup-go only restores the module cache.
       - uses: actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5 # v7.1.0
 
-      - run: |
-          make test
+      - run: make test
 
       - run: |
           go install github.com/mattn/goveralls@latest

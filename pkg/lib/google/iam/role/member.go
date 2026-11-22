@@ -43,7 +43,7 @@ func CreateMember(
 			opts.PulumiOptions...,
 		)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to create the iam member for the role %q: %w", role, err)
 		}
 		created = append(created, res)
 	}

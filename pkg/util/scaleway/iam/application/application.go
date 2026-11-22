@@ -1,6 +1,8 @@
 package application
 
 import (
+	"fmt"
+
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	"github.com/muhlba91/pulumi-shared-library/pkg/lib/scaleway/iam/apikey"
@@ -35,7 +37,7 @@ func CreateApplication(
 		PulumiOptions: opts.PulumiOptions,
 	})
 	if errApp != nil {
-		return nil, errApp
+		return nil, fmt.Errorf("failed to create the scaleway application %q: %w", opts.Name, errApp)
 	}
 
 	key, errKey := apikey.Create(ctx, opts.Name, &apikey.CreateOptions{
@@ -46,7 +48,7 @@ func CreateApplication(
 		},
 	})
 	if errKey != nil {
-		return nil, errKey
+		return nil, fmt.Errorf("failed to create the api key for the scaleway application %q: %w", opts.Name, errKey)
 	}
 
 	return &scwmodel.Application{

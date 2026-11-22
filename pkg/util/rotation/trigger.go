@@ -1,6 +1,8 @@
 package rotation
 
 import (
+	"fmt"
+
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	rLib "github.com/muhlba91/pulumi-shared-library/pkg/lib/rotation"
@@ -14,7 +16,7 @@ import (
 // opts: Rotation options. If nil, no rotation schedule will be created.
 func Trigger(ctx *pulumi.Context, name string, opts *rModel.Options) (*pulumi.StringOutput, error) {
 	if opts == nil {
-		//nolint:nilnil // No rotation options provided, so no trigger is needed.
+		//nolint:nilnil // no rotation options provided, so no trigger is needed
 		return nil, nil
 	}
 
@@ -23,7 +25,7 @@ func Trigger(ctx *pulumi.Context, name string, opts *rModel.Options) (*pulumi.St
 	}
 	rotating, err := rLib.Create(ctx, opts)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create the rotation for %q: %w", name, err)
 	}
 
 	return &rotating.Rfc3339, nil

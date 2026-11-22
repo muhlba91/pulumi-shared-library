@@ -68,7 +68,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*netbird.Set
 
 	expiry, err := expirySeconds(opts)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to derive the setup key expiry: %w", err)
 	}
 
 	pulumiOpts := append([]pulumi.ResourceOption{}, opts.PulumiOptions...)
@@ -98,7 +98,12 @@ func expirySeconds(opts *CreateOptions) (int, error) {
 			days = defaultRotationDays
 		}
 		if days > maxRotationDays {
-			return 0, fmt.Errorf("rotation days must not exceed %d, got %d", maxRotationDays, days)
+			return 0, fmt.Errorf(
+				"%w: rotation days must not exceed %d, got %d",
+				ErrInvalidOptions,
+				maxRotationDays,
+				days,
+			)
 		}
 		derived = days * secondsPerDay * expiryRotationFactor
 	}

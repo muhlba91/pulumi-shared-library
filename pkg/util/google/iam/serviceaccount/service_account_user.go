@@ -1,6 +1,8 @@
 package serviceaccount
 
 import (
+	"fmt"
+
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	"github.com/muhlba91/pulumi-shared-library/pkg/lib/google/iam/serviceaccount"
@@ -47,7 +49,7 @@ func CreateServiceAccountUser(
 		PulumiOptions:             opts.PulumiOptions,
 	})
 	if errSa != nil {
-		return nil, errSa
+		return nil, fmt.Errorf("failed to create the service account %q: %w", opts.Name, errSa)
 	}
 
 	keyOpts := append([]pulumi.ResourceOption{}, opts.PulumiOptions...)
@@ -58,7 +60,7 @@ func CreateServiceAccountUser(
 		PulumiOptions:  keyOpts,
 	})
 	if errKey != nil {
-		return nil, errKey
+		return nil, fmt.Errorf("failed to create the service account key %q: %w", opts.Name, errKey)
 	}
 
 	return &gmodel.User{

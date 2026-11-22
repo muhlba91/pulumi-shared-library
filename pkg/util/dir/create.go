@@ -1,6 +1,7 @@
 package dir
 
 import (
+	"fmt"
 	"os"
 )
 
@@ -9,7 +10,7 @@ import (
 // path: directory path to create.
 func Create(path string) error {
 	if err := os.RemoveAll(path); err != nil {
-		return err
+		return fmt.Errorf("failed to remove the directory %q: %w", path, err)
 	}
 
 	return os.MkdirAll(path, 0o750)

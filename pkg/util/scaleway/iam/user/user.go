@@ -1,6 +1,8 @@
 package user
 
 import (
+	"fmt"
+
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 	"github.com/muhlba91/pulumi-shared-library/pkg/lib/scaleway/iam/apikey"
@@ -35,7 +37,7 @@ func CreateUser(
 		PulumiOptions: opts.PulumiOptions,
 	})
 	if errUser != nil {
-		return nil, errUser
+		return nil, fmt.Errorf("failed to create the scaleway user %q: %w", opts.Name, errUser)
 	}
 
 	key, errKey := apikey.Create(ctx, opts.Name, &apikey.CreateOptions{
@@ -46,7 +48,7 @@ func CreateUser(
 		},
 	})
 	if errKey != nil {
-		return nil, errKey
+		return nil, fmt.Errorf("failed to create the api key for the scaleway user %q: %w", opts.Name, errKey)
 	}
 
 	return &scwmodel.User{

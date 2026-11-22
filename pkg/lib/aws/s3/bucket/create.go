@@ -30,7 +30,7 @@ func Create(ctx *pulumi.Context, opts *CreateOptions) (*s3.Bucket, error) {
 		Tags:         pulumi.ToStringMap(opts.Labels),
 	}, opts.PulumiOptions...)
 	if errCreate != nil {
-		return nil, errCreate
+		return nil, fmt.Errorf("failed to create the s3 bucket %q: %w", opts.Name, errCreate)
 	}
 
 	_, errSSE := s3.NewBucketServerSideEncryptionConfiguration(
@@ -48,7 +48,7 @@ func Create(ctx *pulumi.Context, opts *CreateOptions) (*s3.Bucket, error) {
 		},
 		opts.PulumiOptions...)
 	if errSSE != nil {
-		return nil, errSSE
+		return nil, fmt.Errorf("failed to enable the encryption of the s3 bucket %q: %w", opts.Name, errSSE)
 	}
 
 	return b, nil

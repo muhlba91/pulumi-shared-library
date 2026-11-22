@@ -48,7 +48,12 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*netbird.Pol
 	resName := fmt.Sprintf("netbird-policy-%s", name)
 
 	if len(opts.Rules) > maxRules {
-		return nil, fmt.Errorf("a policy supports at most %d rule(s), got %d", maxRules, len(opts.Rules))
+		return nil, fmt.Errorf(
+			"%w: a policy supports at most %d rule(s), got %d",
+			ErrInvalidOptions,
+			maxRules,
+			len(opts.Rules),
+		)
 	}
 
 	args := &netbird.PolicyArgs{
@@ -61,7 +66,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*netbird.Pol
 	if len(opts.Rules) > 0 {
 		rule, err := toRuleArgs(opts.Rules[0])
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to convert the policy rule: %w", err)
 		}
 		args.Rule = rule
 	}
@@ -75,8 +80,8 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*netbird.Pol
 func toRuleArgs(rule pModel.Rule) (netbird.PolicyRulePtrInput, error) {
 	protocol := defaults.GetOrDefault(rule.Protocol, defaultProtocol)
 	if len(rule.Ports) > 0 && protocol != protocolTCP && protocol != protocolUDP {
-		return nil, fmt.Errorf("rule %q: ports require protocol %q or %q, got %q",
-			rule.Name, protocolTCP, protocolUDP, protocol)
+		return nil, fmt.Errorf("%w: rule %q: ports require protocol %q or %q, got %q",
+			ErrInvalidOptions, rule.Name, protocolTCP, protocolUDP, protocol)
 	}
 
 	args := netbird.PolicyRuleArgs{

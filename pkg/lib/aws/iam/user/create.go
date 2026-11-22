@@ -29,7 +29,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*iam.User, e
 		Tags: pulumi.ToStringMap(opts.Labels),
 	}, opts.PulumiOptions...)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create the aws user %q: %w", name, err)
 	}
 
 	for _, p := range opts.Policies {

@@ -1,6 +1,8 @@
 package random
 
 import (
+	"fmt"
+
 	randomsdk "github.com/pulumi/pulumi-random/sdk/v4/go/random"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
@@ -40,7 +42,7 @@ func CreateBytes(ctx *pulumi.Context, name string, opts *BytesOptions) (*random.
 	},
 		pulumiOpts...)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create the random bytes %q: %w", name, err)
 	}
 
 	return &random.BytesData{

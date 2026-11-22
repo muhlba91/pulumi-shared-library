@@ -19,5 +19,6 @@ Most resources follow the `Create(ctx, opts)` pattern.
 ## Development
 
 - `make fix`: Format code.
+- `make check`: Run linters and tests.
 - `make lint`: Run linters.
 - `make test`: Run tests.

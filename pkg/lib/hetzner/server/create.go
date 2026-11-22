@@ -98,7 +98,7 @@ func Create(ctx *pulumi.Context, name string, opts *CreateOptions) (*hModel.Serv
 		Labels:            pulumi.ToStringMap(opts.Labels),
 	}, optsWithProtection...)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create the hetzner server %q: %w", name, err)
 	}
 
 	ssh := opts.IPAddress.ToStringOutput()
