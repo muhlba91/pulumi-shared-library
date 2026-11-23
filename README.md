@@ -1,10 +1,10 @@
 # Pulumi Shared Library
 
-[![](https://img.shields.io/github/license/muhlba91/pulumi-shared-library?style=for-the-badge)](LICENSE)
-[![](https://img.shields.io/github/actions/workflow/status/muhlba91/pulumi-shared-library/verify.yml?style=for-the-badge)](https://github.com/muhlba91/pulumi-shared-library/actions/workflows/verify.yml)
-[![](https://img.shields.io/coverallsCoverage/github/muhlba91/pulumi-shared-library?style=for-the-badge)](https://github.com/muhlba91/pulumi-shared-library/)
-[![](https://api.scorecard.dev/projects/github.com/muhlba91/pulumi-shared-library/badge?style=for-the-badge)](https://scorecard.dev/viewer/?uri=github.com/muhlba91/pulumi-shared-library)
-[![](https://img.shields.io/github/release-date/muhlba91/pulumi-shared-library?style=for-the-badge)](https://github.com/muhlba91/pulumi-shared-library/releases)
+[![License](https://img.shields.io/github/license/muhlba91/pulumi-shared-library?style=for-the-badge)](LICENSE)
+[![Verify workflow](https://img.shields.io/github/actions/workflow/status/muhlba91/pulumi-shared-library/verify.yml?style=for-the-badge)](https://github.com/muhlba91/pulumi-shared-library/actions/workflows/verify.yml)
+[![Coverage](https://img.shields.io/coverallsCoverage/github/muhlba91/pulumi-shared-library?style=for-the-badge)](https://github.com/muhlba91/pulumi-shared-library/)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/muhlba91/pulumi-shared-library/badge?style=for-the-badge)](https://scorecard.dev/viewer/?uri=github.com/muhlba91/pulumi-shared-library)
+[![Release date](https://img.shields.io/github/release-date/muhlba91/pulumi-shared-library?style=for-the-badge)](https://github.com/muhlba91/pulumi-shared-library/releases)
 
 > [!IMPORTANT]
 > This is a personal library. It is tailored to specific infrastructure patterns and may change without notice.
