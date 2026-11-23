@@ -5,7 +5,6 @@ import (
 
 	"github.com/pulumi/pulumi-gitlab/sdk/v10/go/gitlab"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/rs/zerolog/log"
 
 	"github.com/muhlba91/pulumi-shared-library/pkg/util/defaults"
 )
@@ -33,13 +32,18 @@ type CreateOptions struct {
 
 // Create stores a value in a GitLab Variable.
 // The variable depends on the project and is deleted before it is replaced.
-// Returns an output of the variable, which resolves to nil if the creation failed (the error is logged).
+// Returns ErrMissingRepository if the repository is nil.
+// Returns an output of the variable; a failed creation fails the output and thereby the Pulumi program.
 // ctx: Pulumi context.
 // opts: CreateOptions containing the key, value, and repository.
 func Create(
 	ctx *pulumi.Context,
 	opts *CreateOptions,
-) pulumi.Output {
+) (pulumi.Output, error) {
+	if opts.Repository == nil {
+		return nil, ErrMissingRepository
+	}
+
 	pulumiOpts := opts.PulumiOptions
 	if pulumiOpts == nil {
 		pulumiOpts = []pulumi.ResourceOption{
@@ -50,7 +54,7 @@ func Create(
 	}
 	pulumiOpts = append(pulumiOpts, pulumi.DeleteBeforeReplace(true))
 
-	return opts.Repository.Name.ApplyT(func(repositoryName string) *gitlab.ProjectVariable {
+	return opts.Repository.Name.ApplyT(func(repositoryName string) (*gitlab.ProjectVariable, error) {
 		name := fmt.Sprintf("gitlab-project-variable-%s-%s", repositoryName, opts.Key)
 
 		as, err := gitlab.NewProjectVariable(ctx, name, &gitlab.ProjectVariableArgs{
@@ -64,10 +68,9 @@ func Create(
 			Raw:          pulumi.Bool(defaults.GetOrDefault(opts.DisableVariableExpansion, false)),
 		}, pulumiOpts...)
 		if err != nil {
-			log.Error().Msgf("failed to create GitLab Project Variable: %v", err)
-			return nil
+			return nil, fmt.Errorf("failed to create the GitLab project variable %q: %w", opts.Key, err)
 		}
 
-		return as
-	})
+		return as, nil
+	}), nil
 }

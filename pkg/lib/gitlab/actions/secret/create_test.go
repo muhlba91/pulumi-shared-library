@@ -30,7 +30,8 @@ func TestCreate_GitLabActionsSecret(t *testing.T) {
 			Repository: repo,
 		}
 
-		out := secret.Create(ctx, opts)
+		out, err := secret.Create(ctx, opts)
+		require.NoError(t, err)
 		assert.NotNil(t, out)
 
 		out.ApplyT(func(v any) error {
@@ -104,7 +105,8 @@ func TestCreate_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 			},
 		}
 
-		out := secret.Create(ctx, opts)
+		out, err := secret.Create(ctx, opts)
+		require.NoError(t, err)
 		assert.NotNil(t, out)
 
 		out.ApplyT(func(v any) error {
@@ -165,8 +167,22 @@ func TestCreate_GitLabActionsSecret_WithOptionalArgs(t *testing.T) {
 			},
 		}
 
-		out := secret.Create(ctx, opts)
+		out, cErr := secret.Create(ctx, opts)
+		require.NoError(t, cErr)
 		assert.NotNil(t, out)
+		return nil
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	require.NoError(t, err)
+}
+
+func TestCreate_GitLabActionsSecret_MissingRepository(t *testing.T) {
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		out, cErr := secret.Create(ctx, &secret.CreateOptions{
+			Key:   "MY_SECRET",
+			Value: pulumi.String("s3cr3t"),
+		})
+		require.ErrorIs(t, cErr, secret.ErrMissingRepository)
+		assert.Nil(t, out)
 		return nil
 	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
