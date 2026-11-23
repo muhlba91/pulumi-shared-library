@@ -18,9 +18,9 @@ type CreateRolePolicyAttachmentOptions struct {
 }
 
 // CreateRolePolicyAttachment attaches a policy to a single IAM Role without affecting other entities of the policy.
-// ctx: Pulumi context
-// name: The logical name for the Pulumi resource (prefixed with "aws-iam-role-policy-attach-").
-// opts: Options for creating the role policy attachment
+// ctx: Pulumi context.
+// name: The logical name for the Pulumi resource (prefixed with "aws-iam-role-policy-attachment-").
+// opts: Options for creating the role policy attachment.
 func CreateRolePolicyAttachment(
 	ctx *pulumi.Context,
 	name string,
@@ -28,7 +28,7 @@ func CreateRolePolicyAttachment(
 ) (*iam.RolePolicyAttachment, error) {
 	return iam.NewRolePolicyAttachment(
 		ctx,
-		fmt.Sprintf("aws-iam-role-policy-attach-%s", name),
+		fmt.Sprintf("aws-iam-role-policy-attachment-%s", name),
 		&iam.RolePolicyAttachmentArgs{
 			Role:      opts.Role,
 			PolicyArn: opts.PolicyArn,
