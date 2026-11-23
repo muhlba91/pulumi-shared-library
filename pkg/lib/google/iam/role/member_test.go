@@ -3,6 +3,7 @@ package role_test
 import (
 	"testing"
 
+	"github.com/pulumi/pulumi-gcp/sdk/v10/go/gcp/projects"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -79,6 +80,34 @@ func TestCreateMember_MultipleRoles_WithOptionalArgs(t *testing.T) {
 				return nil
 			})
 		}
+		return nil
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	require.NoError(t, err)
+}
+
+func TestCreateMember_WithCondition(t *testing.T) {
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		description := "only secrets of one repository"
+		created, err := role.CreateMember(ctx, "cond", &role.MemberOptions{
+			Member:  pulumi.String("user:alice@example.com"),
+			Roles:   []string{"roles/secretmanager.secretAccessor"},
+			Project: pulumi.String("proj-123"),
+			Condition: &role.MemberCondition{
+				Title:       "repository",
+				Description: &description,
+				Expression:  pulumi.String("resource.name.startsWith('projects/1/secrets/a')"),
+			},
+		})
+		require.NoError(t, err)
+		require.Len(t, created, 1)
+
+		created[0].Condition.ApplyT(func(c *projects.IAMMemberCondition) error {
+			require.NotNil(t, c)
+			assert.Equal(t, "repository", c.Title)
+			assert.Equal(t, description, *c.Description)
+			assert.Equal(t, "resource.name.startsWith('projects/1/secrets/a')", c.Expression)
+			return nil
+		})
 		return nil
 	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)

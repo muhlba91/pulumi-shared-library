@@ -30,7 +30,8 @@ func TestCreate_GithubActionsSecret(t *testing.T) {
 			Repository: repo,
 		}
 
-		out := secret.Create(ctx, opts)
+		out, err := secret.Create(ctx, opts)
+		require.NoError(t, err)
 		assert.NotNil(t, out)
 
 		out.ApplyT(func(v any) error {
@@ -55,7 +56,8 @@ func TestCreate_GithubActionsSecret(t *testing.T) {
 		opts.PulumiOptions = []pulumi.ResourceOption{
 			pulumi.Protect(true),
 		}
-		out2 := secret.Create(ctx, opts)
+		out2, err := secret.Create(ctx, opts)
+		require.NoError(t, err)
 		assert.NotNil(t, out2)
 		return nil
 	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
@@ -83,7 +85,8 @@ func TestCreate_GithubActionsSecret_WithOptionalArgs(t *testing.T) {
 			},
 		}
 
-		out := secret.Create(ctx, opts)
+		out, err := secret.Create(ctx, opts)
+		require.NoError(t, err)
 		assert.NotNil(t, out)
 
 		out.ApplyT(func(v any) error {
@@ -103,6 +106,19 @@ func TestCreate_GithubActionsSecret_WithOptionalArgs(t *testing.T) {
 			})
 			return nil
 		})
+		return nil
+	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
+	require.NoError(t, err)
+}
+
+func TestCreate_GithubActionsSecret_MissingRepository(t *testing.T) {
+	err := pulumi.RunErr(func(ctx *pulumi.Context) error {
+		out, err := secret.Create(ctx, &secret.CreateOptions{
+			Key:   "MY_SECRET",
+			Value: pulumi.String("s3cr3t"),
+		})
+		require.ErrorIs(t, err, secret.ErrMissingRepository)
+		assert.Nil(t, out)
 		return nil
 	}, pulumi.WithMocks("project", "stack", mocks.NewCounter()))
 	require.NoError(t, err)
