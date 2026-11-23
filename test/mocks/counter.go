@@ -143,6 +143,8 @@ func (c *Counter) Call(
 		outs["id"] = resource.NewStringProperty("1")
 	case "gitlab:index/getCurrentUser:getCurrentUser":
 		outs["id"] = resource.NewStringProperty("1")
+	case "gcp:organizations/getProject:getProject":
+		outs["number"] = resource.NewStringProperty("123456789")
 	}
 
 	return outs, nil
